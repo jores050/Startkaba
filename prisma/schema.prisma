@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model UserProfile {
+  id                 String             @id @default(uuid())
+  email              String             @unique
+  fullName           String
+  avatarUrl          String?
+  city               City               @default(OTHER)
+  bio                String?
+  projectName        String?
+  projectDescription String?
+  skills             String[]
+  currentLevelId     Int                @default(1)
+  totalXp            Int                @default(0)
+  subscriptionStatus SubscriptionStatus @default(FREE)
+  isAdmin            Boolean            @default(false)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  progress      UserProgress[]
+  earnedBadges  UserBadge[]
+  coachMessages CoachMessage[]
+  notifications Notification[]
+
+  @@map("user_profiles")
+}
+
+enum City {
+  COTONOU
+  ABIDJAN
+  DAKAR
+  LOME
+  BAMAKO
+  OTHER
+}
+
+enum SubscriptionStatus {
+  FREE
+  PREMIUM
+}
+
+model UserProgress {
+  id          String         @id @default(uuid())
+  userId      String
+  taskId      Int
+  levelId     Int
+  status      ProgressStatus @default(NOT_STARTED)
+  quizScore   Int?
+  completedAt DateTime?
+  xpEarned    Int            @default(0)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@unique([userId, taskId])
+  @@map("user_progress")
+}
+
+enum ProgressStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+model UserBadge {
+  id       String   @id @default(uuid())
+  userId   String
+  badgeId  Int
+  earnedAt DateTime @default(now())
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@unique([userId, badgeId])
+  @@map("user_badges")
+}
+
+model CoachMessage {
+  id        String      @id @default(uuid())
+  userId    String
+  levelId   Int
+  role      MessageRole
+  content   String      @db.Text
+  createdAt DateTime    @default(now())
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@map("coach_messages")
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  type      NotificationType
+  title     String
+  body      String
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
+}
+
+enum NotificationType {
+  BADGE_EARNED
+  LEVEL_UNLOCKED
+  TASK_COMPLETED
+  MESSAGE_RECEIVED
+  SYSTEM
+}
