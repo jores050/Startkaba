@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+  <!-- Motif wax : losanges imbriqués et triangles (inspiration kente) -->
+  <g fill="none" stroke="#1A6B00" stroke-width="2">
+    <path d="M40 4 L76 40 L40 76 L4 40 Z"/>
+    <path d="M40 18 L62 40 L40 62 L18 40 Z"/>
+  </g>
+  <path d="M40 30 L50 40 L40 50 L30 40 Z" fill="#F77E2D"/>
+  <g fill="#0722AB">
+    <path d="M0 0 L12 0 L0 12 Z"/>
+    <path d="M80 0 L68 0 L80 12 Z"/>
+    <path d="M0 80 L12 80 L0 68 Z"/>
+    <path d="M80 80 L68 80 L80 68 Z"/>
+  </g>
+</svg>

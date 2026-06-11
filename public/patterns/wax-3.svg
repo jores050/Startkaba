@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+  <!-- Motif wax : ondulations et écailles (inspiration "eau de mars") -->
+  <g fill="none" stroke="#0722AB" stroke-width="2">
+    <path d="M0 20 Q20 0 40 20 T80 20"/>
+    <path d="M0 40 Q20 20 40 40 T80 40"/>
+    <path d="M0 60 Q20 40 40 60 T80 60"/>
+  </g>
+  <g fill="#1A6B00">
+    <circle cx="20" cy="12" r="2.5"/>
+    <circle cx="60" cy="12" r="2.5"/>
+    <circle cx="20" cy="32" r="2.5"/>
+    <circle cx="60" cy="32" r="2.5"/>
+    <circle cx="20" cy="52" r="2.5"/>
+    <circle cx="60" cy="52" r="2.5"/>
+    <circle cx="20" cy="72" r="2.5"/>
+    <circle cx="60" cy="72" r="2.5"/>
+  </g>
+</svg>

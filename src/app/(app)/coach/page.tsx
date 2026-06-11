@@ -37,7 +37,7 @@ function Bubble({ msg }: { msg: { role: string; content: string } }) {
     <div className={`flex gap-3 ${isKaba ? "" : "flex-row-reverse"}`}>
       {isKaba && <KabaAvatar />}
       <div
-        className={`max-w-[75%] px-4 py-3 rounded-2xl whitespace-pre-wrap text-sm leading-relaxed ${
+        className={`max-w-[85%] sm:max-w-[75%] px-4 py-3 rounded-2xl whitespace-pre-wrap text-sm leading-relaxed ${
           isKaba
             ? "bg-surface border border-border text-foreground rounded-tl-sm"
             : "bg-primary text-white rounded-tr-sm"
@@ -132,9 +132,9 @@ function CoachChat() {
   }
 
   return (
-    <div className="max-w-3xl flex flex-col h-[calc(100vh-4rem)]">
+    <div className="max-w-3xl flex flex-col h-[calc(100vh-7.5rem)] sm:h-[calc(100vh-7rem)]">
       {/* En-tête */}
-      <div className="flex items-center justify-between pb-4 border-b border-border">
+      <div className="flex items-center justify-between pb-4 border-b border-border flex-wrap gap-2">
         <div className="flex items-center gap-3">
           <KabaAvatar />
           <div>

@@ -15,7 +15,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </a>
         ))}
       </nav>
-      <main className="p-8">{children}</main>
+      <main className="p-4 sm:p-8 animate-page">{children}</main>
     </div>
   );
 }

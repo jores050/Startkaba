@@ -60,7 +60,12 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="flex flex-col items-center justify-center text-center px-4 sm:px-8 py-16 sm:py-24 gap-6 sm:gap-8">
+      <section className="relative overflow-hidden flex flex-col items-center justify-center text-center px-4 sm:px-8 py-16 sm:py-24 gap-6 sm:gap-8">
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none opacity-[0.05]"
+          style={{ backgroundImage: "url(/patterns/wax-1.svg)", backgroundSize: "80px 80px" }}
+        />
         <div className="inline-block px-4 py-1 rounded-full border border-green bg-green-light/30 text-green text-sm font-medium">
           Pour les entrepreneurs d&apos;Afrique francophone 🌍
         </div>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+  <!-- Motif wax : cercles concentriques et points (inspiration "nsubra") -->
+  <g fill="none" stroke="#0722AB" stroke-width="2">
+    <circle cx="40" cy="40" r="28"/>
+    <circle cx="40" cy="40" r="18"/>
+    <circle cx="40" cy="40" r="8"/>
+  </g>
+  <g fill="#F77E2D">
+    <circle cx="40" cy="40" r="3"/>
+    <circle cx="8" cy="8" r="4"/>
+    <circle cx="72" cy="8" r="4"/>
+    <circle cx="8" cy="72" r="4"/>
+    <circle cx="72" cy="72" r="4"/>
+  </g>
+</svg>

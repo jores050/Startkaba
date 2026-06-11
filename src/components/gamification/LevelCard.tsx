@@ -24,7 +24,7 @@ export function LevelCard({ level }: { level: LevelSummary }) {
 
   const card = (
     <div
-      className={`relative bg-surface border rounded-2xl p-6 transition-all h-full flex flex-col gap-4 ${
+      className={`relative overflow-hidden bg-surface border rounded-2xl p-6 transition-all h-full flex flex-col gap-4 ${
         locked
           ? "border-border opacity-60"
           : level.status === "COMPLETED"
@@ -32,7 +32,16 @@ export function LevelCard({ level }: { level: LevelSummary }) {
             : "border-border hover:border-primary hover:shadow-md"
       }`}
     >
-      <div className="flex items-start justify-between">
+      {/* Motif wax en décoration subtile */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none opacity-[0.045]"
+        style={{
+          backgroundImage: `url(/patterns/wax-${(level.id % 3) + 1}.svg)`,
+          backgroundSize: "80px 80px",
+        }}
+      />
+      <div className="flex items-start justify-between relative">
         <div className="flex items-center gap-3">
           <span
             className={`w-10 h-10 rounded-full flex items-center justify-center font-display font-bold ${

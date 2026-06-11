@@ -5,11 +5,10 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@/hooks/use-user";
 import { Avatar } from "@/components/ui/Avatar";
+import { Button } from "@/components/ui/Button";
+import { Input, Select, Textarea, inputClass } from "@/components/ui/Input";
 import { CITIES } from "@/lib/validations/auth";
 import { createClient } from "@/lib/supabase/client";
-
-const inputClass =
-  "px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted/60 focus:border-primary focus:outline-none transition-colors w-full";
 
 export default function ProfilEditPage() {
   const router = useRouter();
@@ -49,10 +48,6 @@ export default function ProfilEditPage() {
       setSkills([...skills, s]);
     }
     setSkillInput("");
-  }
-
-  function removeSkill(skill: string) {
-    setSkills(skills.filter((s) => s !== skill));
   }
 
   async function handleAvatarUpload(file: File) {
@@ -119,7 +114,7 @@ export default function ProfilEditPage() {
   return (
     <div className="max-w-2xl">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-display text-3xl font-bold text-foreground">
+        <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground">
           Modifier mon profil
         </h1>
         <Link href="/profil" className="text-muted hover:text-primary transition-colors">
@@ -142,111 +137,71 @@ export default function ProfilEditPage() {
                 if (f) handleAvatarUpload(f);
               }}
             />
-            <button
+            <Button
               type="button"
+              variant="outline"
+              loading={uploading}
+              loadingText="Envoi..."
               onClick={() => fileInputRef.current?.click()}
-              disabled={uploading}
-              className="px-4 py-2 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-colors disabled:opacity-50"
             >
-              {uploading ? "Envoi..." : "Changer la photo"}
-            </button>
+              Changer la photo
+            </Button>
           </div>
         </div>
 
-        {/* Nom complet */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="fullName" className="text-sm font-medium">
-            Nom complet
-          </label>
-          <input
-            id="fullName"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            required
-            className={inputClass}
-          />
-          {fieldErrors.fullName && (
-            <p className="text-error text-sm">{fieldErrors.fullName}</p>
-          )}
-        </div>
+        <Input
+          id="fullName"
+          label="Nom complet"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          required
+          error={fieldErrors.fullName}
+        />
 
-        {/* Ville */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="city" className="text-sm font-medium">
-            Ville
-          </label>
-          <select
-            id="city"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            className={inputClass}
-          >
-            {CITIES.map((c) => (
-              <option key={c.value} value={c.value}>
-                {c.label}
-              </option>
-            ))}
-          </select>
-          {fieldErrors.city && (
-            <p className="text-error text-sm">{fieldErrors.city}</p>
-          )}
-        </div>
+        <Select
+          id="city"
+          label="Ville"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          error={fieldErrors.city}
+        >
+          {CITIES.map((c) => (
+            <option key={c.value} value={c.value}>
+              {c.label}
+            </option>
+          ))}
+        </Select>
 
-        {/* Bio */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="bio" className="text-sm font-medium">
-            Bio{" "}
-            <span className="text-muted font-normal">
-              ({bio.length}/200)
-            </span>
-          </label>
-          <textarea
-            id="bio"
-            value={bio}
-            onChange={(e) => setBio(e.target.value.slice(0, 200))}
-            rows={3}
-            maxLength={200}
-            placeholder="Qui es-tu en quelques mots ?"
-            className={inputClass}
-          />
-          {fieldErrors.bio && (
-            <p className="text-error text-sm">{fieldErrors.bio}</p>
-          )}
-        </div>
+        <Textarea
+          id="bio"
+          label="Bio"
+          hint={`(${bio.length}/200)`}
+          value={bio}
+          onChange={(e) => setBio(e.target.value.slice(0, 200))}
+          rows={3}
+          maxLength={200}
+          placeholder="Qui es-tu en quelques mots ?"
+          error={fieldErrors.bio}
+        />
 
-        {/* Projet */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="projectName" className="text-sm font-medium">
-            Nom du projet
-          </label>
-          <input
-            id="projectName"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            placeholder="Ex : FraisLocal"
-            className={inputClass}
-          />
-          {fieldErrors.projectName && (
-            <p className="text-error text-sm">{fieldErrors.projectName}</p>
-          )}
-        </div>
+        <Input
+          id="projectName"
+          label="Nom du projet"
+          value={projectName}
+          onChange={(e) => setProjectName(e.target.value)}
+          placeholder="Ex : FraisLocal"
+          error={fieldErrors.projectName}
+        />
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="projectDescription" className="text-sm font-medium">
-            Description du projet
-          </label>
-          <textarea
-            id="projectDescription"
-            value={projectDescription}
-            onChange={(e) => setProjectDescription(e.target.value)}
-            rows={4}
-            placeholder="Quel problème résous-tu, pour qui ?"
-            className={inputClass}
-          />
-          {fieldErrors.projectDescription && (
-            <p className="text-error text-sm">{fieldErrors.projectDescription}</p>
-          )}
-        </div>
+        <Textarea
+          id="projectDescription"
+          label="Description du projet"
+          value={projectDescription}
+          onChange={(e) => setProjectDescription(e.target.value)}
+          rows={4}
+          placeholder="Quel problème résous-tu, pour qui ?"
+          error={fieldErrors.projectDescription}
+        />
 
         {/* Compétences */}
         <div className="flex flex-col gap-2">
@@ -268,13 +223,9 @@ export default function ProfilEditPage() {
               placeholder="Ex : Marketing digital"
               className={inputClass}
             />
-            <button
-              type="button"
-              onClick={addSkill}
-              className="px-4 py-2 rounded-xl bg-primary text-white font-semibold hover:opacity-90 transition-opacity shrink-0"
-            >
+            <Button type="button" variant="primary" onClick={addSkill} className="shrink-0">
               Ajouter
-            </button>
+            </Button>
           </div>
           {skills.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-2">
@@ -286,7 +237,7 @@ export default function ProfilEditPage() {
                   {skill}
                   <button
                     type="button"
-                    onClick={() => removeSkill(skill)}
+                    onClick={() => setSkills(skills.filter((s) => s !== skill))}
                     aria-label={`Supprimer ${skill}`}
                     className="hover:text-error font-bold"
                   >
@@ -307,13 +258,9 @@ export default function ProfilEditPage() {
           </p>
         )}
 
-        <button
-          type="submit"
-          disabled={saving}
-          className="px-6 py-3 rounded-xl bg-cta text-white font-bold hover:opacity-90 transition-opacity disabled:opacity-50"
-        >
-          {saving ? "Enregistrement..." : "Enregistrer les modifications"}
-        </button>
+        <Button type="submit" loading={saving} loadingText="Enregistrement...">
+          Enregistrer les modifications
+        </Button>
       </form>
     </div>
   );

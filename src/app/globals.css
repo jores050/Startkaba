@@ -82,3 +82,19 @@ body {
 .animate-xp-fill {
   animation: xp-fill 0.8s ease-out both;
 }
+
+/* Transition d'entrée de page */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page {
+  animation: page-in 0.25s ease-out both;
+}

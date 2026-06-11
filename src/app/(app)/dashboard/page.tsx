@@ -47,10 +47,19 @@ export default function DashboardPage() {
 
   return (
     <div className="max-w-5xl">
-      <h1 className="font-display text-3xl font-bold text-foreground mb-1">
-        Salut {firstName} 👋🏾
-      </h1>
-      <p className="text-muted mb-8">Voici où en est ton aventure aujourd&apos;hui.</p>
+      <div className="relative overflow-hidden rounded-2xl mb-8 -mx-2 px-2 py-3">
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none opacity-[0.05]"
+          style={{ backgroundImage: "url(/patterns/wax-3.svg)", backgroundSize: "80px 80px" }}
+        />
+        <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-1 relative">
+          Salut {firstName} 👋🏾
+        </h1>
+        <p className="text-muted relative">
+          Voici où en est ton aventure aujourd&apos;hui.
+        </p>
+      </div>
 
       <div className="grid md:grid-cols-3 gap-6">
         {/* Niveau en cours */}

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { getTaskById } from "@/data/tasks";
+import { Modal } from "@/components/ui/Modal";
+import { Button } from "@/components/ui/Button";
 
 export interface QuizResult {
   passed: boolean;
@@ -52,14 +54,7 @@ export function QuizModal({ taskId, onClose, onCompleted }: QuizModalProps) {
   }
 
   return (
-    <div
-      className="fixed inset-0 z-40 bg-black/50 flex items-center justify-center p-4"
-      onClick={onClose}
-    >
-      <div
-        className="bg-surface rounded-2xl p-8 w-full max-w-lg max-h-[85vh] overflow-y-auto shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <Modal onClose={onClose}>
         {!result ? (
           <>
             <h2 className="font-display text-xl font-bold text-foreground mb-1">
@@ -107,19 +102,18 @@ export function QuizModal({ taskId, onClose, onCompleted }: QuizModalProps) {
             )}
 
             <div className="flex gap-3 mt-6">
-              <button
-                onClick={onClose}
-                className="px-4 py-2 rounded-lg border border-border text-muted hover:text-foreground transition-colors"
-              >
+              <Button variant="ghost" onClick={onClose}>
                 Annuler
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={handleSubmit}
-                disabled={!allAnswered || submitting}
-                className="flex-1 px-4 py-2 rounded-lg bg-cta text-white font-bold hover:opacity-90 transition-opacity disabled:opacity-50"
+                disabled={!allAnswered}
+                loading={submitting}
+                loadingText="Validation..."
+                className="flex-1"
               >
-                {submitting ? "Validation..." : "Valider mes réponses"}
-              </button>
+                Valider mes réponses
+              </Button>
             </div>
           </>
         ) : result.passed ? (
@@ -141,12 +135,9 @@ export function QuizModal({ taskId, onClose, onCompleted }: QuizModalProps) {
                 ))}
               </div>
             )}
-            <button
-              onClick={onClose}
-              className="mt-6 px-6 py-3 rounded-xl bg-cta text-white font-bold hover:opacity-90 transition-opacity"
-            >
+            <Button onClick={onClose} className="mt-6">
               Continuer
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="text-center py-4">
@@ -157,15 +148,11 @@ export function QuizModal({ taskId, onClose, onCompleted }: QuizModalProps) {
             <p className="text-muted mb-2">
               Il faut au moins 60%. Relis la tâche et retente dans 5 minutes.
             </p>
-            <button
-              onClick={onClose}
-              className="mt-4 px-6 py-3 rounded-xl border border-primary text-primary font-semibold hover:bg-primary hover:text-white transition-colors"
-            >
+            <Button variant="outline" onClick={onClose} className="mt-4">
               Fermer
-            </button>
+            </Button>
           </div>
         )}
-      </div>
-    </div>
+    </Modal>
   );
 }

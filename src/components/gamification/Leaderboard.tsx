@@ -64,7 +64,8 @@ export function Leaderboard({ defaultCity = "" }: { defaultCity?: string }) {
         </div>
       </div>
 
-      <table className="w-full text-sm">
+      <div className="overflow-x-auto -mx-2 px-2">
+      <table className="w-full text-sm min-w-[420px]">
         <thead>
           <tr className="text-muted text-left border-b border-border">
             <th className="py-2 pr-2 font-medium">#</th>
@@ -105,6 +106,7 @@ export function Leaderboard({ defaultCity = "" }: { defaultCity?: string }) {
           })}
         </tbody>
       </table>
+      </div>
 
       {data?.me && !meInTop && (
         <p className="text-muted text-sm mt-3">

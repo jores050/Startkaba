@@ -33,7 +33,7 @@ export default function ProfilPage() {
   return (
     <div className="max-w-3xl flex flex-col gap-8">
       {/* En-tête identité */}
-      <section className="flex items-start gap-6">
+      <section className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
         <Avatar fullName={user.fullName} avatarUrl={user.avatarUrl} size="lg" />
         <div className="flex-1">
           <h1 className="font-display text-3xl font-bold text-foreground">
