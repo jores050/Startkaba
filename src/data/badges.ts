@@ -12,6 +12,14 @@ export const badges: Badge[] = [
   { id: 9, name: "MVP Livré", description: "Compléter le Niveau 4", icon: "🚀", condition: "level_4_complete" },
   { id: 10, name: "Fan de Kaba", description: "20 messages avec Kaba", icon: "🤖", condition: "kaba_20_messages" },
   { id: 11, name: "Top 10 Ville", description: "Entrer dans le top 10 de sa ville", icon: "🏆", condition: "top_10_city" },
+  { id: 12, name: "Premier Cercle", description: "Construire sa liste de 50 contacts chauds", icon: "📣", condition: "task_50_contacts" },
+  { id: 13, name: "Acquisition Lancée", description: "Compléter le Niveau 5", icon: "🎯", condition: "level_5_complete" },
+  { id: 14, name: "Structuré", description: "Choisir son statut juridique OHADA", icon: "⚖️", condition: "task_statut_juridique" },
+  { id: 15, name: "Cadre Légal Posé", description: "Compléter le Niveau 6", icon: "📋", condition: "level_6_complete" },
+  { id: 16, name: "Pitch Prêt", description: "Créer son pitch deck", icon: "💰", condition: "task_pitch_deck" },
+  { id: 17, name: "Financement Structuré", description: "Compléter le Niveau 7", icon: "🏦", condition: "level_7_complete" },
+  { id: 18, name: "Lancé !", description: "Effectuer son lancement officiel", icon: "🚀", condition: "task_lancement_officiel" },
+  { id: 19, name: "Entrepreneur StartKaba", description: "Compléter les 8 niveaux du parcours", icon: "🏆", condition: "level_8_complete" },
 ];
 
 export function getBadgeById(id: number): Badge | undefined {
