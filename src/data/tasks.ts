@@ -607,6 +607,59 @@ export const tasks: Task[] = [
     title: "Conduis 5 interviews avec des personnes de ta cible",
     description: "Pas des amis qui valident tout. De vraies personnes de ta cible. Au moins 5. Prends des notes précises — les citations mot pour mot sont de l'or.",
     xp: 200,
+    course: {
+      title: "Conduire des interviews sans biais — l'art d'écouter vraiment",
+      readingTime: "6 min",
+      steps: [
+        {
+          type: "concept",
+          icon: "⚠️",
+          title: "Le biais de confirmation : l'ennemi numéro un de l'entrepreneur",
+          content: "Tu as passé des semaines sur ton idée. Tu y crois profondément. Et maintenant tu vas parler à des gens pour \"valider\" — mais inconsciemment, ton cerveau cherche à confirmer ce qu'il veut entendre, pas à découvrir la vérité.\n\nC'est le **biais de confirmation** : la tendance à chercher, interpréter et mémoriser les informations qui confirment nos croyances préexistantes.\n\n**Comment il se manifeste en interview :**\n• Tu poses des questions suggestives : \"N'est-ce pas que c'est un vrai problème ?\"\n• Tu sur-interprètes les signaux positifs : un \"oui peut-être\" devient \"forte demande validée\"\n• Tu minimises les signaux négatifs : \"il n'a pas compris mon idée\"\n• Tu choisis des interviewés parmi des proches qui t'aiment\n• Tu arrêtes les interviews dès que tu as 2-3 \"oui\"\n\n**Le test du biais de confirmation :**\nSi après 5 interviews tu n'as rien appris de surprenant, tu n'as pas fait de vraies interviews — tu as fait une mise en scène de validation.\n\nUne vraie découverte terrain doit te surprendre, te remettre en question, voire t'inquiéter. C'est normal et c'est utile."
+        },
+        {
+          type: "concept",
+          icon: "🎯",
+          title: "Qui interviewer — et qui éviter absolument",
+          content: "**Qui interviewer :**\n• Des personnes qui correspondent précisément à ta persona (âge, situation, comportement)\n• Des personnes qui ont le problème que tu veux résoudre aujourd'hui — pas dans le futur\n• Des inconnus ou des semi-inconnus (pas ta famille, pas tes amis proches)\n• Des personnes qui utilisent déjà des solutions alternatives (elles sont les plus \"éduquées\" sur le problème)\n\n**Comment les trouver à Abidjan, Dakar, Lomé :**\n• Groupes Facebook et WhatsApp de ta niche (mères de famille, entrepreneurs, jeunes professionnels)\n• Associations et coopératives locales\n• Marchés et centres commerciaux fréquentés par ta cible\n• Demander à chaque interviewé de te recommander 2 personnes (effet boule de neige)\n• Universités, cafés, mosquées, églises — selon ta cible\n\n**Qui éviter :**\n❌ Ta famille et amis proches (trop biaisés en ta faveur)\n❌ D'autres entrepreneurs (ils pensent en solutions, pas en problèmes)\n❌ Des gens qui \"connaissent bien le sujet\" mais ne vivent pas le problème au quotidien\n❌ Des gens qui ont déjà entendu ton pitch"
+        },
+        {
+          type: "example",
+          icon: "💡",
+          title: "Cas concret : 5 interviews qui ont changé un projet à Lomé",
+          content: "Kofi voulait lancer une appli de gestion de budget pour les jeunes travailleurs à Lomé. Il pensait que le problème était \"les gens ne savent pas épargner\".\n\n**Ses 5 interviews ont révélé quelque chose de différent :**\n\n**Interview 1 — Akosua, secrétaire, 26 ans**\n\"Je sais exactement combien j'ai et combien je dépense. Le problème c'est que ma famille me demande de l'argent et je ne peux pas refuser.\"\n\n**Interview 2 — Mawuli, technicien, 31 ans**\n\"J'utilise déjà un carnet. L'appli, je l'aurais sur mon téléphone et mes collègues verraient que j'ai de l'argent. Ce n'est pas une bonne idée.\"\n\n**Interview 3 — Ama, commerçante, 29 ans**\n\"Mon problème c'est pas le budget — c'est le Mobile Money. J'ai 3 comptes différents et je ne sais jamais combien j'ai en tout.\"\n\n**Interview 4 — Yawo, chauffeur, 34 ans**\n\"Je mets de l'argent de côté en donnant à ma sœur. Elle garde pour moi. C'est mon système d'épargne.\"\n\n**Interview 5 — Edem, fonctionnaire, 28 ans**\n\"Le vrai problème : entre le 15 et le 30, j'ai plus rien. Pas à cause de mauvaise gestion — à cause des dépenses imprévues collectives [funérailles, baptêmes].\"\n\n**Ce que Kofi a appris :**\nSon hypothèse de départ était fausse. Le problème réel = **pression sociale sur l'argent** + **fragmentation des comptes Mobile Money** + **dépenses collectives imprévisibles**. Son appli de budget ne résoudrait rien de ça. Il a pivoté vers un outil de gestion d'épargne collective — bien plus adapté."
+        },
+        {
+          type: "concept",
+          icon: "📋",
+          title: "Le protocole d'une interview réussie en 5 points",
+          content: "**1. Prépare ton cadre**\nArrive avec ton guide de questions (pas un script — des thèmes). Prends de quoi écrire ou enregistre avec permission. Prévois 30-45 minutes.\n\n**2. Brise la glace correctement**\n\"Je ne teste pas un produit — j'essaie de comprendre comment tu vis [le problème]. Il n'y a pas de bonne ou mauvaise réponse. Ton honnêteté m'aide plus que ta politesse.\"\n\n**3. Pose tes questions, puis ferme la bouche**\nAprès chaque question, laisse 5 secondes de silence. Les gens remplissent le silence — et c'est là que les vraies informations sortent.\n\n**4. Capture les citations exactes**\nNote les mots exacts, pas ton interprétation. \"Je suis obligée\" ≠ \"elle préférerait\". Les citations mot pour mot sont tes données les plus précieuses.\n\n**5. Cherche activement à te faire contredire**\nPose toujours : \"Qu'est-ce qui t'empêcherait d'utiliser une solution comme ça ?\" ou \"Quelqu'un à qui tu as parlé a le même problème que toi ?\" Si personne ne connaît quelqu'un d'autre avec ce problème — signal d'alarme."
+        },
+        {
+          type: "reflection",
+          icon: "🤔",
+          question: "Documente tes 5 interviews — insights et surprises",
+          placeholder: "Interview 1 — [Prénom, situation, âge approximatif]\nCitation clé : \"...\"\nSurprise ou apprentissage : \n\nInterview 2 — \nCitation clé : \"...\"\nSurprise : \n\nInterview 3 — \nCitation clé : \"...\"\nSurprise : \n\nInterview 4 — \nCitation clé : \"...\"\nSurprise : \n\nInterview 5 — \nCitation clé : \"...\"\nSurprise : \n\nCe que j'avais supposé mais qui s'est révélé faux ou plus nuancé :\nCe que je n'avais pas anticipé du tout :"
+        },
+        {
+          type: "check",
+          icon: "✅",
+          question: "Quel biais cognitif est le plus dangereux lors des interviews clients ?",
+          options: [
+            "Le biais de disponibilité — se souvenir surtout des interviews récentes",
+            "Le biais de confirmation — entendre ce qu'on veut entendre",
+            "Le biais d'ancrage — fixer son prix trop tôt",
+          ],
+          correctIndex: 1,
+          explanation: "Le biais de confirmation est particulièrement destructeur dans la recherche utilisateur parce qu'il opère de manière invisible. L'entrepreneur ne réalise pas qu'il biaise ses questions, sur-interprète les signaux positifs et ignore les négatifs.\n\nLe contrer :\n• Recherche activement les preuves que ton idée est mauvaise\n• Demande à quelqu'un d'autre d'analyser tes notes (un regard externe voit les biais)\n• Compte les signaux négatifs autant que les positifs\n• Si 5 interviews ne t'ont rien appris de nouveau — recommence avec de meilleures questions"
+        },
+        {
+          type: "takeaway",
+          icon: "🎯",
+          content: "\"L'entrepreneur qui cherche à se faire réfuter apprend dix fois plus que celui qui cherche à se faire valider. La vérité inconfortable aujourd'hui vaut mieux que l'illusion confortable qui coûtera tout demain.\""
+        }
+      ]
+    },
     quiz: [
       {
         id: 1,
@@ -629,6 +682,53 @@ export const tasks: Task[] = [
     title: "Synthétise tes 3 insights clés",
     description: "Qu'as-tu vraiment appris ? Décide : continuer avec cette idée, pivoter, ou arrêter. Documente ton raisonnement.",
     xp: 150,
+    course: {
+      title: "Du terrain à la décision — synthétiser pour pivoter ou persévérer",
+      readingTime: "5 min",
+      steps: [
+        {
+          type: "concept",
+          icon: "🔬",
+          title: "Un insight ≠ une observation — la différence qui change tout",
+          content: "Après tes interviews et ta recherche concurrentielle, tu as probablement une liste de notes, de citations, d'observations. Mais une liste de faits n'est pas une synthèse.\n\n**Observation** : \"3 interviewés sur 5 m'ont dit qu'ils envoient de l'argent à leur famille chaque mois.\"\n\n**Insight** : \"L'envoi d'argent à la famille est une obligation sociale incontournable qui capte 20-30% du revenu disponible des jeunes travailleurs — avant toute décision d'épargne ou de consommation. Toute solution financière qui ignore cette réalité sera adoptée puis abandonnée.\"\n\nUn insight :\n• Explique le POURQUOI derrière une observation\n• A des implications concrètes pour ton projet\n• Te surprend ou te force à reconsidérer quelque chose\n• Est actionnable — il peut changer une décision\n\nPour transformer une observation en insight, pose-toi : \"Et alors ? Qu'est-ce que ça implique pour mon projet ?\""
+        },
+        {
+          type: "concept",
+          icon: "🔀",
+          title: "Continuer, pivoter ou arrêter — un cadre de décision clair",
+          content: "Après ta recherche, tu dois prendre une décision. Voici comment l'aborder honnêtement :\n\n**Continuer (même direction) si :**\n✓ Le problème est réel et douloureux (les gens ont essayé de le résoudre eux-mêmes)\n✓ Ta solution adresse le vrai problème découvert (pas ton hypothèse initiale)\n✓ Les clients cibles sont identifiés et atteignables\n✓ Il existe un modèle de revenus plausible\n\n**Pivoter (même problème, solution différente) si :**\n↺ Le problème est réel mais ta solution n'est pas la bonne approche\n↺ La cible est différente de ce que tu pensais\n↺ Le canal ou le modèle économique doit changer\n↺ Tu as découvert un problème adjacent plus important\n\n**Arrêter si :**\n✗ Le problème n'est pas assez douloureux pour que les gens paient\n✗ La concurrence est trop établie sans avantage différenciant clair\n✗ Le marché adressable est trop petit pour un business viable\n✗ Tu n'as aucune envie de travailler là-dessus encore 5 ans\n\nArrêter n'est pas un échec — c'est de l'intelligence. Mieux vaut 2 semaines de recherche terrain que 2 ans sur un projet non viable."
+        },
+        {
+          type: "example",
+          icon: "💡",
+          title: "Cas concret : synthèse et pivot à Bamako",
+          content: "Mariam voulait lancer une plateforme de cours en ligne pour lycéens à Bamako. Après 5 interviews et son analyse concurrentielle, voici sa synthèse :\n\n**Ses 3 insights :**\n\n**Insight 1** : Le problème réel n'est pas l'accès aux cours — c'est la préparation aux examens du BAC. Les lycéens ont accès à beaucoup de contenu (YouTube, groupes WhatsApp) mais pas à des annales commentées et des simulateurs d'examens.\n\n**Insight 2** : Les parents (payeurs) font confiance uniquement aux professeurs identifiés. \"Une appli inconnue\" = méfiance. Mais \"le Prof Diallo que mon fils connaît via une appli\" = accepté.\n\n**Insight 3** : La connectivité est un vrai frein — 3 interviewés sur 5 ont des données mobiles rationnées. Contenu téléchargeable = critère éliminatoire si absent.\n\n**Sa décision : Pivot partiel**\n→ Garde : lycéens à Bamako, préparation aux examens\n→ Change : focus uniquement sur les annales BAC commentées + simulateurs hors ligne\n→ Ajoute : système où les enseignants réels peuvent publier (confiance + contenu local)\n\n**Ce qu'elle aurait perdu sans cette étape :** 6 mois à développer une plateforme de vidéos en ligne que personne n'aurait pu utiliser sans wifi."
+        },
+        {
+          type: "reflection",
+          icon: "🤔",
+          question: "Synthèse finale — tes 3 insights et ta décision",
+          placeholder: "Insight 1 (observation → implication pour mon projet) :\nObservation : ...\nImplication : ...\n\nInsight 2 :\nObservation : ...\nImplication : ...\n\nInsight 3 :\nObservation : ...\nImplication : ...\n\nMon hypothèse initiale qui s'est révélée fausse ou incomplète :\n\nMa décision : [ ] Continuer  [ ] Pivoter  [ ] Arrêter\n\nPourquoi (arguments concrets, pas émotionnels) :\n\nSi pivot — qu'est-ce qui change exactement :"
+        },
+        {
+          type: "check",
+          icon: "✅",
+          question: "Qu'est-ce qu'un pivot en entrepreneuriat ?",
+          options: [
+            "Abandonner complètement son projet et recommencer de zéro",
+            "Un changement structuré de stratégie tout en conservant les apprentissages acquis",
+            "Changer de nom d'entreprise pour relancer la communication",
+          ],
+          correctIndex: 1,
+          explanation: "Un pivot conserve les apprentissages — c'est sa force. Tu ne jettes pas les interviews, l'analyse concurrentielle, la compréhension du problème. Tu changes quelque chose de précis : la cible, la solution, le canal, ou le modèle de revenus.\n\nExemples de pivots célèbres :\n• Instagram : app de check-in géolocalisé → app de partage de photos\n• Slack : outil interne d'une startup de jeux → plateforme de communication d'entreprise\n• PayPal : paiement entre PalmPilots → paiement par email\n\nDans chaque cas : le problème de fond (coordination, paiement) est resté. La solution a changé suite aux données terrain.\n\nArrêter n'est pas un échec non plus — c'est une décision rationnelle basée sur des données."
+        },
+        {
+          type: "takeaway",
+          icon: "🎯",
+          content: "\"Un proverbe akan dit : 'Ce n'est pas parce qu'on a commencé à couper un arbre qu'on doit finir de l'abattre s'il est le mauvais.' La vraie bravoure est de pivoter au bon moment — pas de persévérer aveuglément.\""
+        }
+      ]
+    },
     quiz: [
       {
         id: 1,

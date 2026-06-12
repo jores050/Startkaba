@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { TaskWithProgress } from "@/hooks/use-progress";
 import { QuizModal, type QuizResult } from "./QuizModal";
+import { CourseModal } from "./CourseModal";
 import { Button } from "@/components/ui/Button";
 
 function TaskNotes({ taskId }: { taskId: number }) {
@@ -73,14 +74,21 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [quizOpen, setQuizOpen] = useState(false);
+  const [courseOpen, setCourseOpen] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
 
   async function handleStart() {
     setStarting(true);
     setError(null);
     const result = await onStart(task.id);
-    if (!result.ok) setError(result.error ?? "Erreur");
     setStarting(false);
+    if (!result.ok) {
+      setError(result.error ?? "Erreur");
+      return;
+    }
+    if (task.course) {
+      setCourseOpen(true);
+    }
   }
 
   return (
@@ -127,6 +135,14 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
             <span className="inline-flex items-center gap-2 text-cta font-medium text-sm">
               🔥 En cours
             </span>
+            {task.course && (
+              <button
+                onClick={() => setCourseOpen(true)}
+                className="px-3 py-2 rounded-lg border border-border text-foreground text-sm font-medium hover:bg-border/50 transition-colors"
+              >
+                📖 Revoir le cours
+              </button>
+            )}
             <button
               onClick={() => setQuizOpen(true)}
               className="px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm hover:opacity-90 transition-opacity"
@@ -165,6 +181,18 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
           </div>
         )}
       </div>
+
+      {courseOpen && task.course && (
+        <CourseModal
+          course={task.course}
+          taskTitle={task.title}
+          onComplete={() => {
+            setCourseOpen(false);
+            setQuizOpen(true);
+          }}
+          onSkip={() => setCourseOpen(false)}
+        />
+      )}
 
       {quizOpen && (
         <QuizModal
