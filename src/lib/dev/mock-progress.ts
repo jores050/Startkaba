@@ -70,6 +70,23 @@ export function recordMockQuizResult(
   return entry;
 }
 
+export function recordMockLessonComplete(
+  taskId: number,
+  levelId: number,
+  xpEarned: number
+): ProgressEntry {
+  const entry: ProgressEntry = {
+    taskId,
+    levelId,
+    status: "COMPLETED",
+    quizScore: 100,
+    xpEarned,
+    completedAt: new Date().toISOString(),
+  };
+  mockProgress.set(taskId, entry);
+  return entry;
+}
+
 export function startMockTask(taskId: number, levelId: number): ProgressEntry {
   const existing = mockProgress.get(taskId);
   if (existing && existing.status !== "NOT_STARTED") return existing;

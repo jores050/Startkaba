@@ -77,18 +77,24 @@ export interface QuizAnswer {
   selectedIndex: number;
 }
 
-export type CourseStep =
-  | { type: "concept"; icon: string; title: string; content: string }
-  | { type: "example"; icon: string; title: string; content: string }
-  | { type: "reflection"; icon: string; question: string; placeholder: string }
-  | { type: "check"; icon: string; question: string; options: string[]; correctIndex: number; explanation: string }
-  | { type: "takeaway"; icon: string; content: string };
+// ─── Lesson / Exercise (système Duolingo) ────────────────────────────────────
 
-export interface Course {
+export type Exercise =
+  | { type: "info"; icon: string; title: string; content: string; xp: number }
+  | { type: "mcq"; question: string; options: string[]; correctIndex: number; explanation: string; xp: number }
+  | { type: "true_false"; statement: string; isTrue: boolean; explanation: string; xp: number }
+  | { type: "fill_blank"; template: string; blanks: string[]; isOpenAnswer: boolean; xp: number }
+  | { type: "match"; pairs: { left: string; right: string }[]; xp: number }
+  | { type: "reorder"; items: string[]; xp: number }
+  | { type: "scenario"; context: string; question: string; options: string[]; correctIndex: number; explanation: string; xp: number }
+  | { type: "reflection"; icon: string; question: string; placeholder: string; xp: number };
+
+export interface Lesson {
   title: string;
-  readingTime: string;
-  steps: CourseStep[];
+  exercises: Exercise[];
 }
+
+// ─── Task ─────────────────────────────────────────────────────────────────────
 
 export interface Task {
   id: number;
@@ -96,8 +102,8 @@ export interface Task {
   title: string;
   description: string;
   xp: number;
-  quiz: QuizQuestion[];
-  course?: Course;
+  quiz?: QuizQuestion[];  // ancien format (niveaux 2-8 en attente de migration)
+  lesson?: Lesson;        // format Duolingo
 }
 
 export interface Level {

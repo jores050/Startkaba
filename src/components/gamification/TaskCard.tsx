@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { TaskWithProgress } from "@/hooks/use-progress";
 import { QuizModal, type QuizResult } from "./QuizModal";
-import { CourseModal } from "./CourseModal";
+import { LessonPlayer } from "./LessonPlayer";
 import { Button } from "@/components/ui/Button";
 
 function TaskNotes({ taskId }: { taskId: number }) {
@@ -86,9 +86,8 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
       setError(result.error ?? "Erreur");
       return;
     }
-    if (task.course) {
-      setCourseOpen(true);
-    }
+    // Leçon Duolingo ou ancien quiz
+    if (task.lesson) setCourseOpen(true);
   }
 
   return (
@@ -135,32 +134,29 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
             <span className="inline-flex items-center gap-2 text-cta font-medium text-sm">
               🔥 En cours
             </span>
-            {task.course && (
+            {task.lesson ? (
               <button
                 onClick={() => setCourseOpen(true)}
-                className="px-3 py-2 rounded-lg border border-border text-foreground text-sm font-medium hover:bg-border/50 transition-colors"
+                className="px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm hover:opacity-90 transition-opacity"
               >
-                📖 Revoir le cours
+                Reprendre la leçon →
               </button>
-            )}
-            <button
-              onClick={() => setQuizOpen(true)}
-              className="px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm hover:opacity-90 transition-opacity"
-            >
-              Répondre au quiz ({task.quizQuestionCount} question
-              {task.quizQuestionCount > 1 ? "s" : ""})
-            </button>
+            ) : task.quizQuestionCount > 0 ? (
+              <button
+                onClick={() => setQuizOpen(true)}
+                className="px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm hover:opacity-90 transition-opacity"
+              >
+                Répondre au quiz ({task.quizQuestionCount} question
+                {task.quizQuestionCount > 1 ? "s" : ""})
+              </button>
+            ) : null}
           </>
         )}
         {task.status === "COMPLETED" && (
           <span className="inline-flex items-center gap-3 text-sm">
-            <span className="text-green font-semibold">
-              Quiz réussi : {task.quizScore}%
-            </span>
+            <span className="text-green font-semibold">✓ Complété</span>
             <span className="text-muted">·</span>
-            <span className="text-green font-semibold">
-              +{task.xpEarned} XP gagnés
-            </span>
+            <span className="text-green font-semibold">+{task.xpEarned} XP</span>
           </span>
         )}
       </div>
@@ -182,15 +178,15 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
         )}
       </div>
 
-      {courseOpen && task.course && (
-        <CourseModal
-          course={task.course}
+      {courseOpen && task.lesson && (
+        <LessonPlayer
+          lesson={task.lesson}
+          taskId={task.id}
           taskTitle={task.title}
-          onComplete={() => {
+          onClose={() => {
             setCourseOpen(false);
-            setQuizOpen(true);
+            onQuizCompleted({ passed: true, score: 100, xpEarned: task.xp, badgesUnlocked: [] });
           }}
-          onSkip={() => setCourseOpen(false)}
         />
       )}
 

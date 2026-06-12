@@ -23,7 +23,7 @@ const submitSchema = z.object({
 });
 
 function computeScore(task: Task, answers: { questionId: number; selectedIndex: number }[]): number {
-  if (task.quiz.length === 0) return 0;
+  if (!task.quiz?.length) return 0;
   const byQuestion = new Map(answers.map((a) => [a.questionId, a.selectedIndex]));
   const correct = task.quiz.filter(
     (q) => byQuestion.get(q.id) === q.correctIndex

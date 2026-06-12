@@ -1,7 +1,7 @@
 import type { Task } from "@/types";
 
 export const tasks: Task[] = [
-  // --- Niveau 1 ---
+  // --- Niveau 1 (format Duolingo) ---
   {
     id: 101,
     levelId: 1,
@@ -9,144 +9,130 @@ export const tasks: Task[] = [
     description:
       "Sans jargon, sans \"révolutionnaire\". Une phrase simple que tu pourrais dire à ta grand-mère. Si elle comprend, tu es sur la bonne voie.",
     xp: 50,
-    course: {
+    lesson: {
       title: "La proposition de valeur — le cœur de ton business",
-      readingTime: "6 min",
-      steps: [
+      exercises: [
         {
-          type: "concept",
+          type: "info",
           icon: "🎯",
-          title: "Qu'est-ce qu'une proposition de valeur ?",
-          content: "Une proposition de valeur est la réponse claire et honnête à cette question : pourquoi un client devrait-il te choisir toi plutôt que n'importe quelle autre alternative — y compris ne rien faire du tout ?\n\nCe n'est pas un slogan. Ce n'est pas une liste de fonctionnalités. C'est une phrase (deux maximum) qui explique :\n• Quel problème concret tu résous\n• Pour qui exactement\n• Pourquoi tu es le meilleur choix disponible\n\nLa plupart des entrepreneurs font l'erreur inverse : ils décrivent ce que leur produit fait au lieu d'expliquer ce que le client gagne. \"Notre application utilise l'IA pour optimiser les flux logistiques\" ne dit rien à ton client. \"Tu livres en 2h au lieu de 2 jours, sans chauffeur supplémentaire\" — ça, ça parle."
+          title: "Qu\'est-ce qu\'une proposition de valeur ?",
+          content: "C\'est la réponse à la question que tout client se pose : \'Pourquoi toi et pas les autres ?\' Elle explique ce que tu offres, à qui, et pourquoi c\'est différent — en 10 secondes max. Ce n\'est pas un slogan ni une liste de fonctionnalités.",
+          xp: 5,
         },
         {
-          type: "concept",
+          type: "mcq",
+          question: "Laquelle de ces phrases est une proposition de valeur efficace ?",
+          options: [
+            "Nous vendons des solutions innovantes pour les entrepreneurs africains modernes.",
+            "Je livre des repas chauds aux bureaux d\'Abidjan Plateau en 30 min pour les professionnels qui n\'ont pas le temps de sortir déjeuner.",
+            "Notre appli utilise l\'IA pour optimiser votre expérience quotidienne.",
+          ],
+          correctIndex: 1,
+          explanation: "La 2ème nomme qui (professionnels sans temps), quoi (repas chauds), où (Abidjan Plateau) et la promesse concrète (30 min). Les deux autres sont vagues — \"innovant\" et \"IA\" ne disent rien sur ce que le client gagne concrètement.",
+          xp: 10,
+        },
+        {
+          type: "true_false",
+          statement: "Une bonne proposition de valeur liste toutes les fonctionnalités de ton produit.",
+          isTrue: false,
+          explanation: "Faux. Une UVP parle du bénéfice concret pour le client, pas de fonctionnalités. \'Livraison en 30 min\' (bénéfice) vaut mille fois mieux que \'application avec tracking GPS en temps réel\' (fonctionnalité). Le client achète un résultat, pas une technologie.",
+          xp: 5,
+        },
+        {
+          type: "info",
           icon: "✏️",
-          title: "Les 4 caractéristiques d'une bonne proposition",
-          content: "Pour être efficace, ta proposition de valeur doit être :\n\n**Claire** — Ton client la comprend en 5 secondes, sans explication supplémentaire. Si tu dois \"expliquer\" pour qu'elle soit comprise, elle ne l'est pas encore.\n\n**Spécifique** — Elle parle à une cible précise, pas à \"tout le monde\". \"Pour les restaurateurs de Dakar qui font plus de 50 couverts par soir\" est bien plus puissant que \"pour les entrepreneurs\".\n\n**Différenciante** — Elle souligne pourquoi tu es différent de ce qui existe déjà. Pas nécessairement meilleur sur tous les points — mais clairement meilleur sur CE qui compte pour ta cible.\n\n**Centrée sur le bénéfice** — Elle parle de ce que le client obtient (gain, problème résolu, douleur évitée), pas de comment tu le fais techniquement."
+          title: "Les 4 caractéristiques d\'une UVP puissante",
+          content: "Claire : ta grand-mère comprend en 10 secondes. Spécifique : s\'adresse à une cible précise, pas à tout le monde. Différenciante : explique en quoi tu te distingues. Orientée bénéfice : parle du résultat pour le client, pas de ta technologie.",
+          xp: 5,
         },
         {
-          type: "example",
-          icon: "💡",
-          title: "Cas concret : Kofi à Lomé",
-          content: "Kofi développe une application pour les artisans menuisiers de Lomé. Voici comment sa proposition de valeur a évolué :\n\n**Version 1 (vague) :** « Une plateforme digitale qui connecte les artisans à leurs clients via une interface intuitive. »\n→ Problème : ça décrit la technologie, pas la valeur. N'importe quel artisan lira ça et dira « et alors ? »\n\n**Version 2 (trop large) :** « La solution pour tous les artisans d'Afrique de l'Ouest. »\n→ Problème : trop vague, pas crédible, ne parle à personne précisément.\n\n**Version 3 (la bonne) :** « Pour les menuisiers de Lomé, MorebiCraft génère 3 à 5 nouvelles commandes par mois via WhatsApp — sans site web ni avance de frais. »\n→ Pourquoi ça marche : cible précise (menuisiers de Lomé), bénéfice chiffré (3-5 commandes), canal connu (WhatsApp), frein levé (sans avance).\n\nLa différence ? La version 3 répond directement à la question qu'a dans la tête chaque menuisier : « Qu'est-ce que ça m'apporte concrètement ? »"
-        },
-        {
-          type: "concept",
-          icon: "🔧",
-          title: "La méthode pratique : 4 questions + 1 formule",
-          content: "Pose-toi ces 4 questions pour construire ta proposition :\n\n1. **Qui est mon client ?** (sois précis : secteur, ville, situation)\n2. **Quel est son problème #1 ?** (le problème qu'il ressent chaque semaine)\n3. **Qu'est-ce qu'il gagne avec moi ?** (résultat concret, si possible chiffré)\n4. **Pourquoi moi plutôt que l'alternative actuelle ?** (ce que les autres ne font pas)\n\nEnsuite, assemble avec cette formule :\n\n« Pour [QUI], [ton produit/service] [BÉNÉFICE PRINCIPAL] contrairement à [ALTERNATIVE ACTUELLE]. »\n\nExemple : « Pour les PME de Cotonou, FacturaPro génère des devis professionnels en 2 minutes via Mobile Money, contrairement aux tableaux Excel qui prennent 30 minutes et font fuir les clients. »\n\nÇa peut paraître simple. C'est volontaire — la clarté est une force, pas une faiblesse."
+          type: "scenario",
+          context: "Kofi à Lomé veut lancer un service de réparation de smartphones. Il hésite entre trois formulations de son UVP.",
+          question: "Laquelle est la meilleure proposition de valeur ?",
+          options: [
+            "Kofi Tech : services professionnels de réparation avec techniciens certifiés et matériel de qualité.",
+            "Ton smartphone réparé en 2h à Lomé, garanti 6 mois — ou remboursé.",
+            "Réparation rapide et fiable de tous types d\'appareils électroniques.",
+          ],
+          correctIndex: 1,
+          explanation: "La 2ème gagne : délai précis (2h), lieu (Lomé), garantie béton (6 mois), promesse forte (remboursé). C\'est mémorable et vérifiable. Les deux autres sont trop génériques pour convaincre un client de choisir Kofi plutôt qu\'un concurrent.",
+          xp: 15,
         },
         {
           type: "reflection",
           icon: "🤔",
           question: "Écris ta proposition de valeur en utilisant la formule",
-          placeholder: "Pour [qui précisément], [ton produit/service] [bénéfice concret, si possible chiffré] contrairement à [ce que ta cible fait aujourd'hui comme alternative].\n\nEx : « Pour les chauffeurs de taxi-moto d'Abidjan, RidePro augmente leurs courses de 40% par semaine grâce à une file d'attente automatique, contrairement à l'attente passive au bord de la route. »"
+          placeholder: "Modèle : \"Pour [qui précisément], [ton service] [bénéfice concret, si possible chiffré], contrairement à [ce que ta cible fait aujourd\'hui].\"\n\nExemple : \"Pour les chauffeurs de taxi-moto d\'Abidjan, RidePro augmente leurs courses de 40% par semaine grâce à une file d\'attente automatique, contrairement à l\'attente passive au bord de la route.\"\n\nTa version :",
+          xp: 10,
         },
-        {
-          type: "check",
-          icon: "✅",
-          question: "Laquelle de ces propositions de valeur est la meilleure ?",
-          options: [
-            "\"Une solution innovante de gestion pour les entrepreneurs africains modernes\"",
-            "\"Pour les vendeuses du marché de Sandaga à Dakar, StockFacile élimine les ruptures de stock en envoyant une alerte WhatsApp 48h avant — sans smartphone haut de gamme requis\"",
-            "\"Le meilleur logiciel de gestion d'inventaire d'Afrique de l'Ouest\"",
-          ],
-          correctIndex: 1,
-          explanation: "La deuxième est la bonne, et voici pourquoi précisément :\n• Cible définie : vendeuses du marché de Sandaga (pas \"entrepreneurs africains\")\n• Problème réel : les ruptures de stock font perdre des ventes\n• Bénéfice concret : alerte 48h avant (pas \"gérer mieux\")\n• Canal adapté au terrain : WhatsApp\n• Frein levé : fonctionne sans smartphone haut de gamme\n\nLa première est un ensemble de mots vides (\"innovant\", \"moderne\") sans aucun bénéfice. La troisième est une affirmation non vérifiable (\"le meilleur\") qui ne dit rien sur le problème résolu."
-        },
-        {
-          type: "takeaway",
-          icon: "🎯",
-          content: "\"Si tu ne peux pas expliquer simplement ton idée, c'est que tu ne la comprends pas encore assez bien.\" — Appliqué à l'entrepreneuriat, ça veut dire : la clarté n'est pas une simplification. C'est ta première preuve de maîtrise."
-        }
-      ]
+      ],
     },
-    quiz: [
-      {
-        id: 1,
-        question: "Qu'est-ce qu'une proposition de valeur ?",
-        options: [
-          "Un slogan publicitaire accrocheur",
-          "La raison claire pour laquelle un client choisit ton produit plutôt qu'une alternative",
-          "Le prix de ton produit",
-          "Une liste de fonctionnalités",
-        ],
-        correctIndex: 1,
-        explanation:
-          "La proposition de valeur explique concrètement quel problème tu résous, pour qui, et pourquoi tu es le meilleur choix disponible.",
-      },
-    ],
   },
   {
     id: 102,
     levelId: 1,
     title: "Liste 3 raisons personnelles profondes",
     description:
-      "Pourquoi TU dois faire ça ? Pas \"parce que c'est rentable\" — mais pourquoi toi, avec ton histoire, tes expériences, tu es la bonne personne pour ce projet.",
+      "Pourquoi TU dois faire ça ? Pas \"parce que c\'est rentable\" — mais pourquoi toi, avec ton histoire, tes expériences, tu es la bonne personne pour ce projet.",
     xp: 50,
-    course: {
+    lesson: {
       title: "Ton moteur intérieur — pourquoi toi, pourquoi maintenant",
-      readingTime: "5 min",
-      steps: [
+      exercises: [
         {
-          type: "concept",
+          type: "info",
           icon: "🔥",
-          title: "Pourquoi les raisons profondes comptent autant que l'idée",
-          content: "La plupart des startups ne meurent pas à cause d'une mauvaise idée. Elles meurent parce que le fondateur a abandonné au premier moment difficile — et les moments difficiles, dans tout projet entrepreneurial, arrivent toujours.\n\nCe qui fait la différence entre celui qui tient et celui qui lâche, c'est la profondeur de ses raisons. \"Parce que c'est rentable\" ne suffit pas quand tu n'as pas dormi depuis 3 jours, que ton premier client demande un remboursement, et que ton associé perd confiance.\n\nTes raisons profondes sont ton carburant de réserve. Elles doivent répondre à trois niveaux :\n• **Niveau 1 (personnel)** : Ce que tu as vécu qui rend ce problème important pour toi\n• **Niveau 2 (compétence)** : Ce que tu sais faire mieux que la plupart, lié à ce projet\n• **Niveau 3 (mission)** : Ce que ce projet change dans la vie des gens autour de toi"
+          title: "Pourquoi les raisons profondes comptent autant que l\'idée",
+          content: "La plupart des startups ne meurent pas à cause d\'une mauvaise idée — elles meurent parce que le fondateur a abandonné au premier moment difficile. \'Parce que c\'est rentable\' ne suffit pas quand tu n\'as pas dormi depuis 3 jours et que ton premier client demande un remboursement.",
+          xp: 5,
         },
         {
-          type: "concept",
+          type: "mcq",
+          question: "Parmi ces motivations, laquelle est la plus durable sur 5 ans ?",
+          options: [
+            "Gagner beaucoup d\'argent rapidement.",
+            "Résoudre un problème que j\'ai personnellement vécu et que je connais de l\'intérieur.",
+            "Suivre une tendance de marché actuelle.",
+          ],
+          correctIndex: 1,
+          explanation: "La motivation \'problème personnel\' est la plus durable parce qu\'elle ne dépend pas de facteurs externes. Les entrepreneurs qui ont vécu le problème ont une compréhension profonde de la douleur de leurs clients — et ça ne se simule pas. Les deux autres s\'effondrent au premier obstacle.",
+          xp: 10,
+        },
+        {
+          type: "true_false",
+          statement: "Si ton idée ne te passionne pas complètement dès le départ, tu ne devrais pas la poursuivre.",
+          isTrue: false,
+          explanation: "Faux. La passion peut venir après la maîtrise et les premiers succès. Ce qui compte : es-tu motivé par le PROBLÈME que tu veux résoudre ? Certains grands entrepreneurs n\'aimaient pas leur secteur au départ mais croyaient profondément à l\'impact qu\'ils pouvaient avoir.",
+          xp: 5,
+        },
+        {
+          type: "info",
           icon: "⚡",
-          title: "L'Ikigai entrepreneurial : trouver l'intersection",
-          content: "L'Ikigai est un concept japonais qui signifie \"raison d'être\". Appliqué à l'entrepreneuriat, il identifie 4 cercles qui, à leur intersection, créent un projet durable :\n\n**Ce que tu aimes faire** — Les activités où tu perds la notion du temps. Ce que tu ferais même sans être payé.\n\n**Ce en quoi tu es bon** — Tes compétences réelles, validées par des résultats concrets. Pas ce que tu penses être bon — ce que les autres t'ont demandé de faire pour eux.\n\n**Ce dont le monde (ton marché) a besoin** — Un problème réel que des gens paient pour résoudre, ou souffrent de ne pas voir résolu.\n\n**Ce pour quoi on te paiera** — La preuve que quelqu'un est prêt à sortir de l'argent pour cette valeur.\n\nLe piège le plus fréquent : lancer un projet uniquement parce que \"ça paie\" (sans passion ni compétence) ou uniquement parce qu'on \"aime ça\" (sans marché ni capacité à monétiser)."
+          title: "L\'Ikigai entrepreneurial : trouver ton intersection",
+          content: "4 cercles qui, à leur intersection, créent un projet durable : ce que tu AIMES faire, ce en quoi tu es BON (prouvé), ce dont le monde a BESOIN (quelqu\'un paie pour ça), ce pour quoi on te PAIERA. Manquer un cercle, c\'est construire sur du sable.",
+          xp: 5,
         },
         {
-          type: "example",
-          icon: "💡",
-          title: "Cas concret : Aminata à Abidjan",
-          content: "Aminata travaille comme comptable dans une PME à Abidjan. Elle veut lancer un service de comptabilité pour les petits commerçants du marché de Cocody. Voici ses 3 raisons profondes :\n\n**Raison 1 (vécu personnel) :** Sa mère a tenu un stand de tissus pendant 15 ans sans jamais comprendre pourquoi elle ne faisait pas de bénéfices. Aminata a découvert à 18 ans que sa mère perdait 30% de son chiffre d'affaires en coûts cachés non suivis. Cette douleur est ancrée.\n\n**Raison 2 (compétence réelle) :** Elle a géré les finances de 3 associations étudiantes et a restructuré la comptabilité de son employeur actuel. Elle sait simplifier des sujets complexes pour des non-comptables.\n\n**Raison 3 (mission) :** 80% des commerçants du marché Cocody sont des femmes. Leur donner les outils pour comprendre leurs chiffres, c'est les rendre financièrement indépendantes — pas seulement plus rentables.\n\nCes 3 raisons tiennent quand ça va mal. Elles expliquent POURQUOI elle est la bonne personne, pas juste quelqu'un qui veut \"être son propre patron\"."
+          type: "scenario",
+          context: "Moussa à Bamako a 3 idées. Idée 1 : livraison de médicaments (marché évident, mais aucune connexion avec le secteur santé). Idée 2 : formation Excel pour PME (il a 8 ans de comptabilité, il connaît exactement les lacunes). Idée 3 : appli de dating (il a vu que ça marche en Europe).",
+          question: "Quelle idée a le meilleur alignement motivation + compétence + marché ?",
+          options: [
+            "Idée 1 — le marché de la santé est le plus large en Afrique.",
+            "Idée 2 — il connaît le problème de l\'intérieur, a les compétences, et le marché PME est réel.",
+            "Idée 3 — les tendances internationales arrivent toujours en Afrique.",
+          ],
+          correctIndex: 1,
+          explanation: "Idée 2 est l\'alignement parfait : Moussa a vécu le problème (8 ans à voir les PME galèrer avec Excel), il a la compétence technique, et il connaît ses futurs clients. C\'est exactement ce que les investisseurs et les clients recherchent : l\'expert du problème.",
+          xp: 15,
         },
         {
           type: "reflection",
           icon: "🤔",
           question: "Écris tes 3 raisons profondes",
-          placeholder: "Raison 1 (vécu personnel) : Quelle expérience dans ta vie t'a montré que ce problème est réel et important ?\n\nRaison 2 (compétence) : Qu'est-ce que tu sais faire — prouvé par des expériences passées — qui te rend particulièrement apte à résoudre ce problème ?\n\nRaison 3 (mission) : Si ton projet réussit dans 5 ans, qu'est-ce qui change dans la vie des gens que tu sers ?"
+          placeholder: "Raison 1 (vécu personnel) : Quelle expérience dans ta vie t\'a montré que ce problème est réel et important pour toi ?\n\nRaison 2 (compétence) : Qu\'est-ce que tu sais faire — prouvé par des expériences passées — qui te rend particulièrement apte à résoudre ce problème ?\n\nRaison 3 (mission) : Si ton projet réussit dans 5 ans, qu\'est-ce qui change concrètement dans la vie des gens que tu sers ?",
+          xp: 10,
         },
-        {
-          type: "check",
-          icon: "✅",
-          question: "Qu'est-ce que l'Ikigai entrepreneurial ?",
-          options: [
-            "Un outil financier japonais pour calculer la rentabilité d'un projet",
-            "L'intersection entre ce que tu aimes, ce en quoi tu es bon, ce dont le monde a besoin et ce pour quoi on te paiera",
-            "Une technique de méditation pour gérer le stress des entrepreneurs",
-          ],
-          correctIndex: 1,
-          explanation: "L'Ikigai est un outil de positionnement personnel, pas financier. Son utilité en entrepreneuriat est de s'assurer que ton projet repose sur les 4 piliers à la fois. Manquer l'un d'eux crée un déséquilibre :\n• Passion + compétence + besoin sans monétisation = œuvre charitable, non durable\n• Compétence + besoin + monétisation sans passion = burn-out assuré en 2 ans\n• Passion + besoin + monétisation sans compétence = frustration et perte de crédibilité\n\nCe n'est pas de la méditation — c'est de la stratégie fondateur."
-        },
-        {
-          type: "takeaway",
-          icon: "🎯",
-          content: "\"L'éléphant qui porte son fardeau sur ses propres épaules ne trébuche pas.\" Tes raisons personnelles profondes sont ce fardeau que tu es le seul à pouvoir porter avec fierté. Personne d'autre ne peut avoir les mêmes."
-        }
-      ]
+      ],
     },
-    quiz: [
-      {
-        id: 1,
-        question: "Qu'est-ce que l'Ikigai entrepreneurial ?",
-        options: [
-          "Un outil financier japonais",
-          "L'intersection entre ce que tu aimes, ce en quoi tu es bon, ce dont le monde a besoin et ce pour quoi on te paiera",
-          "Une technique de méditation pour entrepreneurs",
-          "Un framework de pricing",
-        ],
-        correctIndex: 1,
-        explanation:
-          "L'Ikigai est un concept japonais qui aide à trouver sa raison d'être. Appliqué à l'entrepreneuriat, il aide à valider l'alignement entre passion, compétence, besoin marché et viabilité économique.",
-      },
-    ],
   },
   {
     id: 103,
@@ -155,74 +141,82 @@ export const tasks: Task[] = [
     description:
       "Pas des fonctionnalités — des problèmes. \"Les gens perdent du temps à...\" plutôt que \"Mon app permet de...\"",
     xp: 75,
-    course: {
+    lesson: {
       title: "Penser problème, pas solution — la discipline qui sauve les startups",
-      readingTime: "6 min",
-      steps: [
+      exercises: [
         {
-          type: "concept",
+          type: "info",
           icon: "🔍",
-          title: "Pourquoi les fondateurs confondent problème et fonctionnalité",
-          content: "La plupart des entrepreneurs passent leurs premières semaines à décrire leur produit : \"Mon application permet de faire X, Y et Z.\" C'est l'erreur classique de quelqu'un amoureux de sa solution.\n\nLe problème avec cette approche : tu peux construire quelque chose de techniquement parfait qui ne résout aucun problème que les gens sont prêts à payer pour résoudre.\n\nLa bonne posture est l'inverse : commencer par articuler les problèmes avec précision, puis voir si ta solution est vraiment la meilleure réponse.\n\nUn problème bien formulé ressemble à :\n• \"Les gérants de maquis à Cotonou passent 2h par soir à réconcilier leurs recettes à la main et trouvent des erreurs 3 fois par semaine.\"\n\nPas à :\n• \"Il manque un bon logiciel de caisse pour les restaurants africains.\"\n\nLa première formulation te dit exactement ce que ressent ton client. La deuxième est une observation de marché vague qui ne t'aide pas à construire."
+          title: "Le piège de la solution",
+          content: "La plupart des entrepreneurs passent leurs premières semaines à décrire leur produit. C\'est l\'erreur classique de quelqu\'un amoureux de sa solution. Tu peux construire quelque chose de techniquement parfait qui ne résout aucun problème que les gens sont prêts à payer pour résoudre.",
+          xp: 5,
         },
         {
-          type: "concept",
+          type: "mcq",
+          question: "Yao dit : \'Je veux créer une appli de gestion de boutique car les outils existants sont mauvais.\' Quel est le problème avec cette approche ?",
+          options: [
+            "Il devrait d\'abord vérifier si des applis similaires existent déjà.",
+            "Il part d\'une solution (appli) pas d\'un problème (ce que vivent les propriétaires de boutiques).",
+            "Les outils existants sont peut-être bons — il ne les a pas assez étudiés.",
+          ],
+          correctIndex: 1,
+          explanation: "Yao part d\'une solution technique et cherche à la justifier. Le bon point de départ : \'Qu\'est-ce qui frustre vraiment les propriétaires de boutiques au quotidien ?\' La réponse pourrait mener à une appli — ou à une formation, un service, ou autre chose entièrement.",
+          xp: 10,
+        },
+        {
+          type: "true_false",
+          statement: "Un bon entrepreneur doit avoir une idée de solution précise avant de commencer ses recherches.",
+          isTrue: false,
+          explanation: "Faux. Les meilleurs entrepreneurs commencent par observer un problème réel, l\'étudient en profondeur, et laissent la solution émerger des données terrain. Airbnb n\'a pas commencé par \'créons une plateforme\' — ils ont commencé par \'nous n\'avons pas d\'argent pour le loyer, des gens ont des chambres vides\'.",
+          xp: 5,
+        },
+        {
+          type: "info",
           icon: "🌳",
-          title: "Problème racine vs symptôme — la méthode des 5 Pourquoi",
-          content: "Un symptôme est ce que le client voit et se plaint. Le problème racine est la cause profonde que le symptôme révèle.\n\nExemple :\n**Symptôme :** « Je n'ai pas assez de clients ce mois-ci. »\n**Pourquoi ?** → Je ne fais pas assez de prospection.\n**Pourquoi ?** → Je passe tout mon temps à gérer les livraisons en retard.\n**Pourquoi ?** → Mes fournisseurs ne respectent pas les délais.\n**Pourquoi ?** → Je commande trop tard car je n'ai pas de visibilité sur mon stock.\n**Problème racine :** absence de gestion de stock en temps réel.\n\nSi tu construis une solution pour \"avoir plus de clients\" tu rates la cible. Si tu construis une solution pour \"gérer son stock en temps réel\", tu règles le vrai problème.\n\nLa méthode des 5 Pourquoi : à chaque réponse, pose un nouveau \"Pourquoi ?\" jusqu'à arriver à une cause que tu peux réellement traiter."
+          title: "La méthode des 5 Pourquoi",
+          content: "Inventée chez Toyota : à chaque réponse, tu poses un nouveau \'Pourquoi ?\' jusqu\'à 5 fois pour atteindre la cause racine. \'Mes clients annulent\' → Pourquoi ? → \'Livraisons en retard\' → Pourquoi ? → \'Fournisseurs imprévisibles\' → Pourquoi ? → Voilà le vrai problème à résoudre.",
+          xp: 5,
         },
         {
-          type: "example",
-          icon: "💡",
-          title: "Cas concret : Moussa à Bamako, service de livraison",
-          content: "Moussa veut lancer un service de livraison de repas à Bamako. Voici comment il a identifié 5 problèmes réels en parlant à ses cibles :\n\n**Problème 1 :** Les employés de bureau de Bamako perdent 45-60 minutes à midi pour trouver de la nourriture, ce qui rogne sur leur pause.\n\n**Problème 2 :** Les restaurateurs du quartier ACI 2000 perdent des commandes potentielles car ils n'ont pas la capacité de livrer eux-mêmes.\n\n**Problème 3 :** Les clients ne savent pas si le plat est disponible avant de se déplacer — ils font le trajet pour rien 30% du temps.\n\n**Problème 4 :** Le paiement à la livraison en cash crée des frictions (monnaie, reçus, retards).\n\n**Problème 5 :** Il n'y a pas de moyen de noter ou recommander un restaurant à ses collègues via WhatsApp facilement.\n\nChacun de ces problèmes lui donne une feature à prioriser — et certains (le problème 3 et 4) sont des bloquants plus critiques que le problème 5 pour son lancement."
+          type: "fill_blank",
+          template: "La méthode des 5 Pourquoi part du {0} visible pour atteindre la {1} racine du problème.",
+          blanks: ["symptôme", "cause"],
+          isOpenAnswer: false,
+          xp: 10,
         },
         {
-          type: "concept",
-          icon: "📋",
-          title: "Comment formuler un problème correctement",
-          content: "Un problème bien formulé contient :\n\n**Qui** : la personne précise qui souffre de ce problème\n**Quoi** : la situation ou l'action où le problème se produit\n**Conséquence** : ce que ça coûte (temps, argent, stress, opportunité perdue)\n**Fréquence** : à quelle fréquence ça arrive (quotidien, hebdomadaire...)\n\nModèle : « [Qui] a du mal à [quoi] quand [situation], ce qui lui coûte [conséquence], et ça arrive [fréquence]. »\n\nExemple : « Les gérants de boutiques de téléphonie à Dakar ont du mal à suivre leurs stocks de crédit téléphonique quand ils ont plusieurs points de vente, ce qui leur fait rater des ventes et créer des conflits avec les livreurs, et ça arrive plusieurs fois par semaine. »\n\nAvec cette formulation, tu sais exactement pour qui tu construis, dans quel contexte, et pourquoi c'est urgent."
+          type: "scenario",
+          context: "Moussa à Bamako remarque que les commerçants du marché Médine perdent beaucoup de marchandise périmée. Après 5 Pourquoi : ils commandent trop → ne savent pas ce qui se vend → pas de registre de ventes → trop compliqué → ça prend 1h par soir.",
+          question: "Quelle est la vraie solution que Moussa devrait développer ?",
+          options: [
+            "Un système de réfrigération pour allonger la durée de vie des marchandises.",
+            "Un outil de suivi des ventes qui prend moins de 5 minutes par jour.",
+            "Une formation sur la gestion des stocks pour les commerçants.",
+          ],
+          correctIndex: 1,
+          explanation: "La cause racine est le temps (1h/soir trop long). La 2ème adresse exactement ça : rendre le suivi rapide. La réfrigération et la formation adressent des symptômes, pas la cause. C\'est la puissance des 5 Pourquoi : éviter de résoudre le mauvais problème.",
+          xp: 15,
+        },
+        {
+          type: "reorder",
+          items: [
+            "Observer une frustration répétée chez des personnes réelles",
+            "Poser \'Pourquoi ?\' pour aller plus loin que le symptôme",
+            "Répéter jusqu\'à trouver une cause qu\'on peut réellement traiter",
+            "Reformuler le problème avec précision (qui, quoi, conséquence)",
+            "Valider que d\'autres personnes ont le même problème",
+          ],
+          xp: 10,
         },
         {
           type: "reflection",
           icon: "🤔",
-          question: "Liste tes 5 problèmes concrets avec la formule complète",
-          placeholder: "Problème 1 : [Qui] a du mal à [quoi] quand [situation], ce qui lui coûte [conséquence], et ça arrive [fréquence].\n\nProblème 2 : ...\n\nProblème 3 : ...\n\nProblème 4 : ...\n\nProblème 5 : ...\n\nLequel de ces 5 problèmes te semble le plus douloureux pour ta cible ? Mets-le en tête."
+          question: "Quel est le vrai problème que tu veux résoudre ?",
+          placeholder: "Commence par le symptôme, puis applique les 5 Pourquoi :\n\nSymptôme observé : ...\nPourquoi ? → ...\nPourquoi ? → ...\nPourquoi ? → ...\nPourquoi ? → ...\nPourquoi ? → ...\n\nCause racine identifiée : ...\n\nFormulation finale du problème :\n\'Les [qui] qui [contexte] ont du mal à [quoi] parce que [cause racine], et ça leur coûte [conséquence].\'",
+          xp: 15,
         },
-        {
-          type: "check",
-          icon: "✅",
-          question: "Quelle est la différence entre un problème et un symptôme ?",
-          options: [
-            "Il n'y a pas de différence, les deux termes sont interchangeables en entrepreneuriat",
-            "Un symptôme est la manifestation visible d'une souffrance, le problème racine est la cause profonde que le symptôme révèle",
-            "Un problème est plus grave qu'un symptôme — les startups ne doivent s'attaquer qu'aux problèmes",
-          ],
-          correctIndex: 1,
-          explanation: "La distinction est cruciale pour construire la bonne solution. Si tu traites le symptôme (\"pas assez de clients\"), ta solution sera superficielle. Si tu traites le problème racine (\"pas de visibilité sur son stock → livraisons en retard → moins de temps pour prospecter\"), ta solution est structurelle et difficile à remplacer.\n\nLes startups qui échouent s'attaquent souvent à des symptômes avec des solutions technologiques complexes. Les startups qui réussissent trouvent la cause profonde et la traitent de la manière la plus simple possible."
-        },
-        {
-          type: "takeaway",
-          icon: "🎯",
-          content: "\"On ne soigne pas la fièvre en enlevant le thermomètre.\" En entrepreneuriat : résoudre le symptôme visible sans s'attaquer au problème racine, c'est construire une solution que le client abandonnera dès qu'il trouvera mieux."
-        }
-      ]
+      ],
     },
-    quiz: [
-      {
-        id: 1,
-        question: "Quelle est la différence entre un problème et un symptôme ?",
-        options: [
-          "Il n'y a pas de différence, c'est la même chose",
-          "Un symptôme est la manifestation visible, le problème est la cause profonde",
-          "Un problème est plus grave qu'un symptôme",
-          "Un symptôme concerne les personnes, un problème concerne les entreprises",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Traiter un symptôme sans s'attaquer au problème profond produit une solution temporaire. Ex : symptôme = \"je n'ai pas assez de clients\", problème profond = \"je n'ai pas de stratégie d'acquisition définie\".",
-      },
-    ],
   },
   {
     id: 104,
@@ -230,149 +224,217 @@ export const tasks: Task[] = [
     title: "Décris ton client idéal",
     description: "Qui est-il, où vit-il, que fait-il ? Sois précis : âge, ville, revenus, habitudes, frustrations quotidiennes.",
     xp: 100,
-    course: {
+    lesson: {
       title: "Construire ta persona — mettre un visage sur ton marché",
-      readingTime: "7 min",
-      steps: [
+      exercises: [
         {
-          type: "concept",
+          type: "info",
           icon: "👤",
-          title: "Qu'est-ce qu'une persona et pourquoi c'est indispensable",
-          content: "Une persona est un personnage semi-fictif qui représente ton client idéal. Ce n'est pas une moyenne statistique — c'est un individu avec un nom, une histoire, des habitudes et des frustrations précises.\n\nPourquoi ne pas se contenter de \"les jeunes entrepreneurs de 25-35 ans\" ?\n\nParce que cette description ne t'aide pas à prendre de décisions. Est-ce que ta persona préfère WhatsApp ou une application ? Est-ce qu'elle paie avec Mobile Money ou en cash ? Est-ce qu'elle fait confiance aux recommandations de sa famille ou aux avis Google ?\n\nUne bonne persona répond à toutes ces questions. Elle te permet de :\n• Décider quelles fonctionnalités prioriser\n• Choisir ton canal de communication\n• Fixer ton prix au bon niveau\n• Écrire des messages qui résonnent vraiment\n\nEn résumé : sans persona précise, tu construis pour tout le monde, ce qui veut dire pour personne."
+          title: "Qu\'est-ce qu\'une persona ?",
+          content: "Un personnage semi-fictif qui représente ton client idéal — avec un nom, une histoire, des habitudes et des frustrations précises. Sans persona précise, tu construis pour tout le monde, ce qui veut dire pour personne. Elle guide chaque décision : produit, prix, canal, message.",
+          xp: 5,
         },
         {
-          type: "concept",
+          type: "mcq",
+          question: "À quoi sert concrètement une persona dans la création d\'un business ?",
+          options: [
+            "À définir le nom et le logo de ton entreprise.",
+            "À prendre des décisions de produit, de prix et de communication alignées avec un vrai client.",
+            "À estimer la taille totale de ton marché.",
+          ],
+          correctIndex: 1,
+          explanation: "La persona guide toutes les micro-décisions : \'Ma persona utilise WhatsApp ou Instagram ?\', \'Elle préfère payer avant ou après ?\', \'Elle lit les descriptions longues ?\'. Sans réponses précises à ces questions, tu dépenses ton argent sur les mauvais canaux.",
+          xp: 10,
+        },
+        {
+          type: "true_false",
+          statement: "Plus ta persona est large (ex: \'femmes 18-45 ans\'), plus tu touches de clientes potentielles.",
+          isTrue: false,
+          explanation: "Faux. Une persona trop large = message trop générique = personne ne se reconnaît. \'Mamans de 28-38 ans à Lomé qui travaillent et cherchent des solutions de garde fiables pour moins de 15 000 FCFA/semaine\' est bien plus puissant. La précision permet un message qui résonne vraiment.",
+          xp: 5,
+        },
+        {
+          type: "info",
           icon: "🗂️",
-          title: "Les 6 dimensions d'une persona complète",
-          content: "Pour construire une persona utile, tu as besoin de 6 dimensions :\n\n**1. Identité** : Prénom fictif, âge, ville précise (pas juste \"Dakar\" — quartier ?), situation familiale, profession.\n\n**2. Situation économique** : Revenus mensuels (en FCFA), mode de paiement habituel (cash, Mobile Money, virement), cycle de revenus (mensuel, hebdomadaire, irrégulier).\n\n**3. Journée type** : Comment passe-t-il/elle sa journée ? Quand a-t-il/elle du temps ? Quels outils utilise-t-il/elle (WhatsApp, Facebook, téléphone)?)\n\n**4. Problèmes prioritaires** : Ses 3 frustrations majeures liées à ton domaine. Formulées avec ses mots, pas les tiens.\n\n**5. Ce qu'il/elle essaie déjà** : La solution actuelle (même imparfaite) qu'il/elle utilise. C'est ton concurrent réel.\n\n**6. Ce qui le/la ferait changer** : Quel déclencheur le pousserait à essayer quelque chose de nouveau ? (Recommandation d'un ami ? Promotion ? Preuve sociale ?)"
+          title: "Les 6 dimensions d\'une persona complète",
+          content: "Démographique (âge, ville, situation familiale), Professionnel (métier, revenus approximatifs), Comportemental (habitudes mobile, achat), Frustrations (ce qui l\'énerve dans les solutions actuelles), Motivations (ce qu\'il/elle veut vraiment), Médias (WhatsApp ? Facebook ? Terrain ?).",
+          xp: 5,
         },
         {
-          type: "example",
-          icon: "💡",
-          title: "Persona complète : Fatou, revendeuse de tissus à Lomé",
-          content: "**Nom :** Fatou Mensah, 34 ans\n**Lieu :** Marché d'Adidogomé, Lomé\n**Situation :** Mariée, 2 enfants, revendeuse de tissus depuis 6 ans au marché\n\n**Situation économique :**\nRevenu mensuel : 180 000 à 280 000 FCFA selon la saison. Paie tout en cash ou T-Money (Togocel). Pas de compte bancaire formel. Revenus très irréguliers (forte saison avant les fêtes, creux en janvier-février).\n\n**Journée type :**\nOuvre son stand à 7h30. Utilise WhatsApp Business depuis 1 an pour envoyer des photos de nouveaux tissus à ses clientes régulières. Ferme à 18h. Gère son stock mentalement ou sur un carnet.\n\n**Frustrations principales :**\n• Elle ne sait jamais quand réapprovisionner — elle découvre les ruptures quand un client demande un tissu qu'elle n'a plus.\n• Elle perd du temps à aller voir ses fournisseurs en personne alors qu'une commande WhatsApp suffirait.\n• En fin de mois, elle ne sait pas combien elle a vraiment gagné.\n\n**Solution actuelle :** Un carnet manuscrit et sa mémoire. Parfois appelle son mari pour qu'il l'aide à compter.\n\n**Ce qui la ferait changer :** Une recommandation d'une autre vendeuse du marché, ou une démo gratuite de 1 mois sans engagement."
+          type: "mcq",
+          question: "Quelle est la source de données la plus fiable pour construire une persona ?",
+          options: [
+            "Ton intuition — tu connais bien ton secteur.",
+            "Des interviews réelles avec 5-10 personnes de ta cible.",
+            "Les données démographiques nationales de ton pays.",
+          ],
+          correctIndex: 1,
+          explanation: "Les interviews réelles révèlent ce que les gens ne disent pas : comportements réels, vraies frustrations, mots exacts qu\'ils utilisent. L\'intuition biaise, les stats nationales sont trop macro. Une persona construite sur des citations réelles est une arme — une persona imaginée est une illusion.",
+          xp: 10,
         },
         {
-          type: "concept",
-          icon: "⚠️",
-          title: "Les erreurs classiques dans la construction de persona",
-          content: "**Erreur 1 — La persona trop large** : \"Entrepreneurs de 20-50 ans en Afrique de l'Ouest\" n'est pas une persona. C'est un continent entier. Sois spécifique jusqu'à l'inconfort.\n\n**Erreur 2 — La persona inventée** : Une persona doit être basée sur de vraies conversations avec de vraies personnes. Si tu n'as encore parlé à personne, appelle-la \"hypothèse de persona\" — elle changera dès que tu feras tes premières interviews.\n\n**Erreur 3 — Plusieurs personas pour commencer** : Au lancement, cible une seule persona. Servir 3 personas différentes avec des besoins différents, c'est construire 3 produits en même temps.\n\n**Erreur 4 — La persona figée** : Ta persona doit évoluer avec tes découvertes. Note la date de création et mets-la à jour après chaque série d'interviews."
+          type: "scenario",
+          context: "Fatou vend des pagnes au marché d\'Adidogomé à Lomé. 32 ans, 2 enfants, utilise WhatsApp Business, gère son stock sur carnet (abandonne souvent après 2 semaines). Revenu : 180-250k FCFA/mois. Frustration principale : ne sait jamais combien elle a gagné à la fin du mois.",
+          question: "Quel produit correspond le mieux à la persona de Fatou ?",
+          options: [
+            "Une formation en comptabilité de 3 jours à 50 000 FCFA.",
+            "Un bot WhatsApp où elle note ses ventes en 10 secondes par message vocal.",
+            "Un logiciel de comptabilité complet sur PC.",
+          ],
+          correctIndex: 1,
+          explanation: "Fatou utilise WhatsApp, abandonne les solutions qui demandent trop d\'effort (cahier = abandon), et a besoin de rapidité. Le bot WhatsApp correspond exactement à ses habitudes et à sa contrainte. Formation = trop cher et long, PC = hors de son usage quotidien.",
+          xp: 15,
+        },
+        {
+          type: "fill_blank",
+          template: "Une persona efficace décrit un client {0} — pas un groupe {1}. Elle est construite sur des {2} réelles, pas sur des {3}.",
+          blanks: ["précis", "vague", "données", "suppositions"],
+          isOpenAnswer: false,
+          xp: 10,
+        },
+        {
+          type: "match",
+          pairs: [
+            { left: "Démographique", right: "Âge, ville, situation familiale" },
+            { left: "Comportemental", right: "Habitudes d\'achat et canal digital préféré" },
+            { left: "Frustrations", right: "Ce que la solution actuelle ne résout pas" },
+            { left: "Motivations", right: "Ce qu\'il veut vraiment accomplir dans sa vie" },
+          ],
+          xp: 10,
+        },
+        {
+          type: "mcq",
+          question: "Tu as 2 personas. A = \'femmes entrepreneurs à Dakar\'. B = \'femmes dirigeantes de PME 3-15 employés à Dakar Plateau, 30-45 ans, qui gèrent leur compta sur Excel et perdent 1h/jour à corriger des erreurs\'. Laquelle est utilisable ?",
+          options: [
+            "A — elle couvre plus de clientes potentielles.",
+            "B — elle est assez précise pour guider les décisions produit et communication.",
+            "Les deux sont équivalentes.",
+          ],
+          correctIndex: 1,
+          explanation: "B est la seule utilisable. Avec A, impossible de savoir où les trouver, quel message leur envoyer, quel prix elles accepteront. Avec B : elles sont sur LinkedIn Dakar et dans les réseaux PME, le message est \'finissez avec Excel\', le prix peut se calculer à partir de l\'heure perdue.",
+          xp: 10,
         },
         {
           type: "reflection",
           icon: "🤔",
-          question: "Construis ta persona principale",
-          placeholder: "Prénom fictif et âge : \nVille et quartier précis : \nProfession / situation : \nRevenus mensuels (FCFA) : \nMode de paiement habituel : \n\nJournée type (en 3-4 phrases) : \n\nSes 3 frustrations principales liées à ton domaine :\n1. \n2. \n3. \n\nCe qu'elle/il utilise aujourd'hui comme solution alternative : \n\nCe qui le/la ferait adopter ton produit : "
+          question: "Construis ta persona principale en 6 dimensions",
+          placeholder: "Prénom fictif + âge : ...\n\n📍 Démographique (ville, quartier, situation familiale) :\n💼 Professionnel (métier, revenus approximatifs en FCFA) :\n📱 Comportemental (mobile, habitudes d\'achat, canal préféré) :\n😤 Frustrations (3 choses qui l\'énervent dans les solutions actuelles) :\n🎯 Motivation profonde (ce qu\'elle/il veut vraiment) :\n📢 Médias (WhatsApp ? Facebook ? Terrain ? Radio ?) :\n\nUne citation typique qu\'il/elle dirait sur son problème :",
+          xp: 20,
         },
-        {
-          type: "check",
-          icon: "✅",
-          question: "Qu'est-ce qu'une persona ?",
-          options: [
-            "Un personnage fictif représentant un segment de clients cibles, basé sur des données réelles et des hypothèses validées",
-            "Le profil LinkedIn de ton premier client — la vraie personne qui paie",
-            "Une étude de marché quantitative avec des centaines de répondants",
-          ],
-          correctIndex: 0,
-          explanation: "Une persona est semi-fictive par définition : elle a un nom, une histoire, un prénom — mais elle représente un archétype construit à partir de vraies données et de vraies conversations. Elle n'est pas une personne réelle (ce serait trop limitant) ni une statistique froide (ce serait trop abstrait).\n\nLe profil LinkedIn d'un vrai client ne t'aide pas à généraliser — il te dit ce qu'une personne fait, pas ce que ta cible pense. L'étude quantitative te donne des tendances mais pas des motivations profondes. La persona synthétise les deux."
-        },
-        {
-          type: "takeaway",
-          icon: "🎯",
-          content: "\"Si tu essaies de plaire à tout le monde, tu ne plais à personne.\" — En entrepreneuriat, choisir une persona précise n'est pas restrictif : c'est ce qui te permet d'être tellement bon pour cette personne qu'elle te recommande à ses proches."
-        }
-      ]
+      ],
     },
-    quiz: [
-      {
-        id: 1,
-        question: "Qu'est-ce qu'une persona ?",
-        options: [
-          "Un personnage fictif représentant un segment de clients cibles",
-          "Le profil LinkedIn de ton premier client",
-          "Une étude de marché quantitative",
-          "Un sondage en ligne",
-        ],
-        correctIndex: 0,
-        explanation:
-          "Une persona est un archétype semi-fictif de ton client idéal, basé sur des données réelles et des hypothèses. Elle humanise ton marché cible et guide tes décisions produit.",
-      },
-    ],
   },
   {
     id: 105,
     levelId: 1,
     title: "Rédige ta Proposition de Valeur Unique",
-    description: "En 2 phrases : pour qui, quel problème tu résous, pourquoi tu es différent. C'est le cœur de tout le reste.",
+    description: "En 2 phrases : pour qui, quel problème tu résous, pourquoi tu es différent. C\'est le cœur de tout le reste.",
     xp: 150,
-    course: {
-      title: "L'UVP — l'arme de communication la plus puissante de ton business",
-      readingTime: "7 min",
-      steps: [
+    lesson: {
+      title: "L\'UVP — l\'arme de communication la plus puissante de ton business",
+      exercises: [
         {
-          type: "concept",
+          type: "info",
           icon: "💎",
-          title: "Pourquoi l'UVP est différente de la proposition de valeur simple",
-          content: "Tu as déjà défini une proposition de valeur à la tâche 1. L'UVP (Unique Value Proposition) va plus loin : elle intègre l'aspect de différenciation compétitive.\n\nLa proposition de valeur dit : « Voici ce que je fais et pourquoi c'est utile. »\nL'UVP dit : « Voici ce que je fais, pourquoi c'est utile, ET pourquoi personne d'autre ne le fait aussi bien pour toi. »\n\nC'est cette dernière partie — l'unicité — qui est souvent manquante. Et c'est elle qui transforme une bonne solution en business défendable.\n\nL'unicité ne signifie pas inventer quelque chose qui n'existe pas. Elle signifie trouver ta combinaison unique de :\n• Cible (qui tu sers précisément)\n• Problème (lequel tu adresses en priorité)\n• Approche (comment tu le résous)\n• Contexte (dans quel environnement tu opères)"
+          title: "UVP vs proposition de valeur : la différence clé",
+          content: "Ta proposition de valeur définit ce que tu offres (interne). Ton UVP est la formulation externe, la phrase que tu dis à un client : \'Pourquoi moi ?\' Elle doit déclencher \'Ah, c\'est exactement ce qu\'il me faut !\' — pas \'c\'est intéressant\'. Si c\'est intéressant, c\'est pas assez fort.",
+          xp: 5,
         },
         {
-          type: "concept",
+          type: "mcq",
+          question: "Quel est l\'objectif principal d\'une bonne UVP ?",
+          options: [
+            "Expliquer toutes les fonctionnalités de ton produit en détail.",
+            "Déclencher chez le client idéal la pensée : \'c\'est exactement pour moi\'.",
+            "Te différencier de 100% de tes concurrents sur tous les points.",
+          ],
+          correctIndex: 1,
+          explanation: "Une UVP n\'a pas besoin d\'expliquer tout le produit. Son objectif est précis : faire en sorte que la bonne personne se reconnaisse immédiatement et veuille en savoir plus. Un médecin qui lit \'pour les médecins débordés qui veulent faire des ordonnances en 30 secondes\' clique — même sans savoir comment ça marche.",
+          xp: 15,
+        },
+        {
+          type: "true_false",
+          statement: "Une UVP qui plaît à tout le monde est une UVP efficace.",
+          isTrue: false,
+          explanation: "Faux. Une UVP qui plaît à tout le monde ne choisit pas — et ne résonne fort pour personne. Les meilleures UVP polarisent : elles font dire \'c\'est exactement pour moi\' à certains et \'ça ne me concerne pas\' à d\'autres. C\'est le signe qu\'elles sont suffisamment précises.",
+          xp: 5,
+        },
+        {
+          type: "info",
           icon: "🏗️",
-          title: "Le framework en 4 parties pour construire ton UVP",
-          content: "Utilise cette structure éprouvée :\n\n**Pour [CIBLE PRÉCISE]**\nQui est exactement cette personne ? (reprise de ta persona)\n\n**Qui [PROBLÈME PRINCIPAL]**\nQuelle est sa douleur principale que tu adresses ?\n\n**Notre [PRODUIT/SERVICE] est [CATÉGORIE]**\nDans quelle catégorie tu te places ? (application mobile, service de livraison, conseil...)\n\n**Qui [BÉNÉFICE UNIQUE] contrairement à [ALTERNATIVE ACTUELLE]**\nQu'est-ce que tu fais que personne d'autre ne fait dans ce contexte précis ?\n\n---\n\nExemple complet :\n« Pour les maraîchers de la périphérie d'Abidjan qui perdent 20-30% de leurs légumes faute d'acheteurs, FraisConnect est une plateforme de vente directe qui les met en contact avec des restaurants en moins de 4h — contrairement à la vente au marché central où ils attendent des jours et vendent à perte. »\n\nChaque mot est choisi. Chaque mot élimine quelqu'un (et c'est une bonne chose)."
+          title: "Le framework en 4 parties",
+          content: "Structure éprouvée : \'Pour [CIBLE PRÉCISE] qui [PROBLÈME PRINCIPAL], [PRODUIT/SERVICE] est [CATÉGORIE] qui [BÉNÉFICE UNIQUE] contrairement à [ALTERNATIVE ACTUELLE].\' Chaque partie élimine quelqu\'un — et c\'est une bonne chose. La précision, c\'est de la force.",
+          xp: 10,
         },
         {
-          type: "example",
-          icon: "💡",
-          title: "Analyse de 3 UVP — bonne, mauvaise, excellente",
-          content: "**UVP 1 (mauvaise) :** « La meilleure application de gestion pour les entrepreneurs africains. »\n→ Problèmes : \"meilleure\" ne veut rien dire, \"entrepreneurs africains\" est trop large, aucun bénéfice concret, aucune différenciation.\n\n**UVP 2 (bonne) :** « Pour les PME de Cotonou, FacturaPro génère des devis professionnels en 2 minutes. »\n→ Correct : cible géographique précise, bénéfice chiffré. Mais : pas de différenciation vs concurrents, pas de contexte de paiement local.\n\n**UVP 3 (excellente) :** « Pour les PME de Cotonou qui perdent des contrats à cause de devis informels faits à la main, FacturaPro génère des devis professionnels en 2 minutes, encaissables directement par Flooz ou MTN MoMo — contrairement aux logiciels français qui nécessitent une carte bancaire et un expert-comptable. »\n→ Pourquoi c'est excellent :\n• Cible avec son problème exprimé (\"perdent des contrats\")\n• Bénéfice chiffré (2 minutes)\n• Contexte local intégré (Flooz, MTN MoMo)\n• Différenciation face au concurrent réel (logiciels étrangers inadaptés)\n\nLa troisième prend 3x plus de temps à lire — mais elle convertit 5x mieux."
+          type: "fill_blank",
+          template: "Une bonne UVP doit être comprise en moins de {0} secondes, et dire en quoi tu es {1} des alternatives existantes.",
+          blanks: ["10", "différent"],
+          isOpenAnswer: false,
+          xp: 15,
         },
         {
-          type: "concept",
+          type: "scenario",
+          context: "Bintou à Dakar lance un service de coiffure à domicile. Elle hésite entre 3 formulations.",
+          question: "Quelle UVP est la plus efficace ?",
+          options: [
+            "Bintou Hair : services de coiffure professionnelle à domicile de qualité.",
+            "Je me déplace chez toi à Dakar pour te coiffer en 2h, sans rendez-vous raté ni taxi à prendre.",
+            "La coiffure réinventée pour la femme moderne africaine qui a du goût.",
+          ],
+          correctIndex: 1,
+          explanation: "La 2ème est concrète et résout un vrai problème (rendez-vous ratés, trajet). La 1ère est vague (\'qualité\' dit tout le monde). La 3ème est poétique mais vide — \'femme moderne avec du goût\' ne dit rien sur le problème résolu. Une cliente qui lit la 2ème dit immédiatement \'j\'en ai marre des rendez-vous ratés\'.",
+          xp: 20,
+        },
+        {
+          type: "match",
+          pairs: [
+            { left: "\'La meilleure appli du marché\'", right: "Affirmation invérifiable" },
+            { left: "\'Pour les entrepreneurs africains\'", right: "Cible trop large" },
+            { left: "\'Optimise votre expérience\'", right: "Bénéfice vague" },
+            { left: "\'Notre technologie révolutionnaire\'", right: "Parle solution, pas bénéfice" },
+          ],
+          xp: 15,
+        },
+        {
+          type: "reorder",
+          items: [
+            "Définir la cible précise (pour qui exactement)",
+            "Identifier le problème douloureux (ce que le client souffre)",
+            "Formuler le bénéfice concret et mesurable (ce qu\'il gagne)",
+            "Nommer le différenciateur vs alternatives actuelles",
+            "Tester avec une vraie personne de la cible",
+          ],
+          xp: 15,
+        },
+        {
+          type: "mcq",
+          question: "Comment tester si ton UVP est assez forte ?",
+          options: [
+            "La montrer à des proches et compter les \'j\'aime bien\'.",
+            "La dire à quelqu\'un de ta cible et mesurer sa première réaction et question.",
+            "La comparer aux UVP de tes 3 principaux concurrents.",
+          ],
+          correctIndex: 1,
+          explanation: "Le vrai test : ta cible entend ton UVP et dit \'comment tu fais ça ?\' ou \'c\'est exactement mon problème !\' — signe d\'intérêt réel. Si la réaction est polie mais neutre, ce n\'est pas encore assez précis. Les proches sont trop bienveillants — cherche des inconnus qui correspondent à ta cible.",
+          xp: 10,
+        },
+        {
+          type: "info",
           icon: "🧪",
-          title: "Le test \"Grand-mère\" et le test \"Concurrent\"",
-          content: "Deux tests rapides pour valider ton UVP :\n\n**Test Grand-mère** : Lis ton UVP à quelqu'un qui ne connaît rien à ton secteur. Si après 10 secondes elle peut te dire ce que tu fais et pour qui — elle est claire. Si elle te demande d'expliquer — simplifie.\n\n**Test Concurrent** : Remplace ton nom par celui d'un concurrent direct. Si l'UVP reste vraie pour lui aussi — elle n'est pas assez différenciante. Si elle sonne faux avec son nom — tu as trouvé quelque chose de réel.\n\n**Test Prix** : Après avoir lu ton UVP, quelqu'un de ta cible devrait se dire spontanément \"combien ça coûte ?\" — pas \"c'est quoi exactement ?\". Si la deuxième question arrive avant la première, ton UVP n'est pas encore assez claire sur le bénéfice."
+          title: "Le test Grand-mère et le test Concurrent",
+          content: "Test Grand-mère : lis ton UVP à quelqu\'un hors du secteur. Si elle comprend en 10 secondes ce que tu fais et pour qui — elle est claire. Test Concurrent : remplace ton nom par celui d\'un concurrent. Si l\'UVP reste vraie pour lui aussi — elle n\'est pas assez différenciante.",
+          xp: 5,
         },
         {
           type: "reflection",
           icon: "🤔",
           question: "Rédige ton UVP finale en utilisant le framework complet",
-          placeholder: "Pour [ta persona précise — reprise de la tâche 4]\nqui [son problème principal en ses mots],\n[ton produit/service] est [catégorie]\nqui [bénéfice concret, si possible chiffré]\ncontrairement à [ce que ta cible utilise aujourd'hui].\n\nEnsuite : fais les 3 tests (Grand-mère, Concurrent, Prix) et note ici ce que tu as ajusté."
+          placeholder: "\'Pour [ta persona précise — reprise de la tâche 4]\nqui [son problème principal en ses mots],\n[ton produit/service] est [catégorie]\nqui [bénéfice concret, si possible chiffré]\ncontrairement à [ce que ta cible utilise aujourd\'hui].\'\n\nRésultat du test Grand-mère :\nRésultat du test Concurrent :\nCe que tu as ajusté après les tests :",
+          xp: 30,
         },
-        {
-          type: "check",
-          icon: "✅",
-          question: "Quel est le format le plus efficace pour une UVP ?",
-          options: [
-            "\"Notre produit est le meilleur du marché grâce à notre technologie avancée\"",
-            "\"Pour [cible précise] qui [problème], [produit] est [catégorie] qui [bénéfice] contrairement à [alternative actuelle]\"",
-            "Une liste de 5 fonctionnalités clés accompagnées de leur prix",
-          ],
-          correctIndex: 1,
-          explanation: "Le format en 4 parties est efficace précisément parce qu'il force à répondre aux 4 questions que se pose tout client potentiel : Est-ce que c'est pour moi ? Est-ce que ça résout mon problème ? Qu'est-ce que j'y gagne ? Pourquoi pas ce que j'utilise déjà ?\n\n\"Le meilleur du marché\" est une affirmation non vérifiable qui crée de la méfiance. Une liste de fonctionnalités parle à l'équipe produit, pas au client qui cherche à résoudre un problème concret."
-        },
-        {
-          type: "takeaway",
-          icon: "🎯",
-          content: "\"La différence entre une bonne idée et un bon business, c'est la clarté sur ce que tu offres à qui — et la capacité à l'expliquer en 30 secondes à un inconnu dans le bus.\" Si tu as ton UVP, tu as ton pitch de bus. Tout le reste en découle."
-        }
-      ]
+      ],
     },
-    quiz: [
-      {
-        id: 1,
-        question: "Quel est le format classique d'une UVP (Unique Value Proposition) ?",
-        options: [
-          "\"Notre produit est le meilleur du marché\"",
-          "\"Pour [cible], [notre produit] est [catégorie] qui [bénéfice clé] contrairement à [alternative]\"",
-          "Une liste de 5 avantages concurrentiels",
-          "Le prix le plus bas du marché",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Une bonne UVP identifie clairement : à qui elle s'adresse, ce qu'elle fait, la catégorie du produit, le bénéfice principal, et pourquoi elle est différente des alternatives existantes.",
-      },
-    ],
   },
 
   // --- Niveau 2 ---
@@ -382,59 +444,6 @@ export const tasks: Task[] = [
     title: "Recherche et liste 3 concurrents",
     description: "Directs ou indirects. Aucun concurrent = mauvais signe (pas de marché) ou mauvaise recherche. Analyse leurs forces et faiblesses.",
     xp: 75,
-    course: {
-      title: "Analyse concurrentielle — comprendre le terrain avant de te battre",
-      readingTime: "6 min",
-      steps: [
-        {
-          type: "concept",
-          icon: "🗺️",
-          title: "Pourquoi \"zéro concurrent\" est rarement une bonne nouvelle",
-          content: "Beaucoup d'entrepreneurs présentent l'absence de concurrents comme une force : \"Je suis le premier sur ce marché !\"\n\nEn réalité, ça peut signifier trois choses très différentes :\n\n**Scénario 1 (rare, bon) :** Tu as découvert un vrai gap de marché que personne n'a encore adressé. Ça arrive, mais c'est exceptionnel.\n\n**Scénario 2 (fréquent, dangereux) :** Des gens ont essayé avant toi et ont échoué. Le marché n'est pas viable ou le timing est mauvais. Absence de concurrent = cimetière de startups précédentes.\n\n**Scénario 3 (très fréquent) :** Tu n'as pas cherché assez loin ou tu définis ton concurrent trop étroitement. Un concurrent n'est pas seulement quelqu'un qui fait la même chose — c'est toute alternative que ton client utilise aujourd'hui pour résoudre son problème.\n\nLe stylo est le concurrent de l'application de prise de notes. Le motocycliste taxi est le concurrent d'un service de livraison.\n\n**Avoir des concurrents prouve qu'il y a un marché.** C'est une bonne nouvelle, pas un problème."
-        },
-        {
-          type: "concept",
-          icon: "🔎",
-          title: "Les 3 types de concurrents à identifier",
-          content: "**1. Concurrents directs** : Ils proposent la même solution au même problème à la même cible. Si tu lances un service de nettoyage à domicile à Dakar, les autres services de nettoyage à Dakar sont tes concurrents directs. Ils sont les plus faciles à identifier.\n\n**2. Concurrents indirects** : Ils résolvent le même problème mais avec une approche différente. Si tu lances un service de livraison de repas, les restaurants où les gens mangent sur place sont des concurrents indirects. Ils capturent le même budget \"repas du midi\".\n\n**3. Concurrents de substitution** : Ce sont les comportements alternatifs. L'habitude de faire soi-même, de se débrouiller, ou de ne pas résoudre le problème du tout. Ce sont parfois tes concurrents les plus coriaces car ils ne coûtent rien au client.\n\nPour ton analyse : liste 1-2 de chaque catégorie. Cela te donne une vision complète de l'écosystème dans lequel tu entres."
-        },
-        {
-          type: "example",
-          icon: "💡",
-          title: "Cas concret : analyse concurrentielle de PharmaGo à Cotonou",
-          content: "Segun veut lancer PharmaGo — livraison de médicaments à domicile à Cotonou en 2h. Voici son analyse :\n\n**Concurrents directs :**\n• Jumia Food (a essayé la livraison de médicaments, abandonné en 2022 — à analyser : pourquoi ?)\n• Quelques pharmacies qui font de la livraison informelle via moto-taxi\n\n**Concurrents indirects :**\n• Les pharmacies de quartier (les gens se déplacent eux-mêmes)\n• Les proches (\"appelle ton cousin qui passe près de la pharmacie\")\n\n**Concurrents de substitution :**\n• Ne pas acheter le médicament parce que la démarche est trop compliquée\n• Acheter des médicaments au marché informel (moins chers, moins sûrs)\n\n**Ce que cette analyse lui apprend :**\n→ Jumia a échoué : il doit comprendre pourquoi (délais ? prix ? confiance ?)\n→ Le concurrent principal n'est pas une autre appli — c'est l'habitude d'envoyer un proche\n→ Sa différenciation doit adresser deux peurs : la confiance (vrais médicaments ?) et le délai (plus rapide que d'envoyer quelqu'un ?)"
-        },
-        {
-          type: "concept",
-          icon: "📊",
-          title: "La grille d'analyse : 4 dimensions à comparer",
-          content: "Pour chaque concurrent, analyse 4 dimensions :\n\n**Prix** : Combien facturent-ils ? Comment (abonnement, à l'acte, commission) ? Comment ça se compare au pouvoir d'achat de ta cible ?\n\n**Canaux** : Comment trouvent-ils leurs clients ? (réseaux sociaux, bouche à oreille, physique, appli) Comment livrent-ils ? Ces canaux sont-ils accessibles à ta cible ?\n\n**Points forts** : Ce qu'ils font bien. Sois honnête — ne sous-estime pas tes concurrents.\n\n**Points faibles** : Ce qui frustre leurs utilisateurs actuels. C'est là que tu trouves TON opportunité.\n\nLe plus précieux à chercher : les avis négatifs de leurs clients actuels. Sur Google, Facebook, les groupes WhatsApp locaux. Ce que les gens se plaignent de tes concurrents, c'est exactement ce que tu dois promettre de faire mieux."
-        },
-        {
-          type: "reflection",
-          icon: "🤔",
-          question: "Analyse tes 3 concurrents avec la grille complète",
-          placeholder: "Concurrent 1 (direct) : [Nom]\n• Ce qu'il fait : \n• Prix : \n• Canal principal : \n• Point fort : \n• Point faible (ce que ses clients lui reprochent) : \n\nConcurrent 2 (indirect) : [Nom]\n• ...\n\nConcurrent 3 (substitution) : [Comportement alternatif]\n• ...\n\nConclusion : Quelle est la brèche que tu as identifiée — ce que personne ne fait assez bien aujourd'hui ?"
-        },
-        {
-          type: "check",
-          icon: "✅",
-          question: "Pourquoi une analyse concurrentielle est-elle essentielle avant de lancer ?",
-          options: [
-            "Pour copier ce qui fonctionne chez les concurrents et éviter d'innover",
-            "Pour comprendre le marché existant, trouver les gaps non adressés et affiner ton positionnement",
-            "Elle n'est pas nécessaire si ton idée est vraiment innovante et qu'il n'y a pas de concurrents",
-          ],
-          correctIndex: 1,
-          explanation: "L'analyse concurrentielle n'est pas là pour copier — c'est là pour apprendre du marché sans avoir à tout tester toi-même. Elle te donne :\n• La preuve que le marché existe (tes concurrents ont des clients)\n• Les erreurs à ne pas répéter (pourquoi certains ont échoué)\n• Les attentes de base que tu dois satisfaire (table stakes)\n• Les frustrations à exploiter (ton avantage différenciant)\n\nAbsence de concurrents n'est pas un avantage — c'est souvent le signal d'un marché non viable ou d'une recherche incomplète."
-        },
-        {
-          type: "takeaway",
-          icon: "🎯",
-          content: "\"Étudie tes concurrents avec le respect qu'on doit à un enseignant — ils ont déjà fait les erreurs coûteuses et trouvé ce qui fonctionne. Ton rôle est de faire mieux, pas de réinventer le marché de zéro.\""
-        }
-      ]
-    },
     quiz: [
       {
         id: 1,
@@ -457,59 +466,6 @@ export const tasks: Task[] = [
     title: "Estime la taille de ton marché",
     description: "TAM / SAM / SOM simplifié. Pas besoin d'études McKinsey — des estimations raisonnées avec des sources locales.",
     xp: 100,
-    course: {
-      title: "Estimer son marché — la méthode bottom-up sans données McKinsey",
-      readingTime: "6 min",
-      steps: [
-        {
-          type: "concept",
-          icon: "📏",
-          title: "TAM, SAM, SOM — les 3 cercles à connaître",
-          content: "Quand un investisseur ou un partenaire te demande \"quelle est la taille de ton marché ?\" — il ne s'attend pas à un rapport de consulting. Il veut savoir si tu as réfléchi sérieusement.\n\nVoici les 3 niveaux :\n\n**TAM (Total Addressable Market)** : Tout le marché théorique si 100% des clients potentiels utilisaient ta solution. C'est le rêve maximal.\n\n**SAM (Serviceable Addressable Market)** : La portion du TAM que tu peux réellement servir avec ton modèle, ta géographie, ton canal. Tu vends à Dakar ? Ton SAM = le marché dakarois, pas le marché mondial.\n\n**SOM (Serviceable Obtainable Market)** : Ce que tu peux réalistement capturer dans les 2-3 prochaines années. Typiquement 1-10% du SAM pour une startup en démarrage.\n\nLe SOM, c'est ton vrai objectif de business. TAM et SAM montrent le potentiel — SOM montre l'ambition réaliste."
-        },
-        {
-          type: "concept",
-          icon: "🔢",
-          title: "Bottom-up vs top-down : quelle méthode utiliser ?",
-          content: "**Méthode top-down (déconseillée pour les startups early-stage en Afrique) :**\nPIB du pays × pourcentage du secteur = taille de marché\nProblème : les données macro-économiques africaines sont souvent obsolètes, mal segmentées, ou calculées sur des économies formelles qui excluent une large part de l'activité réelle.\n\n**Méthode bottom-up (recommandée) :**\nTu construis ton estimation depuis le bas — à partir de données granulaires que tu peux vérifier toi-même :\n\n`Nombre de clients potentiels × Fréquence d'achat par an × Prix unitaire = Taille de marché`\n\nPar exemple :\n• Combien y a-t-il de femmes entre 25-45 ans dans ma ville ?\n• Parmi elles, combien ont ce problème spécifique ?\n• Combien de fois par mois achèteraient-elles ma solution ?\n• À quel prix seraient-elles prêtes à payer ?\n\nCes données, tu peux les estimer avec des sources gratuites (ANSD, recensements, terrain) et du bon sens."
-        },
-        {
-          type: "example",
-          icon: "💡",
-          title: "Cas concret : estimation bottom-up pour BobiBraid à Abidjan",
-          content: "Koffi veut lancer BobiBraid — plateforme de mise en relation avec des tresseuses à domicile à Abidjan. Voici son estimation :\n\n**Étape 1 : Définir la cible**\nFemmes 18-45 ans à Abidjan : ~800 000 personnes (source : RGPH 2021, projection)\n\n**Étape 2 : Filtrer par problème réel**\n\"Qui fait des tresses régulièrement ET cherche une tresseuse ?\" → Il suppose 40% = 320 000 femmes\n\n**Étape 3 : Fréquence d'achat**\nTressage en moyenne 1 fois par mois = 12 fois/an\n\n**Étape 4 : Panier moyen**\nTressage simple : 3 000-8 000 FCFA. Il prend 5 000 FCFA en median.\n\n**Calcul SAM :**\n320 000 × 12 × 5 000 FCFA = **19,2 milliards FCFA/an** (~30M USD)\n\n**SOM à 3 ans :**\nAvec 3% de part de marché = **576 millions FCFA/an**\n(réaliste pour une startup avec 2-3 ans de croissance)\n\n**Validation :** Il croise avec d'autres signaux — nombre de tresseuses à Abidjan, concurrents actifs, volume des recherches sur les réseaux sociaux."
-        },
-        {
-          type: "concept",
-          icon: "🌍",
-          title: "Sources de données gratuites pour l'Afrique de l'Ouest",
-          content: "Pas besoin d'acheter des rapports à 5 000€. Ces sources sont gratuites et souvent meilleures :\n\n**Données démographiques :**\n• Résultats des recensements nationaux (ANSD Sénégal, INS Côte d'Ivoire, INSAE Bénin)\n• CIA World Factbook pour des estimations rapides\n• Worldometers.info pour les données en temps réel par ville\n\n**Données de marché :**\n• Rapports Afrique de la Banque Mondiale (gratuits)\n• GSMA Intelligence pour les données mobile/internet\n• Groupes Facebook et WhatsApp locaux (taille = proxy d'intérêt)\n\n**Validation terrain :**\n• Demander directement dans la rue à 10-20 personnes de ta cible\n• Observer le flux dans un lieu pertinent (marché, arrêt de bus)\n• Parler aux acteurs du secteur (grossistes, associations)\n\n**Règle d'or :** note tes hypothèses clairement. Une bonne estimation n'est pas celle qui a le bon chiffre — c'est celle dont les hypothèses sont transparentes et défendables."
-        },
-        {
-          type: "reflection",
-          icon: "🤔",
-          question: "Calcule ton marché avec la méthode bottom-up",
-          placeholder: "Définis ta cible précise : [qui, où, quel problème]\n\nNombre estimé de clients potentiels : ___\nSource : ___\n\nFréquence d'achat (fois/an) : ___\n\nPrix unitaire moyen (FCFA) : ___\n\nTAM = ___ × ___ × ___ = ___ FCFA/an\nSAM (ta géographie/segment) = ___ FCFA/an\nSOM réaliste à 3 ans (___%) = ___ FCFA/an\n\nHypothèse la plus risquée de mon estimation : ___\nComment je pourrais la vérifier rapidement : ___"
-        },
-        {
-          type: "check",
-          icon: "✅",
-          question: "Comment estimer un marché sans données officielles ?",
-          options: [
-            "C'est impossible sans études Nielsen ou McKinsey",
-            "Par des estimations bottom-up : nombre de clients potentiels × fréquence × prix",
-            "En copiant les chiffres du concurrent principal",
-          ],
-          correctIndex: 1,
-          explanation: "L'estimation bottom-up est la méthode la plus fiable pour les marchés africains où les données macro sont incomplètes. Elle part de données granulaires accessibles (population cible par recensement, observations terrain, interviews) pour construire une taille de marché défendable.\n\nBonus : elle te force à réfléchir à qui exactement est ton client, combien de fois il achète, et à quel prix — ce qui affûte aussi ton positionnement produit."
-        },
-        {
-          type: "takeaway",
-          icon: "🎯",
-          content: "\"Un marché de 500 millions FCFA que tu as estimé toi-même, avec des hypothèses claires et vérifiables, vaut infiniment plus qu'un rapport qui dit '50 milliards' mais que tu ne sais pas défendre.\""
-        }
-      ]
-    },
     quiz: [
       {
         id: 1,
@@ -532,59 +488,6 @@ export const tasks: Task[] = [
     title: "Prépare ton guide d'entretien client",
     description: "5-7 questions ouvertes. L'objectif : comprendre les problèmes, pas valider tes hypothèses. Suis les principes du Mom Test.",
     xp: 100,
-    course: {
-      title: "Le Mom Test — comment mener des interviews qui révèlent la vérité",
-      readingTime: "7 min",
-      steps: [
-        {
-          type: "concept",
-          icon: "🙅",
-          title: "Pourquoi la plupart des interviews clients sont inutiles",
-          content: "Voici comment se passe typiquement une \"interview client\" mal préparée :\n\nToi : \"J'ai une idée d'appli pour commander des repas. Tu l'utiliserais ?\"\nEux : \"Oui, bonne idée ! Tu sais, je commande souvent de la nourriture.\"\nToi : *(enthousiasmé)* \"Super ! Tu paierais combien ?\"\nEux : \"Ça dépend... Peut-être 2 000 FCFA par commande ?\"\n\nRésultat : tu rentes chez toi convaincu que ton idée est validée. Mais tu viens de recueillir des **opinions sur l'avenir** — pas des données sur le comportement réel.\n\n**Trois problèmes fondamentaux :**\n1. Les gens veulent être gentils — ils ne vont pas dire \"ton idée est nulle\"\n2. Les opinions sur le futur sont peu fiables — \"je ferai ça\" ≠ \"je fais ça\"\n3. La formulation de tes questions induit les réponses que tu veux entendre\n\nLe Mom Test (de Rob Fitzpatrick) est une méthode pour contourner ces biais."
-        },
-        {
-          type: "concept",
-          icon: "📖",
-          title: "Les 3 règles du Mom Test",
-          content: "Le principe central : pose des questions si bonnes que même ta maman ne pourrait pas te mentir — pas parce qu'elle veut être honnête, mais parce que tes questions ne lui donnent pas l'occasion de te faire plaisir.\n\n**Règle 1 : Parle de leur vie, pas de ton idée**\nNe présente jamais ton idée au début. Demande leur réalité actuelle.\nMauvais : \"Est-ce que tu achèterais une appli de livraison ?\"\nBon : \"Comment tu fais quand tu veux manger chez toi sans cuisiner ?\"\n\n**Règle 2 : Pose des questions sur le passé, pas sur le futur**\nLe passé est un fait. Le futur est une promesse que les gens ne tiendront pas forcément.\nMauvais : \"Est-ce que tu utiliserais ça ?\" (futur)\nBon : \"La dernière fois que tu as eu ce problème, qu'est-ce que tu as fait ?\" (passé)\n\n**Règle 3 : Écoute les comportements, pas les opinions**\nSi quelqu'un te dit qu'il a un problème mais n'a jamais rien fait pour le résoudre — c'est peut-être que le problème n'est pas assez douloureux. Les gens qui ont vraiment un problème cherchent activement des solutions, même imparfaites."
-        },
-        {
-          type: "example",
-          icon: "💡",
-          title: "Bon vs mauvais guide d'entretien — exemple concret à Dakar",
-          content: "Aminata veut lancer un service de garde d'enfants à domicile à Dakar. Voici deux versions de son guide :\n\n**VERSION MAUVAISE** (questions biaisées)\n❌ \"Si j'avais un service de garde d'enfants fiable, tu l'utiliserais ?\"\n❌ \"Combien tu serais prête à payer pour une nounou de confiance ?\"\n❌ \"Tu penses que la sécurité des enfants c'est important ?\"\n\nProblème : toutes ces questions induisent un \"oui\" poli.\n\n**VERSION CORRECTE** (Mom Test)\n✅ \"Comment tu gères la garde de tes enfants aujourd'hui ?\"\n✅ \"La dernière fois que tu avais besoin d'une garde d'urgence, qu'est-ce que tu as fait ?\"\n✅ \"Est-ce que tu as déjà cherché activement une solution ? Qu'est-ce que tu as trouvé ?\"\n✅ \"Qu'est-ce qui t'a empêché de résoudre ça complètement jusqu'ici ?\"\n✅ \"Si je disparaissais demain et que mon service n'existait pas, tu ferais quoi ?\"\n\n**Ce que la 2ème version révèle :**\n→ La vraie solution actuelle (souvent = demander à la famille)\n→ À quel point le problème est douloureux (ont-elles perdu des opportunités à cause de ça ?)\n→ Les vraies barrières (confiance ? prix ? disponibilité ?)"
-        },
-        {
-          type: "concept",
-          icon: "📝",
-          title: "Structure d'un guide d'entretien en 5 phases",
-          content: "**Phase 1 — Contexte (2 min)** : Comprendre qui est la personne en face.\n\"Parle-moi de toi — que fais-tu au quotidien ?\"\n\n**Phase 2 — Problème général (5 min)** : Explorer leur réalité sans mentionner ton idée.\n\"Dans ta journée/semaine, quelles sont les choses les plus difficiles ou frustrantes autour de [thème général] ?\"\n\n**Phase 3 — Comportements passés (10 min)** : Les questions Mom Test essentielles.\n\"La dernière fois que tu as eu [le problème], qu'est-ce que tu as fait ?\"\n\"As-tu essayé d'autres solutions ? Qu'est-ce qui n'a pas marché ?\"\n\"Combien de temps/argent ça t'a coûté ?\"\n\n**Phase 4 — Motivations profondes (5 min)** : Comprendre le \"pourquoi\".\n\"Si tu réglais ça complètement demain, qu'est-ce que ça changerait dans ta vie ?\"\n\n**Phase 5 — Recommandations (2 min)** : Clôture et signal d'intérêt réel.\n\"Est-ce que tu connais d'autres personnes qui vivent ce problème que je pourrais rencontrer ?\"\n(Si la personne donne des noms, c'est un signal fort d'intérêt.)"
-        },
-        {
-          type: "reflection",
-          icon: "🤔",
-          question: "Rédige ton guide d'entretien de 5-7 questions",
-          placeholder: "Problème que j'investigate : [ton hypothèse de départ]\n\nQuestion 1 (contexte) : \n\nQuestion 2 (comportement passé) : \n\nQuestion 3 (comportement passé) : \n\nQuestion 4 (solutions actuelles) : \n\nQuestion 5 (motivation profonde) : \n\nQuestion bonus (signal d'intérêt) : \n\n⚠️ Vérifie : est-ce que chaque question parle du PASSÉ et de leur VIE, pas de ton idée ?"
-        },
-        {
-          type: "check",
-          icon: "✅",
-          question: "Quel est le principe clé du Mom Test pour les interviews clients ?",
-          options: [
-            "Parler à sa mère en premier car elle sera honnête",
-            "Poser des questions sur le passé et les comportements réels, jamais sur les opinions ou le futur",
-            "Toujours enregistrer les entretiens",
-          ],
-          correctIndex: 1,
-          explanation: "Le Mom Test repose sur une vérité simple : les gens vous mentent sans le vouloir quand on leur demande des opinions sur l'avenir (\"tu l'utiliserais ?\") car ils veulent être gentils.\n\nEn posant des questions sur le passé (\"la dernière fois que...\") et les comportements réels (\"qu'est-ce que tu as fait ?\"), on recueille des faits vérifiables — pas des intentions polies.\n\nSignal le plus puissant : si quelqu'un te dit qu'il a un problème mais n'a JAMAIS rien fait pour le résoudre, ce problème n'est probablement pas assez douloureux pour payer pour une solution."
-        },
-        {
-          type: "takeaway",
-          icon: "🎯",
-          content: "\"Un bon guide d'entretien ne contient pas le mot 'solution' avant la toute dernière question. Les 80% du temps, tu écoutes — tu ne pitches pas.\""
-        }
-      ]
-    },
     quiz: [
       {
         id: 1,
@@ -607,59 +510,6 @@ export const tasks: Task[] = [
     title: "Conduis 5 interviews avec des personnes de ta cible",
     description: "Pas des amis qui valident tout. De vraies personnes de ta cible. Au moins 5. Prends des notes précises — les citations mot pour mot sont de l'or.",
     xp: 200,
-    course: {
-      title: "Conduire des interviews sans biais — l'art d'écouter vraiment",
-      readingTime: "6 min",
-      steps: [
-        {
-          type: "concept",
-          icon: "⚠️",
-          title: "Le biais de confirmation : l'ennemi numéro un de l'entrepreneur",
-          content: "Tu as passé des semaines sur ton idée. Tu y crois profondément. Et maintenant tu vas parler à des gens pour \"valider\" — mais inconsciemment, ton cerveau cherche à confirmer ce qu'il veut entendre, pas à découvrir la vérité.\n\nC'est le **biais de confirmation** : la tendance à chercher, interpréter et mémoriser les informations qui confirment nos croyances préexistantes.\n\n**Comment il se manifeste en interview :**\n• Tu poses des questions suggestives : \"N'est-ce pas que c'est un vrai problème ?\"\n• Tu sur-interprètes les signaux positifs : un \"oui peut-être\" devient \"forte demande validée\"\n• Tu minimises les signaux négatifs : \"il n'a pas compris mon idée\"\n• Tu choisis des interviewés parmi des proches qui t'aiment\n• Tu arrêtes les interviews dès que tu as 2-3 \"oui\"\n\n**Le test du biais de confirmation :**\nSi après 5 interviews tu n'as rien appris de surprenant, tu n'as pas fait de vraies interviews — tu as fait une mise en scène de validation.\n\nUne vraie découverte terrain doit te surprendre, te remettre en question, voire t'inquiéter. C'est normal et c'est utile."
-        },
-        {
-          type: "concept",
-          icon: "🎯",
-          title: "Qui interviewer — et qui éviter absolument",
-          content: "**Qui interviewer :**\n• Des personnes qui correspondent précisément à ta persona (âge, situation, comportement)\n• Des personnes qui ont le problème que tu veux résoudre aujourd'hui — pas dans le futur\n• Des inconnus ou des semi-inconnus (pas ta famille, pas tes amis proches)\n• Des personnes qui utilisent déjà des solutions alternatives (elles sont les plus \"éduquées\" sur le problème)\n\n**Comment les trouver à Abidjan, Dakar, Lomé :**\n• Groupes Facebook et WhatsApp de ta niche (mères de famille, entrepreneurs, jeunes professionnels)\n• Associations et coopératives locales\n• Marchés et centres commerciaux fréquentés par ta cible\n• Demander à chaque interviewé de te recommander 2 personnes (effet boule de neige)\n• Universités, cafés, mosquées, églises — selon ta cible\n\n**Qui éviter :**\n❌ Ta famille et amis proches (trop biaisés en ta faveur)\n❌ D'autres entrepreneurs (ils pensent en solutions, pas en problèmes)\n❌ Des gens qui \"connaissent bien le sujet\" mais ne vivent pas le problème au quotidien\n❌ Des gens qui ont déjà entendu ton pitch"
-        },
-        {
-          type: "example",
-          icon: "💡",
-          title: "Cas concret : 5 interviews qui ont changé un projet à Lomé",
-          content: "Kofi voulait lancer une appli de gestion de budget pour les jeunes travailleurs à Lomé. Il pensait que le problème était \"les gens ne savent pas épargner\".\n\n**Ses 5 interviews ont révélé quelque chose de différent :**\n\n**Interview 1 — Akosua, secrétaire, 26 ans**\n\"Je sais exactement combien j'ai et combien je dépense. Le problème c'est que ma famille me demande de l'argent et je ne peux pas refuser.\"\n\n**Interview 2 — Mawuli, technicien, 31 ans**\n\"J'utilise déjà un carnet. L'appli, je l'aurais sur mon téléphone et mes collègues verraient que j'ai de l'argent. Ce n'est pas une bonne idée.\"\n\n**Interview 3 — Ama, commerçante, 29 ans**\n\"Mon problème c'est pas le budget — c'est le Mobile Money. J'ai 3 comptes différents et je ne sais jamais combien j'ai en tout.\"\n\n**Interview 4 — Yawo, chauffeur, 34 ans**\n\"Je mets de l'argent de côté en donnant à ma sœur. Elle garde pour moi. C'est mon système d'épargne.\"\n\n**Interview 5 — Edem, fonctionnaire, 28 ans**\n\"Le vrai problème : entre le 15 et le 30, j'ai plus rien. Pas à cause de mauvaise gestion — à cause des dépenses imprévues collectives [funérailles, baptêmes].\"\n\n**Ce que Kofi a appris :**\nSon hypothèse de départ était fausse. Le problème réel = **pression sociale sur l'argent** + **fragmentation des comptes Mobile Money** + **dépenses collectives imprévisibles**. Son appli de budget ne résoudrait rien de ça. Il a pivoté vers un outil de gestion d'épargne collective — bien plus adapté."
-        },
-        {
-          type: "concept",
-          icon: "📋",
-          title: "Le protocole d'une interview réussie en 5 points",
-          content: "**1. Prépare ton cadre**\nArrive avec ton guide de questions (pas un script — des thèmes). Prends de quoi écrire ou enregistre avec permission. Prévois 30-45 minutes.\n\n**2. Brise la glace correctement**\n\"Je ne teste pas un produit — j'essaie de comprendre comment tu vis [le problème]. Il n'y a pas de bonne ou mauvaise réponse. Ton honnêteté m'aide plus que ta politesse.\"\n\n**3. Pose tes questions, puis ferme la bouche**\nAprès chaque question, laisse 5 secondes de silence. Les gens remplissent le silence — et c'est là que les vraies informations sortent.\n\n**4. Capture les citations exactes**\nNote les mots exacts, pas ton interprétation. \"Je suis obligée\" ≠ \"elle préférerait\". Les citations mot pour mot sont tes données les plus précieuses.\n\n**5. Cherche activement à te faire contredire**\nPose toujours : \"Qu'est-ce qui t'empêcherait d'utiliser une solution comme ça ?\" ou \"Quelqu'un à qui tu as parlé a le même problème que toi ?\" Si personne ne connaît quelqu'un d'autre avec ce problème — signal d'alarme."
-        },
-        {
-          type: "reflection",
-          icon: "🤔",
-          question: "Documente tes 5 interviews — insights et surprises",
-          placeholder: "Interview 1 — [Prénom, situation, âge approximatif]\nCitation clé : \"...\"\nSurprise ou apprentissage : \n\nInterview 2 — \nCitation clé : \"...\"\nSurprise : \n\nInterview 3 — \nCitation clé : \"...\"\nSurprise : \n\nInterview 4 — \nCitation clé : \"...\"\nSurprise : \n\nInterview 5 — \nCitation clé : \"...\"\nSurprise : \n\nCe que j'avais supposé mais qui s'est révélé faux ou plus nuancé :\nCe que je n'avais pas anticipé du tout :"
-        },
-        {
-          type: "check",
-          icon: "✅",
-          question: "Quel biais cognitif est le plus dangereux lors des interviews clients ?",
-          options: [
-            "Le biais de disponibilité — se souvenir surtout des interviews récentes",
-            "Le biais de confirmation — entendre ce qu'on veut entendre",
-            "Le biais d'ancrage — fixer son prix trop tôt",
-          ],
-          correctIndex: 1,
-          explanation: "Le biais de confirmation est particulièrement destructeur dans la recherche utilisateur parce qu'il opère de manière invisible. L'entrepreneur ne réalise pas qu'il biaise ses questions, sur-interprète les signaux positifs et ignore les négatifs.\n\nLe contrer :\n• Recherche activement les preuves que ton idée est mauvaise\n• Demande à quelqu'un d'autre d'analyser tes notes (un regard externe voit les biais)\n• Compte les signaux négatifs autant que les positifs\n• Si 5 interviews ne t'ont rien appris de nouveau — recommence avec de meilleures questions"
-        },
-        {
-          type: "takeaway",
-          icon: "🎯",
-          content: "\"L'entrepreneur qui cherche à se faire réfuter apprend dix fois plus que celui qui cherche à se faire valider. La vérité inconfortable aujourd'hui vaut mieux que l'illusion confortable qui coûtera tout demain.\""
-        }
-      ]
-    },
     quiz: [
       {
         id: 1,
@@ -682,53 +532,6 @@ export const tasks: Task[] = [
     title: "Synthétise tes 3 insights clés",
     description: "Qu'as-tu vraiment appris ? Décide : continuer avec cette idée, pivoter, ou arrêter. Documente ton raisonnement.",
     xp: 150,
-    course: {
-      title: "Du terrain à la décision — synthétiser pour pivoter ou persévérer",
-      readingTime: "5 min",
-      steps: [
-        {
-          type: "concept",
-          icon: "🔬",
-          title: "Un insight ≠ une observation — la différence qui change tout",
-          content: "Après tes interviews et ta recherche concurrentielle, tu as probablement une liste de notes, de citations, d'observations. Mais une liste de faits n'est pas une synthèse.\n\n**Observation** : \"3 interviewés sur 5 m'ont dit qu'ils envoient de l'argent à leur famille chaque mois.\"\n\n**Insight** : \"L'envoi d'argent à la famille est une obligation sociale incontournable qui capte 20-30% du revenu disponible des jeunes travailleurs — avant toute décision d'épargne ou de consommation. Toute solution financière qui ignore cette réalité sera adoptée puis abandonnée.\"\n\nUn insight :\n• Explique le POURQUOI derrière une observation\n• A des implications concrètes pour ton projet\n• Te surprend ou te force à reconsidérer quelque chose\n• Est actionnable — il peut changer une décision\n\nPour transformer une observation en insight, pose-toi : \"Et alors ? Qu'est-ce que ça implique pour mon projet ?\""
-        },
-        {
-          type: "concept",
-          icon: "🔀",
-          title: "Continuer, pivoter ou arrêter — un cadre de décision clair",
-          content: "Après ta recherche, tu dois prendre une décision. Voici comment l'aborder honnêtement :\n\n**Continuer (même direction) si :**\n✓ Le problème est réel et douloureux (les gens ont essayé de le résoudre eux-mêmes)\n✓ Ta solution adresse le vrai problème découvert (pas ton hypothèse initiale)\n✓ Les clients cibles sont identifiés et atteignables\n✓ Il existe un modèle de revenus plausible\n\n**Pivoter (même problème, solution différente) si :**\n↺ Le problème est réel mais ta solution n'est pas la bonne approche\n↺ La cible est différente de ce que tu pensais\n↺ Le canal ou le modèle économique doit changer\n↺ Tu as découvert un problème adjacent plus important\n\n**Arrêter si :**\n✗ Le problème n'est pas assez douloureux pour que les gens paient\n✗ La concurrence est trop établie sans avantage différenciant clair\n✗ Le marché adressable est trop petit pour un business viable\n✗ Tu n'as aucune envie de travailler là-dessus encore 5 ans\n\nArrêter n'est pas un échec — c'est de l'intelligence. Mieux vaut 2 semaines de recherche terrain que 2 ans sur un projet non viable."
-        },
-        {
-          type: "example",
-          icon: "💡",
-          title: "Cas concret : synthèse et pivot à Bamako",
-          content: "Mariam voulait lancer une plateforme de cours en ligne pour lycéens à Bamako. Après 5 interviews et son analyse concurrentielle, voici sa synthèse :\n\n**Ses 3 insights :**\n\n**Insight 1** : Le problème réel n'est pas l'accès aux cours — c'est la préparation aux examens du BAC. Les lycéens ont accès à beaucoup de contenu (YouTube, groupes WhatsApp) mais pas à des annales commentées et des simulateurs d'examens.\n\n**Insight 2** : Les parents (payeurs) font confiance uniquement aux professeurs identifiés. \"Une appli inconnue\" = méfiance. Mais \"le Prof Diallo que mon fils connaît via une appli\" = accepté.\n\n**Insight 3** : La connectivité est un vrai frein — 3 interviewés sur 5 ont des données mobiles rationnées. Contenu téléchargeable = critère éliminatoire si absent.\n\n**Sa décision : Pivot partiel**\n→ Garde : lycéens à Bamako, préparation aux examens\n→ Change : focus uniquement sur les annales BAC commentées + simulateurs hors ligne\n→ Ajoute : système où les enseignants réels peuvent publier (confiance + contenu local)\n\n**Ce qu'elle aurait perdu sans cette étape :** 6 mois à développer une plateforme de vidéos en ligne que personne n'aurait pu utiliser sans wifi."
-        },
-        {
-          type: "reflection",
-          icon: "🤔",
-          question: "Synthèse finale — tes 3 insights et ta décision",
-          placeholder: "Insight 1 (observation → implication pour mon projet) :\nObservation : ...\nImplication : ...\n\nInsight 2 :\nObservation : ...\nImplication : ...\n\nInsight 3 :\nObservation : ...\nImplication : ...\n\nMon hypothèse initiale qui s'est révélée fausse ou incomplète :\n\nMa décision : [ ] Continuer  [ ] Pivoter  [ ] Arrêter\n\nPourquoi (arguments concrets, pas émotionnels) :\n\nSi pivot — qu'est-ce qui change exactement :"
-        },
-        {
-          type: "check",
-          icon: "✅",
-          question: "Qu'est-ce qu'un pivot en entrepreneuriat ?",
-          options: [
-            "Abandonner complètement son projet et recommencer de zéro",
-            "Un changement structuré de stratégie tout en conservant les apprentissages acquis",
-            "Changer de nom d'entreprise pour relancer la communication",
-          ],
-          correctIndex: 1,
-          explanation: "Un pivot conserve les apprentissages — c'est sa force. Tu ne jettes pas les interviews, l'analyse concurrentielle, la compréhension du problème. Tu changes quelque chose de précis : la cible, la solution, le canal, ou le modèle de revenus.\n\nExemples de pivots célèbres :\n• Instagram : app de check-in géolocalisé → app de partage de photos\n• Slack : outil interne d'une startup de jeux → plateforme de communication d'entreprise\n• PayPal : paiement entre PalmPilots → paiement par email\n\nDans chaque cas : le problème de fond (coordination, paiement) est resté. La solution a changé suite aux données terrain.\n\nArrêter n'est pas un échec non plus — c'est une décision rationnelle basée sur des données."
-        },
-        {
-          type: "takeaway",
-          icon: "🎯",
-          content: "\"Un proverbe akan dit : 'Ce n'est pas parce qu'on a commencé à couper un arbre qu'on doit finir de l'abattre s'il est le mauvais.' La vraie bravoure est de pivoter au bon moment — pas de persévérer aveuglément.\""
-        }
-      ]
-    },
     quiz: [
       {
         id: 1,

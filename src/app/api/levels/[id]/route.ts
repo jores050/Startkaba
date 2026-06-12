@@ -27,12 +27,12 @@ function buildLevelDetail(levelId: number, rows: ProgressRow[]) {
         title: task.title,
         description: task.description,
         xp: task.xp,
-        quizQuestionCount: task.quiz.length,
+        quizQuestionCount: task.quiz?.length ?? 0,
         status: p?.status ?? "NOT_STARTED",
         quizScore: p?.quizScore ?? null,
         xpEarned: p?.xpEarned ?? 0,
         completedAt: p?.completedAt ?? null,
-        course: task.course,
+        lesson: task.lesson,
       };
     }),
   };

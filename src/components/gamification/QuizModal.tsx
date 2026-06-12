@@ -25,7 +25,7 @@ export function QuizModal({ taskId, onClose, onCompleted }: QuizModalProps) {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<QuizResult | null>(null);
 
-  if (!task) return null;
+  if (!task || !task.quiz?.length) return null;
 
   const allAnswered = task.quiz.every((q) => answers[q.id] !== undefined);
 
@@ -65,7 +65,7 @@ export function QuizModal({ taskId, onClose, onCompleted }: QuizModalProps) {
             </p>
 
             <div className="flex flex-col gap-6">
-              {task.quiz.map((q, qi) => (
+              {task.quiz!.map((q, qi) => (
                 <fieldset key={q.id}>
                   <legend className="font-semibold text-foreground mb-3">
                     {qi + 1}. {q.question}

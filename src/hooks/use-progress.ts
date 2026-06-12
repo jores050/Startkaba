@@ -1,6 +1,6 @@
 import useSWR, { useSWRConfig } from "swr";
 import type { LevelSummary } from "@/lib/progress/compute";
-import type { Course } from "@/types";
+import type { Lesson } from "@/types";
 
 export interface TaskWithProgress {
   id: number;
@@ -12,7 +12,7 @@ export interface TaskWithProgress {
   quizScore: number | null;
   xpEarned: number;
   completedAt: string | null;
-  course?: Course;
+  lesson?: Lesson;
 }
 
 export interface LevelDetail extends LevelSummary {

@@ -83,6 +83,16 @@ body {
   animation: xp-fill 0.8s ease-out both;
 }
 
+@keyframes xp-float {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  60% { opacity: 1; transform: translateY(-24px) scale(1.2); }
+  100% { opacity: 0; transform: translateY(-44px) scale(0.9); }
+}
+
+.animate-xp-float {
+  animation: xp-float 1.4s ease-out forwards;
+}
+
 /* Transition d'entrée de page */
 @keyframes page-in {
   from {
