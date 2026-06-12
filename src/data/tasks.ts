@@ -9,7 +9,7 @@ export const tasks: Task[] = [
     description:
       "Sans jargon, sans \"révolutionnaire\". Une phrase simple que tu pourrais dire à ta grand-mère. Si elle comprend, tu es sur la bonne voie.",
     xp: 50,
-    recapLabel: "Ta proposition de valeur",
+    recapLabel: "🎯 Ta proposition de valeur",
     lesson: {
       title: "La proposition de valeur — construite brique par brique",
       exercises: [
@@ -132,6 +132,7 @@ export const tasks: Task[] = [
     description:
       "Pourquoi TU dois faire ça ? Pas \"parce que c\'est rentable\" — mais pourquoi toi, avec ton histoire, tes expériences, tu es la bonne personne pour ce projet.",
     xp: 50,
+    recapLabel: "❤️ Pourquoi ce projet te tient à cœur",
     lesson: {
       title: "Ton moteur intérieur — pourquoi toi, pourquoi maintenant",
       exercises: [
@@ -198,6 +199,7 @@ export const tasks: Task[] = [
     description:
       "Pas des fonctionnalités — des problèmes. \"Les gens perdent du temps à...\" plutôt que \"Mon app permet de...\"",
     xp: 75,
+    recapLabel: "🔍 Les problèmes que tu résous",
     lesson: {
       title: "Penser problème, pas solution — la discipline qui sauve les startups",
       exercises: [
@@ -281,6 +283,7 @@ export const tasks: Task[] = [
     title: "Décris ton client idéal",
     description: "Qui est-il, où vit-il, que fait-il ? Sois précis : âge, ville, revenus, habitudes, frustrations quotidiennes.",
     xp: 100,
+    recapLabel: "👤 Ton client idéal",
     lesson: {
       title: "Construire ta persona — mettre un visage sur ton marché",
       exercises: [
@@ -387,6 +390,7 @@ export const tasks: Task[] = [
     title: "Rédige ta Proposition de Valeur Unique",
     description: "En 2 phrases : pour qui, quel problème tu résous, pourquoi tu es différent. C\'est le cœur de tout le reste.",
     xp: 150,
+    recapLabel: "✨ Ta proposition de valeur (version finale)",
     lesson: {
       title: "L\'UVP — l\'arme de communication la plus puissante de ton business",
       exercises: [

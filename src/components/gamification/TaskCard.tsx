@@ -5,6 +5,7 @@ import type { TaskWithProgress } from "@/hooks/use-progress";
 import { QuizModal, type QuizResult } from "./QuizModal";
 import { LessonPlayer } from "./LessonPlayer";
 import { Button } from "@/components/ui/Button";
+import { ReflectionSummaryCard } from "./ReflectionSummaryCard";
 
 // ─── Notes personnelles ────────────────────────────────────────────────────────
 
@@ -65,90 +66,6 @@ function TaskNotes({ taskId }: { taskId: number }) {
   );
 }
 
-// ─── Reflection sauvegardée ────────────────────────────────────────────────────
-
-function TaskReflectionBlock({ taskId, recapLabel }: { taskId: number; recapLabel: string }) {
-  const [answer, setAnswer] = useState<string | null>(null);
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState("");
-  const [saving, setSaving] = useState(false);
-  const [saved, setSaved] = useState(false);
-
-  useEffect(() => {
-    fetch(`/api/tasks/${taskId}/reflection`)
-      .then((r) => r.json())
-      .then((d) => { if (d.answer) setAnswer(d.answer); })
-      .catch(() => {});
-  }, [taskId]);
-
-  if (!answer) return null;
-
-  async function saveEdit() {
-    if (!draft.trim()) return;
-    setSaving(true);
-    await fetch(`/api/tasks/${taskId}/reflection`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ answer: draft }),
-    });
-    setAnswer(draft);
-    setSaving(false);
-    setSaved(true);
-    setEditing(false);
-    setTimeout(() => setSaved(false), 2000);
-  }
-
-  return (
-    <div className="bg-[#EEF1FF] border border-[#0722AB]/20 rounded-2xl p-4 flex flex-col gap-3">
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <span className="text-base">🎯</span>
-          <span className="text-xs font-bold text-[#0722AB] uppercase tracking-wider">{recapLabel}</span>
-        </div>
-        {!editing && (
-          <button
-            onClick={() => { setDraft(answer); setEditing(true); }}
-            className="text-xs text-[#0722AB] hover:underline shrink-0"
-          >
-            Modifier
-          </button>
-        )}
-      </div>
-
-      {editing ? (
-        <>
-          <textarea
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            rows={4}
-            autoFocus
-            className="w-full px-3 py-2 rounded-xl border-2 border-[#0722AB]/40 bg-white text-foreground text-sm focus:border-[#0722AB] focus:outline-none resize-none leading-relaxed"
-          />
-          <div className="flex gap-2">
-            <button
-              onClick={saveEdit}
-              disabled={saving || !draft.trim()}
-              className="px-3 py-1.5 rounded-lg bg-[#0722AB] text-white text-xs font-bold hover:opacity-90 transition-opacity disabled:opacity-40"
-            >
-              {saving ? "..." : "Sauvegarder"}
-            </button>
-            <button
-              onClick={() => setEditing(false)}
-              className="px-3 py-1.5 rounded-lg border border-border text-muted text-xs hover:text-foreground transition-colors"
-            >
-              Annuler
-            </button>
-          </div>
-        </>
-      ) : (
-        <p className="text-sm font-medium text-foreground leading-relaxed">{answer}</p>
-      )}
-
-      {saved && <span className="text-green text-xs font-medium">✓ Modifié</span>}
-    </div>
-  );
-}
-
 // ─── TaskCard ──────────────────────────────────────────────────────────────────
 
 interface TaskCardProps {
@@ -165,9 +82,9 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
   const [courseOpen, setCourseOpen] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
 
-  // Détermine si la leçon contient un reflection_template
-  const hasReflectionTemplate = task.lesson?.exercises.some(
-    (ex) => ex.type === "reflection_template"
+  // Détermine si la leçon contient une reflection sauvegardable (reflection ou reflection_template)
+  const hasReflection = task.lesson?.exercises.some(
+    (ex) => ex.type === "reflection_template" || ex.type === "reflection"
   ) ?? false;
 
   async function handleStart() {
@@ -255,12 +172,12 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
 
       {error && <p className="text-error text-sm pl-11">{error}</p>}
 
-      {/* Reflection sauvegardée — affichée si tâche complétée avec reflection_template */}
-      {task.status === "COMPLETED" && hasReflectionTemplate && (
+      {/* Reflection sauvegardée — affichée si tâche complétée avec reflection ou reflection_template */}
+      {task.status === "COMPLETED" && hasReflection && (
         <div className="pl-0 sm:pl-11">
-          <TaskReflectionBlock
+          <ReflectionSummaryCard
             taskId={task.id}
-            recapLabel={task.recapLabel ?? "Ta réflexion"}
+            recapLabel={task.recapLabel ?? "📝 Ta réflexion"}
           />
         </div>
       )}
