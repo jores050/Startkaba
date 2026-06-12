@@ -87,7 +87,12 @@ export type Exercise =
   | { type: "match"; pairs: { left: string; right: string }[]; xp: number }
   | { type: "reorder"; items: string[]; xp: number }
   | { type: "scenario"; context: string; question: string; options: string[]; correctIndex: number; explanation: string; xp: number }
-  | { type: "reflection"; icon: string; question: string; placeholder: string; xp: number };
+  // Reflection simple (texte libre — format historique tâches 102-105+)
+  | { type: "reflection"; icon: string; question: string; placeholder: string; xp: number }
+  // Reflection template (assemblage de micro_inputs — format tâche 101+)
+  | { type: "reflection_template"; intro: string; template: string; variables: string[]; xp: number }
+  // Micro-input : saisie courte attachée à l'exercice précédent, crée une "brique"
+  | { type: "micro_input"; prompt: string; placeholder: string; storageKey: string; xp: number };
 
 export interface Lesson {
   title: string;

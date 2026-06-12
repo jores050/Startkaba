@@ -10,60 +10,104 @@ export const tasks: Task[] = [
       "Sans jargon, sans \"révolutionnaire\". Une phrase simple que tu pourrais dire à ta grand-mère. Si elle comprend, tu es sur la bonne voie.",
     xp: 50,
     lesson: {
-      title: "La proposition de valeur — le cœur de ton business",
+      title: "La proposition de valeur — construite brique par brique",
       exercises: [
+        // 0 — Info
         {
           type: "info",
           icon: "🎯",
           title: "Qu\'est-ce qu\'une proposition de valeur ?",
-          content: "C\'est la réponse à la question que tout client se pose : \'Pourquoi toi et pas les autres ?\' Elle explique ce que tu offres, à qui, et pourquoi c\'est différent — en 10 secondes max. Ce n\'est pas un slogan ni une liste de fonctionnalités.",
+          content: "C\'est la réponse à \"Pourquoi toi et pas les autres ?\" Elle tient en une phrase : qui est ton client, quel problème tu résous, et quel bénéfice concret tu apportes. Pas un slogan. Pas une liste de fonctionnalités. Une promesse claire.",
           xp: 5,
         },
+        // 1 — MCQ : enseigne "qui précis"
         {
           type: "mcq",
-          question: "Laquelle de ces phrases est une proposition de valeur efficace ?",
+          question: "Laquelle de ces descriptions de client est la plus précise pour une UVP ?",
           options: [
-            "Nous vendons des solutions innovantes pour les entrepreneurs africains modernes.",
-            "Je livre des repas chauds aux bureaux d\'Abidjan Plateau en 30 min pour les professionnels qui n\'ont pas le temps de sortir déjeuner.",
-            "Notre appli utilise l\'IA pour optimiser votre expérience quotidienne.",
+            "Les gens qui ont besoin d\'un service rapide.",
+            "Les jeunes entrepreneurs africains.",
+            "Les employés de bureau d\'Abidjan Plateau qui déjeunent sur place faute de temps.",
+          ],
+          correctIndex: 2,
+          explanation: "La 3ème cible une situation précise : lieu (Abidjan Plateau), statut (employés de bureau), contrainte réelle (déjeuner sur place). Plus c\'est précis, plus ton client se reconnaît — et plus il se dit \"c\'est fait pour moi\".",
+          xp: 8,
+        },
+        // 2 — Micro-input : brique "qui"
+        {
+          type: "micro_input",
+          prompt: "Et ton client à toi — décris-le aussi précisément que l\'exemple : qui est-il, où est-il, dans quelle situation ?",
+          placeholder: "Ex : les mamans de Dakar Plateau qui travaillent et n\'ont pas le temps de cuisiner le soir...",
+          storageKey: "qui",
+          xp: 2,
+        },
+        // 3 — Scénario : enseigne "vrai problème vs symptôme"
+        {
+          type: "scenario",
+          context: "Aïcha veut lancer une appli de livraison de repas. Elle pense que le problème de ses clients est : \"Il n\'y a pas d\'appli pratique pour commander à manger.\" Mais après avoir parlé à 10 collègues, elle entend surtout : \"Je perds presque une heure chaque midi à chercher où manger et à faire la queue.\"",
+          question: "Quel est le VRAI problème qu\'Aïcha doit résoudre ?",
+          options: [
+            "L\'absence d\'une bonne application mobile.",
+            "Perdre 45-60 minutes chaque midi à cause de la restauration.",
+            "Le manque de restaurants près des bureaux.",
           ],
           correctIndex: 1,
-          explanation: "La 2ème nomme qui (professionnels sans temps), quoi (repas chauds), où (Abidjan Plateau) et la promesse concrète (30 min). Les deux autres sont vagues — \"innovant\" et \"IA\" ne disent rien sur ce que le client gagne concrètement.",
-          xp: 10,
+          explanation: "\"Pas d\'appli\" est le symptôme — la solution qu\'Aïcha imagine. Le vrai problème, c\'est le temps perdu. Une bonne UVP nomme le problème réel du client, pas l\'absence de ta solution. Si tu résous le temps perdu, l\'appli n\'est qu\'un moyen parmi d\'autres.",
+          xp: 8,
         },
+        // 4 — Micro-input : brique "probleme"
         {
-          type: "true_false",
-          statement: "Une bonne proposition de valeur liste toutes les fonctionnalités de ton produit.",
-          isTrue: false,
-          explanation: "Faux. Une UVP parle du bénéfice concret pour le client, pas de fonctionnalités. \'Livraison en 30 min\' (bénéfice) vaut mille fois mieux que \'application avec tracking GPS en temps réel\' (fonctionnalité). Le client achète un résultat, pas une technologie.",
-          xp: 5,
+          type: "micro_input",
+          prompt: "Quel est le VRAI problème que vit ton client — pas \"il manque ma solution\", mais la douleur concrète au quotidien ?",
+          placeholder: "Ex : passe 2h par semaine à chercher un artisan fiable et se fait souvent escroquer...",
+          storageKey: "probleme",
+          xp: 2,
         },
+        // 5 — Info : les 4 caractéristiques
         {
           type: "info",
           icon: "✏️",
           title: "Les 4 caractéristiques d\'une UVP puissante",
-          content: "Claire : ta grand-mère comprend en 10 secondes. Spécifique : s\'adresse à une cible précise, pas à tout le monde. Différenciante : explique en quoi tu te distingues. Orientée bénéfice : parle du résultat pour le client, pas de ta technologie.",
+          content: "Claire : ta grand-mère comprend en 10 secondes. Spécifique : s\'adresse à une cible précise, pas à tout le monde. Différenciante : explique en quoi tu te distingues des alternatives. Orientée bénéfice : parle du résultat pour le client, pas de ta technologie.",
           xp: 5,
         },
+        // 6 — Scénario : enseigne "bénéfice unique concret + différenciant"
         {
           type: "scenario",
-          context: "Kofi à Lomé veut lancer un service de réparation de smartphones. Il hésite entre trois formulations de son UVP.",
-          question: "Laquelle est la meilleure proposition de valeur ?",
+          context: "Kofi à Lomé veut lancer un service de réparation de smartphones. Il hésite entre trois formulations.",
+          question: "Laquelle formule le bénéfice de façon unique, concrète ET différenciante ?",
           options: [
-            "Kofi Tech : services professionnels de réparation avec techniciens certifiés et matériel de qualité.",
-            "Ton smartphone réparé en 2h à Lomé, garanti 6 mois — ou remboursé.",
-            "Réparation rapide et fiable de tous types d\'appareils électroniques.",
+            "Kofi Tech : réparation professionnelle avec techniciens certifiés.",
+            "Réparation rapide et fiable de tous types d\'appareils à Lomé.",
+            "Ton smartphone réparé en 2h — garanti 6 mois ou remboursé.",
           ],
-          correctIndex: 1,
-          explanation: "La 2ème gagne : délai précis (2h), lieu (Lomé), garantie béton (6 mois), promesse forte (remboursé). C\'est mémorable et vérifiable. Les deux autres sont trop génériques pour convaincre un client de choisir Kofi plutôt qu\'un concurrent.",
-          xp: 15,
+          correctIndex: 2,
+          explanation: "La 3ème gagne : délai précis (2h), garantie béton (6 mois), engagement fort (remboursé). C\'est mémorable et vérifiable. \"Professionnel\" et \"rapide\" sont des mots que tout concurrent peut copier — une promesse chiffrée, non.",
+          xp: 8,
         },
+        // 7 — Micro-input : brique "benefice"
         {
-          type: "reflection",
-          icon: "🤔",
-          question: "Écris ta proposition de valeur en utilisant la formule",
-          placeholder: "Modèle : \"Pour [qui précisément], [ton service] [bénéfice concret, si possible chiffré], contrairement à [ce que ta cible fait aujourd\'hui].\"\n\nExemple : \"Pour les chauffeurs de taxi-moto d\'Abidjan, RidePro augmente leurs courses de 40% par semaine grâce à une file d\'attente automatique, contrairement à l\'attente passive au bord de la route.\"\n\nTa version :",
-          xp: 10,
+          type: "micro_input",
+          prompt: "Quel est TON bénéfice unique — concret, si possible chiffré, et difficile à copier pour un concurrent ?",
+          placeholder: "Ex : livrée en 20 min chrono dans ton quartier, garantie fraîcheur ou on recommence...",
+          storageKey: "benefice",
+          xp: 2,
+        },
+        // 8 — True/false
+        {
+          type: "true_false",
+          statement: "Une bonne UVP liste toutes les fonctionnalités de ton produit pour montrer sa richesse.",
+          isTrue: false,
+          explanation: "Faux. Une UVP parle d\'un seul bénéfice central, vu du côté client. \"Livraison en 30 min\" (bénéfice) convainc infiniment mieux que \"application avec tracking GPS, notifications push et paiement Mobile Money intégré\" (fonctionnalités). Moins c\'est plus.",
+          xp: 5,
+        },
+        // 9 — Reflection template : assemblage final
+        {
+          type: "reflection_template",
+          intro: "Voilà — tu as déjà tout construit ! Tes trois briques forment maintenant ta proposition de valeur. Relis, ajuste les mots si besoin, et c\'est ta vraie UVP.",
+          template: "Pour {qui}, qui {probleme}, mon idée apporte {benefice}.",
+          variables: ["qui", "probleme", "benefice"],
+          xp: 5,
         },
       ],
     },

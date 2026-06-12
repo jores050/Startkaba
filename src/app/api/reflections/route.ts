@@ -52,13 +52,14 @@ function enrichReflections(rows: { taskId: number; levelId: number; exerciseInde
     const task = getTaskById(r.taskId);
     if (!task?.lesson) return [];
     const ex = task.lesson.exercises[r.exerciseIndex];
-    if (!ex || ex.type !== "reflection") return [];
+    if (!ex || (ex.type !== "reflection" && ex.type !== "reflection_template")) return [];
+    const question = ex.type === "reflection" ? ex.question : ex.intro;
     return [{
       taskId: r.taskId,
       taskTitle: task.title,
       levelId: r.levelId,
       exerciseIndex: r.exerciseIndex,
-      question: ex.question,
+      question,
       answer: r.answer,
       createdAt: r.createdAt,
     }];

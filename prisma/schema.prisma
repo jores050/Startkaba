@@ -28,6 +28,7 @@ model UserProfile {
   coachMessages CoachMessage[]
   notifications Notification[]
   reflections   TaskReflection[]
+  microInputs   UserMicroInput[]
 
   @@map("user_profiles")
 }
@@ -136,4 +137,19 @@ model TaskReflection {
 
   @@unique([userId, taskId, exerciseIndex])
   @@map("task_reflections")
+}
+
+model UserMicroInput {
+  id         String   @id @default(uuid())
+  userId     String
+  taskId     Int
+  storageKey String
+  value      String   @db.Text
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@unique([userId, taskId, storageKey])
+  @@map("user_micro_inputs")
 }

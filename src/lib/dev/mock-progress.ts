@@ -87,6 +87,34 @@ export function recordMockLessonComplete(
   return entry;
 }
 
+// ─── Mock micro-inputs ────────────────────────────────────────────────────────
+
+export interface MicroInputEntry {
+  userId: string;
+  taskId: number;
+  storageKey: string;
+  value: string;
+}
+
+const globalForMicro = globalThis as unknown as {
+  mockMicroInputs?: MicroInputEntry[];
+};
+export const mockMicroInputs: MicroInputEntry[] =
+  globalForMicro.mockMicroInputs ?? [];
+globalForMicro.mockMicroInputs = mockMicroInputs;
+
+export function upsertMockMicroInput(entry: MicroInputEntry): void {
+  const i = mockMicroInputs.findIndex(
+    m => m.userId === entry.userId && m.taskId === entry.taskId && m.storageKey === entry.storageKey
+  );
+  if (i >= 0) mockMicroInputs[i] = entry;
+  else mockMicroInputs.push(entry);
+}
+
+export function getMockMicroInputs(userId: string, taskId: number): MicroInputEntry[] {
+  return mockMicroInputs.filter(m => m.userId === userId && m.taskId === taskId);
+}
+
 // ─── Mock reflections ─────────────────────────────────────────────────────────
 
 export interface ReflectionEntry {

@@ -75,6 +75,8 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
   const [shuffledMatchRight, setShuffledMatchRight] = useState<string[]>([]);
   // Accumulate reflection answers: exerciseIndex → answer text
   const reflectionsRef = useRef<Map<number, string>>(new Map());
+  // Accumulate micro_input answers: storageKey → value
+  const microInputsRef = useRef<Map<string, string>>(new Map());
 
   const exercise = lesson.exercises[idx];
   const isLast = idx === lesson.exercises.length - 1;
@@ -94,6 +96,13 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
     }
     if (exercise.type === "match") {
       setShuffledMatchRight(shuffleArray(exercise.pairs.map(p => p.right)));
+    }
+    if (exercise.type === "reflection_template") {
+      const assembled = exercise.template.replace(
+        /\{(\w+)\}/g,
+        (_, key) => microInputsRef.current.get(key) ?? `[${key}]`
+      );
+      setTextInputs([assembled]);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idx]);
@@ -148,7 +157,31 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
     showXpPopup(xp);
     setLastCorrect(true);
     setKabaMsg("Bien réfléchi ! Chaque réflexion renforce ta vision. 💭");
-    // Persist reflection answer before moving on
+    const answer = (textInputs[0] ?? "").trim();
+    if (answer) reflectionsRef.current.set(idx, answer);
+    setPhase("feedback");
+  }
+
+  function handleMicroInputSubmit() {
+    if (exercise.type !== "micro_input") return;
+    const value = (textInputs[0] ?? "").trim();
+    if (!value) return;
+    microInputsRef.current.set(exercise.storageKey, value);
+    const xp = exercise.xp;
+    setTotalXp(t => t + xp);
+    showXpPopup(xp);
+    setLastCorrect(true);
+    setKabaMsg("Brique ajoutée ! ✏️ On continue à construire.");
+    setPhase("feedback");
+  }
+
+  function handleReflectionTemplateContinue() {
+    if (exercise.type !== "reflection_template") return;
+    const xp = exercise.xp;
+    setTotalXp(t => t + xp);
+    showXpPopup(xp);
+    setLastCorrect(true);
+    setKabaMsg("Ta proposition de valeur est posée. 🔥");
     const answer = (textInputs[0] ?? "").trim();
     if (answer) reflectionsRef.current.set(idx, answer);
     setPhase("feedback");
@@ -235,11 +268,14 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
     const reflections = Array.from(reflectionsRef.current.entries()).map(
       ([exerciseIndex, answer]) => ({ exerciseIndex, answer })
     );
+    const microInputs = Array.from(microInputsRef.current.entries()).map(
+      ([storageKey, value]) => ({ storageKey, value })
+    );
     try {
       const res = await fetch(`/api/tasks/${taskId}/complete-lesson`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ xpEarned: totalXp, reflections }),
+        body: JSON.stringify({ xpEarned: totalXp, reflections, microInputs }),
       });
       const data = await res.json().catch(() => null);
       if (!res.ok) {
@@ -305,12 +341,16 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
               ))}
             </div>
           </div>
-          <div className="flex gap-1">
-            {lesson.exercises.map((_, i) => (
+          <div className="flex gap-1 items-center">
+            {lesson.exercises.map((ex, i) => (
               <div
                 key={i}
-                className={`h-2 flex-1 rounded-full transition-all duration-300 ${
-                  i < idx ? "bg-primary" : i === idx ? "bg-primary/50" : "bg-border"
+                className={`rounded-full transition-all duration-300 ${
+                  isMicroInput(ex) ? "flex-[0.4] h-1.5" : "flex-1 h-2"
+                } ${
+                  i < idx ? (isMicroInput(ex) ? "bg-[#0722AB]/60" : "bg-primary") :
+                  i === idx ? (isMicroInput(ex) ? "bg-[#0722AB]/30" : "bg-primary/50") :
+                  "bg-border"
                 }`}
               />
             ))}
@@ -360,7 +400,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
                 }`}>
                   {phase === "dead" ? "Plus de cœurs !" : kabaMsg}
                 </p>
-                {!lastCorrect && phase !== "dead" && exercise.type !== "info" && exercise.type !== "reflection" && (
+                {!lastCorrect && phase !== "dead" && exercise.type !== "info" && exercise.type !== "reflection" && exercise.type !== "reflection_template" && exercise.type !== "micro_input" && (
                   <p className="text-foreground text-sm leading-relaxed">{getExplanation(exercise)}</p>
                 )}
                 {phase === "dead" && (
@@ -394,6 +434,8 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
               onFillBlankSubmit={handleFillBlankSubmit}
               onReorderCheck={handleReorderCheck}
               onReflectionContinue={handleReflectionContinue}
+              onMicroInputSubmit={handleMicroInputSubmit}
+              onReflectionTemplateContinue={handleReflectionTemplateContinue}
             />
           </div>
         )}
@@ -730,8 +772,60 @@ function ExerciseRenderer(props: ExerciseRendererProps) {
         />
         <p className="text-xs text-muted text-center">
           {(props.textInputs[0] ?? "").trim().length === 0
-            ? "Écris ta réflexion pour continuer (+{xp} XP)".replace("{xp}", String(exercise.xp))
+            ? `Écris ta réflexion pour continuer (+${exercise.xp} XP)`
             : "✓ Prêt à continuer"}
+        </p>
+      </div>
+    );
+  }
+
+  if (exercise.type === "micro_input") {
+    return (
+      <div className="flex flex-col gap-3 mt-2">
+        <div className="bg-[#EEF1FF] border border-[#0722AB]/20 rounded-2xl p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-lg">✏️</span>
+            <span className="text-xs font-bold text-[#0722AB] uppercase tracking-wider">Ta brique</span>
+          </div>
+          <p className="font-display text-sm font-bold text-foreground leading-snug mb-3">{exercise.prompt}</p>
+          <input
+            type="text"
+            value={props.textInputs[0] ?? ""}
+            onChange={e => props.setTextInputs([e.target.value])}
+            disabled={answered}
+            placeholder={exercise.placeholder}
+            className="w-full px-3 py-2.5 rounded-xl border border-[#0722AB]/30 bg-white text-foreground text-sm placeholder:text-muted/50 focus:border-[#0722AB] focus:outline-none transition-colors"
+          />
+        </div>
+        {answered && (
+          <div className="bg-[#EEF1FF] rounded-xl px-4 py-2 text-sm text-[#0722AB] font-medium">
+            ✓ Brique enregistrée : &ldquo;{props.textInputs[0]}&rdquo;
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (exercise.type === "reflection_template") {
+    const value = props.textInputs[0] ?? "";
+    return (
+      <div className="flex flex-col gap-4 mt-2">
+        <div className="bg-[#EEF1FF] border border-[#0722AB]/20 rounded-2xl p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-lg">🔥</span>
+            <span className="text-xs font-bold text-[#0722AB] uppercase tracking-wider">Assemblage final</span>
+          </div>
+          <p className="text-sm text-foreground leading-relaxed">{exercise.intro}</p>
+        </div>
+        <textarea
+          value={value}
+          onChange={e => props.setTextInputs([e.target.value])}
+          disabled={answered}
+          rows={5}
+          className="w-full px-4 py-3 rounded-xl border-2 border-[#0722AB]/40 bg-[#EEF1FF]/30 text-foreground text-sm font-medium focus:border-[#0722AB] focus:outline-none transition-colors resize-none leading-relaxed"
+        />
+        <p className="text-xs text-muted text-center">
+          {value.trim().length === 0 ? "Le texte sera pré-rempli avec tes briques" : "✓ Édite si tu veux peaufiner"}
         </p>
       </div>
     );
@@ -746,6 +840,7 @@ function ActionBar({
   exercise, selectedOption, textInputs, reorderChecked,
   onInfoContinue, onMcqSubmit, onFillBlankSubmit,
   onReorderCheck, onReflectionContinue,
+  onMicroInputSubmit, onReflectionTemplateContinue,
 }: {
   exercise: Exercise;
   selectedOption: number | null;
@@ -756,6 +851,8 @@ function ActionBar({
   onFillBlankSubmit: () => void;
   onReorderCheck: () => void;
   onReflectionContinue: () => void;
+  onMicroInputSubmit: () => void;
+  onReflectionTemplateContinue: () => void;
 }) {
   if (exercise.type === "info") {
     return (
@@ -774,6 +871,32 @@ function ActionBar({
         className="w-full py-3 rounded-xl font-bold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-cta text-white hover:opacity-90"
       >
         {hasText ? "Continuer →" : "Écris ta réflexion d'abord"}
+      </button>
+    );
+  }
+
+  if (exercise.type === "micro_input") {
+    const hasText = (textInputs[0] ?? "").trim().length > 0;
+    return (
+      <button
+        disabled={!hasText}
+        onClick={onMicroInputSubmit}
+        className="w-full py-3 rounded-xl font-bold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-[#0722AB] text-white hover:opacity-90"
+      >
+        {hasText ? "Valider cette brique →" : "Écris ta réponse d'abord"}
+      </button>
+    );
+  }
+
+  if (exercise.type === "reflection_template") {
+    const hasText = (textInputs[0] ?? "").trim().length > 0;
+    return (
+      <button
+        disabled={!hasText}
+        onClick={onReflectionTemplateContinue}
+        className="w-full py-3 rounded-xl font-bold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-cta text-white hover:opacity-90"
+      >
+        {hasText ? "Valider ma proposition de valeur →" : "Le template sera pré-rempli"}
       </button>
     );
   }
@@ -838,6 +961,12 @@ function getExplanation(exercise: Exercise): string {
     return `Les bonnes réponses : ${exercise.blanks.join(", ")}`;
   }
   return "";
+}
+
+// La barre de progression doit refléter les micro_inputs avec un style différent.
+// (utilisé dans le header — les segments micro_input sont plus fins)
+function isMicroInput(exercise: Exercise): boolean {
+  return exercise.type === "micro_input";
 }
 
 function shuffleArray<T>(arr: T[]): T[] {

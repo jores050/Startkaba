@@ -8,7 +8,7 @@ export interface RecapCard {
 
 export const LEVEL_RECAP_CARDS: Record<number, RecapCard[]> = {
   1: [
-    { icon: "🎯", title: "Ta proposition de valeur", taskId: 101, exerciseIndex: 5 },
+    { icon: "🎯", title: "Ta proposition de valeur", taskId: 101, exerciseIndex: 9 },
     { icon: "❤️", title: "Pourquoi ce projet te tient à cœur", taskId: 102, exerciseIndex: 5 },
     { icon: "🔍", title: "Les problèmes que tu résous", taskId: 103, exerciseIndex: 6 },
     { icon: "👤", title: "Ton client idéal", taskId: 104, exerciseIndex: 6 },
