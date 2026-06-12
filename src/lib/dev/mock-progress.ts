@@ -145,6 +145,15 @@ export function getMockReflections(userId: string): ReflectionEntry[] {
   return mockReflections.filter(r => r.userId === userId);
 }
 
+export function getMockTaskReflection(userId: string, taskId: number): ReflectionEntry | undefined {
+  return mockReflections.find(r => r.userId === userId && r.taskId === taskId);
+}
+
+export function updateMockReflection(userId: string, taskId: number, answer: string): void {
+  const i = mockReflections.findIndex(r => r.userId === userId && r.taskId === taskId);
+  if (i >= 0) mockReflections[i] = { ...mockReflections[i], answer };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function startMockTask(taskId: number, levelId: number): ProgressEntry {

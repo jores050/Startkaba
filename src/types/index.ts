@@ -109,6 +109,7 @@ export interface Task {
   title: string;
   description: string;
   xp: number;
+  recapLabel?: string;    // ex: "Ta proposition de valeur" — affiché sur la card après complétion
   quiz?: QuizQuestion[];  // ancien format (niveaux 2-8 en attente de migration)
   lesson?: Lesson;        // format Duolingo
 }

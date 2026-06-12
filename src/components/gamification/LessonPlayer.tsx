@@ -77,6 +77,8 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
   const reflectionsRef = useRef<Map<number, string>>(new Map());
   // Accumulate micro_input answers: storageKey → value
   const microInputsRef = useRef<Map<string, string>>(new Map());
+  // Ref-based XP tracker — source of truth pour l'API (évite stale closure sur totalXp state)
+  const earnedXpRef = useRef(0);
   // self_check checklist state: checkboxId → checked
   const [checklistState, setChecklistState] = useState<Record<string, boolean>>({});
 
@@ -132,6 +134,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
   }
 
   function handleCorrect(xp: number) {
+    earnedXpRef.current += xp;
     setTotalXp(t => t + xp);
     showXpPopup(xp);
     setLastCorrect(true);
@@ -149,6 +152,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
 
   function handleInfoContinue() {
     const xp = (exercise as { xp: number }).xp;
+    earnedXpRef.current += xp;
     setTotalXp(t => t + xp);
     showXpPopup(xp);
     setLastCorrect(true);
@@ -158,6 +162,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
 
   function handleReflectionContinue() {
     const xp = (exercise as { xp: number }).xp;
+    earnedXpRef.current += xp;
     setTotalXp(t => t + xp);
     showXpPopup(xp);
     setLastCorrect(true);
@@ -173,6 +178,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
     if (!value) return;
     microInputsRef.current.set(exercise.storageKey, value);
     const xp = exercise.xp;
+    earnedXpRef.current += xp;
     setTotalXp(t => t + xp);
     showXpPopup(xp);
     setLastCorrect(true);
@@ -195,6 +201,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
   function handleReflectionTemplateContinue() {
     if (exercise.type !== "reflection_template") return;
     const xp = exercise.xp;
+    earnedXpRef.current += xp;
     setTotalXp(t => t + xp);
     showXpPopup(xp);
     setLastCorrect(true);
@@ -268,6 +275,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
       setIdx(0);
       setHearts(MAX_HEARTS);
       setTotalXp(0);
+      earnedXpRef.current = 0;
       setPhase("answering");
       return;
     }
@@ -292,7 +300,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
       const res = await fetch(`/api/tasks/${taskId}/complete-lesson`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ xpEarned: totalXp, reflections, microInputs }),
+        body: JSON.stringify({ xpEarned: earnedXpRef.current, reflections, microInputs }),
       });
       const data = await res.json().catch(() => null);
       if (!res.ok) {
@@ -306,7 +314,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
       setSubmitting(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [taskId, totalXp]);
+  }, [taskId]);
 
   // ─── Rendu ──────────────────────────────────────────────────────────────────
 

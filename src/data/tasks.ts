@@ -9,6 +9,7 @@ export const tasks: Task[] = [
     description:
       "Sans jargon, sans \"révolutionnaire\". Une phrase simple que tu pourrais dire à ta grand-mère. Si elle comprend, tu es sur la bonne voie.",
     xp: 50,
+    recapLabel: "Ta proposition de valeur",
     lesson: {
       title: "La proposition de valeur — construite brique par brique",
       exercises: [
