@@ -10,6 +10,7 @@ import { getLevelById } from "@/data/levels";
 import { LEVEL_KABA_MESSAGES, LEVEL_RECAP_CARDS } from "@/data/level-meta";
 import { Confetti } from "@/components/gamification/Confetti";
 import type { ReflectionWithMeta } from "@/app/api/reflections/route";
+import type { StaticProduct } from "@/data/products";
 
 // ─── XP Counter animation ─────────────────────────────────────────────────────
 
@@ -70,6 +71,80 @@ function ReflectionCard({ icon, title, answer, index }: ReflectionCardProps) {
 
 // ─── Main page ────────────────────────────────────────────────────────────────
 
+// ─── Cross-sell card ──────────────────────────────────────────────────────────
+
+function CrossSellCard({ product }: { product: StaticProduct & { isPurchased: boolean } }) {
+  const [purchasing, setPurchasing] = useState(false);
+  const [purchased, setPurchased] = useState(product.isPurchased);
+  const [showModal, setShowModal] = useState(false);
+
+  async function confirm() {
+    setPurchasing(true);
+    try {
+      const res = await fetch(`/api/products/${product.id}/purchase`, { method: "POST" });
+      if (res.ok) {
+        setPurchased(true);
+        setShowModal(false);
+      }
+    } finally {
+      setPurchasing(false);
+    }
+  }
+
+  if (purchased) return null;
+
+  return (
+    <>
+      <div className="bg-gradient-to-r from-[#FFF4EC] to-[#FFF9F5] border border-[#F77E2D]/30 rounded-2xl p-5 flex gap-4 items-center">
+        <div className="w-14 h-14 rounded-2xl bg-[#F77E2D]/10 flex items-center justify-center text-3xl shrink-0">
+          {["🎯", "📐", "🏗️", "🚀", "📣", "⚖️", "💰", "🎊"][(product.levelTag ?? 1) - 1] ?? "📘"}
+        </div>
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-bold text-[#F77E2D] uppercase tracking-wide mb-1">
+            Va plus loin
+          </p>
+          <p className="font-bold text-[#0A0E2A] text-sm leading-snug">{product.title}</p>
+          <p className="text-[#8892C8] text-xs mt-0.5">
+            Tu as compris le concept. Approfondis avec cette formation exclusive.
+          </p>
+        </div>
+        <button
+          onClick={() => setShowModal(true)}
+          className="shrink-0 px-4 py-2 rounded-xl bg-[#F77E2D] text-white text-xs font-bold hover:opacity-90 transition-opacity"
+        >
+          {product.priceCFA.toLocaleString("fr-FR")} FCFA
+        </button>
+      </div>
+
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" onClick={() => setShowModal(false)}>
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="px-2 py-0.5 rounded-full bg-[#FFF4EC] text-[#F77E2D] text-xs font-bold">Mode test</span>
+              <span className="text-xs text-[#8892C8]">Paiement simulé</span>
+            </div>
+            <h3 className="font-display text-lg font-bold text-[#0A0E2A] mb-2">{product.title}</h3>
+            <div className="bg-[#F8F9FF] rounded-xl p-3 mb-4 flex justify-between items-center">
+              <span className="text-[#4A5280] text-sm">Montant</span>
+              <span className="font-display font-extrabold text-[#0722AB] text-xl">
+                {product.priceCFA.toLocaleString("fr-FR")} FCFA
+              </span>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={() => setShowModal(false)} className="flex-1 py-2.5 rounded-xl border border-[#E8EAF0] text-[#8892C8] text-sm hover:text-[#0A0E2A]">
+                Annuler
+              </button>
+              <button onClick={confirm} disabled={purchasing} className="flex-1 py-2.5 rounded-xl bg-[#F77E2D] text-white text-sm font-bold hover:opacity-90 disabled:opacity-50">
+                {purchasing ? "..." : "Confirmer →"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 export default function RecapPage() {
@@ -79,6 +154,10 @@ export default function RecapPage() {
   const [confetti, setConfetti] = useState(true);
 
   const { data: reflections } = useSWR<ReflectionWithMeta[]>("/api/reflections", fetcher);
+  const { data: productsData } = useSWR<{ products: (StaticProduct & { isPurchased: boolean })[] }>(
+    "/api/products",
+    fetcher
+  );
 
   const levelData = getLevelById(levelId);
   const nextLevelId = levelId < 8 ? levelId + 1 : null;
@@ -89,6 +168,11 @@ export default function RecapPage() {
 
   const recapCards = LEVEL_RECAP_CARDS[levelId] ?? [];
   const kabaMessage = LEVEL_KABA_MESSAGES[levelId] ?? `Tu viens de compléter le Niveau ${levelId}. Continue sur cette lancée !`;
+
+  // Formation cross-sell pour ce niveau
+  const crossSellProduct = productsData?.products.find(
+    (p) => p.category === "FORMATION_NIVEAU" && p.levelTag === levelId
+  ) ?? null;
 
   // Build reflection lookup: taskId → answer
   const reflectionByTask = new Map<number, string>();
@@ -198,6 +282,13 @@ export default function RecapPage() {
                 />
               ))}
             </div>
+          </section>
+        )}
+
+        {/* ── Cross-sell formation ───────────────────────────────────── */}
+        {crossSellProduct && !crossSellProduct.isPurchased && (
+          <section className="mb-8">
+            <CrossSellCard product={crossSellProduct} />
           </section>
         )}
 

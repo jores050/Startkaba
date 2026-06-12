@@ -19,9 +19,12 @@ model UserProfile {
   currentLevelId     Int                @default(1)
   totalXp            Int                @default(0)
   subscriptionStatus SubscriptionStatus @default(FREE)
-  isAdmin            Boolean            @default(false)
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
+  isAdmin                Boolean                 @default(false)
+  role                   UserRole                @default(ENTREPRENEUR)
+  payoutInfo             Json?
+  coachApplicationStatus CoachApplicationStatus?
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
 
   progress      UserProgress[]
   earnedBadges  UserBadge[]
@@ -29,6 +32,9 @@ model UserProfile {
   notifications Notification[]
   reflections   TaskReflection[]
   microInputs   UserMicroInput[]
+  products      Product[]       @relation("CoachProducts")
+  purchases     Purchase[]
+  payouts       Payout[]
 
   @@map("user_profiles")
 }
@@ -45,6 +51,18 @@ enum City {
 enum SubscriptionStatus {
   FREE
   PREMIUM
+}
+
+enum UserRole {
+  ENTREPRENEUR
+  COACH
+  ADMIN
+}
+
+enum CoachApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 model UserProgress {
@@ -152,4 +170,87 @@ model UserMicroInput {
 
   @@unique([userId, taskId, storageKey])
   @@map("user_micro_inputs")
+}
+
+// ─── Marketplace ──────────────────────────────────────────────────────────────
+
+enum ProductCategory {
+  TEMPLATE_GRATUIT
+  FORMATION_NIVEAU
+  FORMATION_COACH
+}
+
+enum OwnerType {
+  STARTKABA
+  COACH
+}
+
+enum ProductStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  MOCK_PAID
+}
+
+enum PayoutStatus {
+  PENDING
+  PAID
+}
+
+model Product {
+  id             String          @id @default(uuid())
+  ownerType      OwnerType
+  coachId        String?
+  title          String
+  description    String          @db.Text
+  category       ProductCategory
+  priceCFA       Int             @default(0)
+  levelTag       Int?
+  fileUrl        String
+  coverImageUrl  String?
+  status         ProductStatus   @default(DRAFT)
+  downloadsCount Int             @default(0)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  coach     UserProfile? @relation("CoachProducts", fields: [coachId], references: [id])
+  purchases Purchase[]
+
+  @@map("products")
+}
+
+model Purchase {
+  id             String        @id @default(uuid())
+  userId         String
+  productId      String
+  priceCFA       Int
+  commissionCFA  Int           @default(0)
+  coachAmountCFA Int           @default(0)
+  paymentStatus  PaymentStatus @default(PENDING)
+  paidAt         DateTime?
+  createdAt      DateTime      @default(now())
+
+  user    UserProfile @relation(fields: [userId], references: [id])
+  product Product     @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
+  @@map("purchases")
+}
+
+model Payout {
+  id        String       @id @default(uuid())
+  coachId   String
+  amountCFA Int
+  period    String
+  status    PayoutStatus @default(PENDING)
+  paidAt    DateTime?
+  createdAt DateTime     @default(now())
+
+  coach UserProfile @relation(fields: [coachId], references: [id])
+
+  @@map("payouts")
 }

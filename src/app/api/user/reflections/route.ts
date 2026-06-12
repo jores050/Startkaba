@@ -4,11 +4,12 @@ import { prisma } from "@/lib/prisma/client";
 import { tasks } from "@/data/tasks";
 import { levels } from "@/data/levels";
 import { mockProgress, getMockTaskReflection } from "@/lib/dev/mock-progress";
+import type { ProjetSection, ProjetResponse } from "@/lib/projet-types";
 
 const isDev = process.env.NODE_ENV !== "production";
 
-// Tasks that have a reflection_template exercise
-export const REFLECTION_TASKS = tasks
+// Tasks that have a reflection_template exercise (internal — not exported)
+const REFLECTION_TASKS = tasks
   .filter((t) => t.lesson?.exercises.some((e) => e.type === "reflection_template"))
   .map((t) => ({
     taskId: t.id,
@@ -16,27 +17,6 @@ export const REFLECTION_TASKS = tasks
     taskTitle: t.title,
     recapLabel: t.recapLabel ?? "📝 Ta réflexion",
   }));
-
-export interface ProjetReflection {
-  taskId: number;
-  taskTitle: string;
-  recapLabel: string;
-  isCompleted: boolean;
-  answer: string | null;
-}
-
-export interface ProjetSection {
-  levelId: number;
-  levelTitle: string;
-  isUnlocked: boolean;
-  reflections: ProjetReflection[];
-}
-
-export interface ProjetResponse {
-  sections: ProjetSection[];
-  totalSections: number;
-  completedCount: number;
-}
 
 export async function GET() {
   const supabase = await createClient();
@@ -95,7 +75,6 @@ export async function GET() {
     }
   }
 
-  // Group reflection tasks by levelId
   const byLevel = new Map<number, typeof REFLECTION_TASKS>();
   for (const t of REFLECTION_TASKS) {
     const arr = byLevel.get(t.levelId) ?? [];

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import type { ProjetResponse, ProjetSection, ProjetReflection } from "@/app/api/user/reflections/route";
+import type { ProjetResponse, ProjetSection, ProjetReflection } from "@/lib/projet-types";
 
 // ─── Editable reflection card (completed) ─────────────────────────────────────
 
