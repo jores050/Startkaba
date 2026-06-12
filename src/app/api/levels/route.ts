@@ -6,25 +6,22 @@ import { mockProgress } from "@/lib/dev/mock-progress";
 
 const isDev = process.env.NODE_ENV !== "production";
 
-function mockRows(): ProgressRow[] {
-  return Array.from(mockProgress.values());
-}
-
 // GET — les 8 niveaux avec la progression de l'utilisateur.
 export async function GET() {
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-    if (!user) {
-      if (isDev) {
-        return NextResponse.json({ levels: computeLevelSummaries(mockRows()) });
-      }
-      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  if (!user) {
+    if (isDev) {
+      const rows: ProgressRow[] = Array.from(mockProgress.values());
+      return NextResponse.json({ levels: computeLevelSummaries(rows) });
     }
+    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  }
 
+  try {
     const rows = await prisma.userProgress.findMany({
       where: { userId: user.id },
       select: {
@@ -36,12 +33,9 @@ export async function GET() {
         completedAt: true,
       },
     });
-
     return NextResponse.json({ levels: computeLevelSummaries(rows) });
   } catch (e) {
-    if (isDev) {
-      return NextResponse.json({ levels: computeLevelSummaries(mockRows()) });
-    }
-    throw e;
+    console.error("[/api/levels GET] erreur:", e);
+    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }

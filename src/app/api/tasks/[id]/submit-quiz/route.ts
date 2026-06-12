@@ -68,24 +68,12 @@ export async function POST(
   const passed = score >= QUIZ_PASS_THRESHOLD;
   const xpEarned = calculateXp(taskId, score);
 
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-    if (!user) {
-      if (isDev) return NextResponse.json(submitMock(taskId, task, passed, score, xpEarned));
-      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
-    }
-
-    return NextResponse.json(
-      await submitReal(user.id, taskId, task, passed, score, xpEarned)
-    );
-  } catch (e) {
-    if (e instanceof QuizError) {
-      return NextResponse.json({ error: e.message, retryAfterSeconds: e.retryAfterSeconds }, { status: e.status });
-    }
+  if (!user) {
     if (isDev) {
       try {
         return NextResponse.json(submitMock(taskId, task, passed, score, xpEarned));
@@ -96,7 +84,19 @@ export async function POST(
         throw me;
       }
     }
-    throw e;
+    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  }
+
+  try {
+    return NextResponse.json(
+      await submitReal(user.id, taskId, task, passed, score, xpEarned)
+    );
+  } catch (e) {
+    if (e instanceof QuizError) {
+      return NextResponse.json({ error: e.message, retryAfterSeconds: e.retryAfterSeconds }, { status: e.status });
+    }
+    console.error("[/api/tasks/[id]/submit-quiz] erreur:", e);
+    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
 

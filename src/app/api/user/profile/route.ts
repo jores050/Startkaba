@@ -9,19 +9,20 @@ import { mockProfile, updateMockProfile } from "@/lib/dev/mock-profile";
 const isDev = process.env.NODE_ENV !== "production";
 
 // GET — profil complet (infos + badges + statistiques de progression).
-// En dev sans Supabase réel, retourne le profil mocké.
 export async function GET() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  // Pas de session : mock en dev uniquement (test sans compte Supabase réel).
+  if (!user) {
+    if (isDev) return NextResponse.json(mockProfile);
+    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  }
+
+  // Utilisateur authentifié → on ne retombe JAMAIS sur le mock.
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      if (isDev) return NextResponse.json(mockProfile);
-      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
-    }
-
     const profile = await ensureProfile({
       userId: user.id,
       email: user.email ?? "",
@@ -34,7 +35,7 @@ export async function GET() {
     });
 
     const weekStart = new Date();
-    weekStart.setDate(weekStart.getDate() - weekStart.getDay()); // dimanche
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay());
     weekStart.setHours(0, 0, 0, 0);
 
     const [badges, tasksCompleted, activeDaysRows] = await Promise.all([
@@ -52,7 +53,6 @@ export async function GET() {
       `,
     ]);
 
-    // Stats weekly séparées pour ne pas faire tomber le profil si elles échouent.
     let weekly: { tasksCompleted: number; xpEarned: number; badgeName?: string } | undefined;
     try {
       const [weeklyProgress, weeklyBadge] = await Promise.all([
@@ -76,7 +76,7 @@ export async function GET() {
         badgeName: weeklyBadge ? getBadgeById(weeklyBadge.badgeId)?.name : undefined,
       };
     } catch {
-      // weekly stats non-critiques — on continue sans elles
+      // stats weekly non-critiques
     }
 
     return NextResponse.json({
@@ -89,9 +89,8 @@ export async function GET() {
       },
     });
   } catch (e) {
-    console.error("[/api/user/profile] erreur:", e);
-    if (isDev) return NextResponse.json(mockProfile);
-    throw e;
+    console.error("[/api/user/profile GET] erreur:", e);
+    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
 
@@ -121,25 +120,24 @@ export async function PUT(request: Request) {
     ...(parsed.data.avatarUrl ? { avatarUrl: parsed.data.avatarUrl } : {}),
   };
 
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    if (isDev) return NextResponse.json(updateMockProfile(data));
+    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  }
+
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      if (isDev) return NextResponse.json(updateMockProfile(data));
-      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
-    }
-
     const updated = await prisma.userProfile.update({
       where: { id: user.id },
       data,
     });
-
     return NextResponse.json(updated);
   } catch (e) {
-    if (isDev) return NextResponse.json(updateMockProfile(data));
-    throw e;
+    console.error("[/api/user/profile PUT] erreur:", e);
+    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }

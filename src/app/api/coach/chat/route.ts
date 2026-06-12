@@ -79,22 +79,23 @@ export async function POST(request: Request) {
   let profile: UserProfile | null = null;
   let uid: string | null = null;
 
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-    if (!user) {
-      if (isDev) return mockStream(message, levelId);
-      return Response.json({ error: "Non authentifié" }, { status: 401 });
-    }
-    uid = user.id;
+  if (!user) {
+    if (isDev) return mockStream(message, levelId);
+    return Response.json({ error: "Non authentifié" }, { status: 401 });
+  }
+  uid = user.id;
+
+  try {
     profile = (await prisma.userProfile.findUnique({
       where: { id: user.id },
     })) as UserProfile | null;
-  } catch {
-    if (isDev) return mockStream(message, levelId);
+  } catch (e) {
+    console.error("[/api/coach/chat] erreur profil:", e);
     return Response.json({ error: "Service indisponible" }, { status: 503 });
   }
 
@@ -186,7 +187,6 @@ export async function POST(request: Request) {
 
     return sseResponse(stream);
   } catch {
-    if (isDev) return mockStream(message, levelId);
     return Response.json(
       { error: "Kaba est indisponible pour le moment" },
       { status: 503 }

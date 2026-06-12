@@ -47,42 +47,48 @@ export async function GET(
     return NextResponse.json({ error: "Niveau introuvable" }, { status: 404 });
   }
 
-  let rows: ProgressRow[];
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-    if (!user) {
-      if (!isDev) {
-        return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  if (!user) {
+    if (isDev) {
+      const rows = Array.from(mockProgress.values());
+      if (!isLevelUnlocked(levelId, rows)) {
+        return NextResponse.json(
+          { error: "Niveau verrouillé — complète d'abord le niveau précédent" },
+          { status: 403 }
+        );
       }
-      rows = Array.from(mockProgress.values());
-    } else {
-      rows = await prisma.userProgress.findMany({
-        where: { userId: user.id },
-        select: {
-          taskId: true,
-          levelId: true,
-          status: true,
-          quizScore: true,
-          xpEarned: true,
-          completedAt: true,
-        },
-      });
+      return NextResponse.json(buildLevelDetail(levelId, rows));
     }
+    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  }
+
+  try {
+    const rows = await prisma.userProgress.findMany({
+      where: { userId: user.id },
+      select: {
+        taskId: true,
+        levelId: true,
+        status: true,
+        quizScore: true,
+        xpEarned: true,
+        completedAt: true,
+      },
+    });
+
+    if (!isLevelUnlocked(levelId, rows)) {
+      return NextResponse.json(
+        { error: "Niveau verrouillé — complète d'abord le niveau précédent" },
+        { status: 403 }
+      );
+    }
+
+    return NextResponse.json(buildLevelDetail(levelId, rows));
   } catch (e) {
-    if (!isDev) throw e;
-    rows = Array.from(mockProgress.values());
+    console.error("[/api/levels/[id] GET] erreur:", e);
+    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
-
-  if (!isLevelUnlocked(levelId, rows)) {
-    return NextResponse.json(
-      { error: "Niveau verrouillé — complète d'abord le niveau précédent" },
-      { status: 403 }
-    );
-  }
-
-  return NextResponse.json(buildLevelDetail(levelId, rows));
 }

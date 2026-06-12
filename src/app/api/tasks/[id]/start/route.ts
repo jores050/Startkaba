@@ -18,23 +18,23 @@ export async function POST(
     return NextResponse.json({ error: "Tâche introuvable" }, { status: 404 });
   }
 
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-    if (!user) {
-      if (isDev) {
-        const rows = Array.from(mockProgress.values());
-        if (!isLevelUnlocked(task.levelId, rows)) {
-          return NextResponse.json({ error: "Niveau verrouillé" }, { status: 403 });
-        }
-        return NextResponse.json(startMockTask(taskId, task.levelId));
+  if (!user) {
+    if (isDev) {
+      const rows = Array.from(mockProgress.values());
+      if (!isLevelUnlocked(task.levelId, rows)) {
+        return NextResponse.json({ error: "Niveau verrouillé" }, { status: 403 });
       }
-      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+      return NextResponse.json(startMockTask(taskId, task.levelId));
     }
+    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  }
 
+  try {
     const rows: ProgressRow[] = await prisma.userProgress.findMany({
       where: { userId: user.id },
       select: {
@@ -69,9 +69,7 @@ export async function POST(
 
     return NextResponse.json(progress);
   } catch (e) {
-    if (isDev) {
-      return NextResponse.json(startMockTask(taskId, task.levelId));
-    }
-    throw e;
+    console.error("[/api/tasks/[id]/start] erreur:", e);
+    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }

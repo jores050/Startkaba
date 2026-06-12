@@ -23,17 +23,17 @@ function mockResponse(levelId: number) {
 export async function GET(request: Request) {
   const levelId = Number(new URL(request.url).searchParams.get("levelId") ?? 1);
 
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    if (isDev) return mockResponse(levelId);
+    return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
+  }
+
   try {
-    const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      if (isDev) return mockResponse(levelId);
-      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
-    }
-
     const [messages, userCount, rows, profile] = await Promise.all([
       prisma.coachMessage.findMany({
         where: { userId: user.id, levelId },
@@ -53,7 +53,7 @@ export async function GET(request: Request) {
       quota: computeQuota(rows, userCount, profile?.subscriptionStatus === "PREMIUM"),
     });
   } catch (e) {
-    if (isDev) return mockResponse(levelId);
-    throw e;
+    console.error("[/api/coach/messages GET] erreur:", e);
+    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
