@@ -255,7 +255,12 @@ export default function ProfilPage() {
 
       {/* Projet */}
       <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 shadow-sm">
-        <h2 className="font-display text-xl font-bold text-[#0A0E2A] mb-4">Mon projet</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-display text-xl font-bold text-[#0A0E2A]">Mon projet</h2>
+          <Link href="/projet" className="text-xs font-semibold text-[#0722AB] hover:underline">
+            Voir mon projet complet →
+          </Link>
+        </div>
         {user.projectName ? (
           <div>
             <p className="font-display text-xl font-bold text-[#0722AB]">{user.projectName}</p>

@@ -74,6 +74,11 @@ const ICONS: Record<string, React.ReactNode> = {
       <path d="M5.5 8h5M8 5.5v5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
     </svg>
   ),
+  "/projet": (
+    <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4 shrink-0">
+      <path d="M8 1.5L10 5.5H14.5L11 8.5L12.5 13L8 10.5L3.5 13L5 8.5L1.5 5.5H6L8 1.5Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
+    </svg>
+  ),
 };
 
 function NavLink({

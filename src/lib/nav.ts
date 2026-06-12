@@ -9,6 +9,7 @@ export const MAIN_NAV = [
 ];
 
 export const CONTENT_NAV = [
+  { href: "/projet", label: "Mon Projet" },
   { href: "/ressources", label: "Ressources" },
   { href: "/classement", label: "Classement" },
   { href: "/profil", label: "Profil" },
