@@ -37,20 +37,25 @@ export async function GET() {
     weekStart.setDate(weekStart.getDate() - weekStart.getDay()); // dimanche
     weekStart.setHours(0, 0, 0, 0);
 
-    const [badges, tasksCompleted, activeDaysRows, weeklyProgress, weeklyBadge] =
-      await Promise.all([
-        prisma.userBadge.findMany({
-          where: { userId: user.id },
-          select: { badgeId: true, earnedAt: true },
-          orderBy: { earnedAt: "asc" },
-        }),
-        prisma.userProgress.count({
-          where: { userId: user.id, status: "COMPLETED" },
-        }),
-        prisma.$queryRaw<{ count: bigint }[]>`
-          SELECT COUNT(DISTINCT DATE("updatedAt")) AS count
-          FROM "user_progress" WHERE "userId" = ${user.id}
-        `,
+    const [badges, tasksCompleted, activeDaysRows] = await Promise.all([
+      prisma.userBadge.findMany({
+        where: { userId: user.id },
+        select: { badgeId: true, earnedAt: true },
+        orderBy: { earnedAt: "asc" },
+      }),
+      prisma.userProgress.count({
+        where: { userId: user.id, status: "COMPLETED" },
+      }),
+      prisma.$queryRaw<{ count: bigint }[]>`
+        SELECT COUNT(DISTINCT DATE("updatedAt")) AS count
+        FROM "user_progress" WHERE "userId" = ${user.id}
+      `,
+    ]);
+
+    // Stats weekly séparées pour ne pas faire tomber le profil si elles échouent.
+    let weekly: { tasksCompleted: number; xpEarned: number; badgeName?: string } | undefined;
+    try {
+      const [weeklyProgress, weeklyBadge] = await Promise.all([
         prisma.userProgress.aggregate({
           where: {
             userId: user.id,
@@ -65,6 +70,14 @@ export async function GET() {
           orderBy: { earnedAt: "desc" },
         }),
       ]);
+      weekly = {
+        tasksCompleted: weeklyProgress._count.id,
+        xpEarned: weeklyProgress._sum.xpEarned ?? 0,
+        badgeName: weeklyBadge ? getBadgeById(weeklyBadge.badgeId)?.name : undefined,
+      };
+    } catch {
+      // weekly stats non-critiques — on continue sans elles
+    }
 
     return NextResponse.json({
       ...profile,
@@ -72,16 +85,11 @@ export async function GET() {
       stats: {
         tasksCompleted,
         activeDays: Number(activeDaysRows[0]?.count ?? 0),
-        weekly: {
-          tasksCompleted: weeklyProgress._count.id,
-          xpEarned: weeklyProgress._sum.xpEarned ?? 0,
-          badgeName: weeklyBadge
-            ? getBadgeById(weeklyBadge.badgeId)?.name
-            : undefined,
-        },
+        weekly,
       },
     });
   } catch (e) {
+    console.error("[/api/user/profile] erreur:", e);
     if (isDev) return NextResponse.json(mockProfile);
     throw e;
   }
