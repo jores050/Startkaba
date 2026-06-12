@@ -266,18 +266,23 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
     />;
   }
 
+  // Footer color class (shared between mobile-fixed and desktop-static)
+  const footerColorCls =
+    phase === "dead"        ? "bg-error/10 border-error/30"
+    : lastCorrect           ? "bg-green/10 border-green/30"
+    :                         "bg-error/10 border-error/30";
+
   return (
-    // Outer: full-screen overlay, scrollable on very long content
     <div
       className="fixed inset-0 z-50 bg-background overflow-y-auto"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Inner: centered column, phone-width on desktop, full height */}
-      <div className="min-h-full max-w-xl mx-auto flex flex-col">
+      {/* Scrollable content — no forced height, pb clears the fixed footer on mobile */}
+      <div className="max-w-xl mx-auto px-4 pb-28 md:pb-8">
 
         {/* Header */}
-        <div className="shrink-0 px-4 pt-4 pb-3">
+        <div className="pt-4 pb-3">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2 min-w-0">
               <button onClick={onClose} className="text-muted hover:text-foreground shrink-0 p-1">
@@ -287,7 +292,6 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
               </button>
               <span className="text-sm text-muted truncate">{taskTitle}</span>
             </div>
-            {/* Hearts */}
             <div className="flex gap-1 shrink-0">
               {Array.from({ length: MAX_HEARTS }).map((_, i) => (
                 <span key={i} className={`text-lg transition-all ${i < hearts ? "" : "opacity-20 grayscale"}`}>❤️</span>
@@ -295,7 +299,6 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
             </div>
           </div>
 
-          {/* Progress bar */}
           <div className="flex gap-1">
             {lesson.exercises.map((_, i) => (
               <div
@@ -307,22 +310,19 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
             ))}
           </div>
 
-          {/* XP counter */}
           <div className="flex justify-between items-center mt-1">
             <span className="text-xs text-muted">{idx + 1} / {lesson.exercises.length}</span>
             <span className="text-xs font-bold text-primary">⚡ {totalXp} XP</span>
           </div>
         </div>
 
-        {/* Exercise content — grows to fill space, no forced min-height */}
-        <div className="flex-1 px-4 py-4 relative">
-          {/* XP popups */}
+        {/* Exercise body */}
+        <div className="py-2 relative">
           {xpPopups.map(p => (
-            <div key={p.id} className="absolute top-2 right-4 pointer-events-none z-10 animate-xp-float">
+            <div key={p.id} className="absolute top-2 right-0 pointer-events-none z-10 animate-xp-float">
               <span className="text-primary font-bold text-sm">+{p.amount} XP</span>
             </div>
           ))}
-
           <ExerciseRenderer
             exercise={exercise}
             phase={phase}
@@ -342,17 +342,15 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
           />
         </div>
 
-        {/* Feedback bar (after answering) */}
-        {phase !== "answering" && (
-          <div
-            className={`shrink-0 px-4 py-4 border-t transition-colors ${
-              phase === "dead"
-                ? "bg-error/10 border-error/30"
-                : lastCorrect
-                ? "bg-green/10 border-green/30"
-                : "bg-error/10 border-error/30"
-            }`}
-          >
+      </div>
+
+      {/* ── Footer ──────────────────────────────────────────────────────────────
+          Mobile  : fixed bottom-0 full-width, content centered to max-w-xl
+          Desktop : static, max-w-xl centered, appears directly below content  */}
+
+      {phase !== "answering" && (
+        <div className={`fixed bottom-0 inset-x-0 border-t transition-colors md:static md:max-w-xl md:mx-auto ${footerColorCls}`}>
+          <div className="max-w-xl mx-auto px-4 py-4 md:mx-0 md:max-w-none">
             <div className="flex items-start gap-3 mb-3">
               <span className="text-2xl">
                 {phase === "dead" ? "💔" : lastCorrect ? "✅" : "❌"}
@@ -364,9 +362,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
                   {phase === "dead" ? "Plus de cœurs !" : kabaMsg}
                 </p>
                 {!lastCorrect && phase !== "dead" && exercise.type !== "info" && exercise.type !== "reflection" && (
-                  <p className="text-foreground text-sm leading-relaxed">
-                    {getExplanation(exercise)}
-                  </p>
+                  <p className="text-foreground text-sm leading-relaxed">{getExplanation(exercise)}</p>
                 )}
                 {phase === "dead" && (
                   <p className="text-muted text-sm">Recommence depuis le début pour garder tes XP.</p>
@@ -376,20 +372,19 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
             <button
               onClick={goNext}
               className={`w-full py-3 rounded-xl text-sm font-bold transition-opacity hover:opacity-90 ${
-                phase === "dead"
-                  ? "bg-error text-white"
-                  : lastCorrect
-                  ? "bg-green text-white"
-                  : "bg-primary text-white"
+                phase === "dead" ? "bg-error text-white"
+                : lastCorrect   ? "bg-green text-white"
+                :                 "bg-primary text-white"
               }`}
             >
               {phase === "dead" ? "Recommencer la leçon" : isLast ? "Terminer la leçon →" : "Continuer →"}
             </button>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Action bar (while answering) */}
-        {phase === "answering" && (
+      {phase === "answering" && (
+        <div className="fixed bottom-0 inset-x-0 bg-background md:static md:max-w-xl md:mx-auto">
           <ActionBar
             exercise={exercise}
             selectedOption={selectedOption}
@@ -401,9 +396,8 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
             onReorderCheck={handleReorderCheck}
             onReflectionContinue={handleReflectionContinue}
           />
-        )}
-
-      </div>
+        </div>
+      )}
     </div>
   );
 }
