@@ -3,7 +3,7 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/client";
 import { getTaskById } from "@/data/tasks";
-import { calculateXp, getCurrentLevel, getTotalXp } from "@/lib/utils/xp";
+import { getCurrentLevel, getTotalXp } from "@/lib/utils/xp";
 import { checkAndAwardBadges } from "@/lib/utils/badges";
 import { getBadgeById } from "@/data/badges";
 import { mockProgress, recordMockLessonComplete } from "@/lib/dev/mock-progress";
@@ -61,7 +61,6 @@ export async function POST(
 }
 
 function completeMock(taskId: number, levelId: number, xpEarned: number): LessonResponse {
-  const entry = mockProgress.get(taskId);
   // Allow completing even if not IN_PROGRESS (lesson started inline)
   recordMockLessonComplete(taskId, levelId, xpEarned);
 

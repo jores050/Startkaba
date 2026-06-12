@@ -49,9 +49,10 @@ interface LessonPlayerProps {
   taskId: number;
   taskTitle: string;
   onClose: () => void;
+  onComplete?: (result: { xpEarned: number; badgesUnlocked: LessonResult["badgesUnlocked"] }) => void;
 }
 
-export function LessonPlayer({ lesson, taskId, taskTitle, onClose }: LessonPlayerProps) {
+export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }: LessonPlayerProps) {
   const [idx, setIdx] = useState(0);
   const [hearts, setHearts] = useState(MAX_HEARTS);
   const [totalXp, setTotalXp] = useState(0);
@@ -71,6 +72,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose }: LessonPlaye
   const [matchDone, setMatchDone] = useState<{ l: number; r: number }[]>([]);
   const [reorderItems, setReorderItems] = useState<string[]>([]);
   const [reorderChecked, setReorderChecked] = useState(false);
+  const [shuffledMatchRight, setShuffledMatchRight] = useState<string[]>([]);
 
   const exercise = lesson.exercises[idx];
   const isLast = idx === lesson.exercises.length - 1;
@@ -87,6 +89,9 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose }: LessonPlaye
     }
     if (exercise.type === "reorder") {
       setReorderItems(shuffleArray([...exercise.items]));
+    }
+    if (exercise.type === "match") {
+      setShuffledMatchRight(shuffleArray(exercise.pairs.map(p => p.right)));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idx]);
@@ -178,9 +183,9 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose }: LessonPlaye
       if (matchSelected === null) return;
       const leftIdx = matchSelected;
       setMatchSelected(null);
-      // Check if correct pair
+      // Check if correct pair using the same shuffled order shown in UI
       const pair = exercise.pairs[leftIdx];
-      const rightItem = shuffledRight(exercise.pairs)[idx];
+      const rightItem = shuffledMatchRight[idx];
       if (pair.right === rightItem) {
         const newDone = [...matchDone, { l: leftIdx, r: idx }];
         setMatchDone(newDone);
@@ -249,7 +254,13 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose }: LessonPlaye
       totalXp={totalXp}
       submitting={submitting}
       apiError={apiError}
-      onClose={onClose}
+      onClose={() => {
+        if (result && onComplete) {
+          onComplete({ xpEarned: result.xpEarned, badgesUnlocked: result.badgesUnlocked });
+        } else {
+          onClose();
+        }
+      }}
       exerciseCount={lesson.exercises.length}
     />;
   }
@@ -317,10 +328,12 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose }: LessonPlaye
           setTextInputs={setTextInputs}
           matchSelected={matchSelected}
           matchDone={matchDone}
+          shuffledMatchRight={shuffledMatchRight}
           handleMatchPick={handleMatchPick}
           reorderItems={reorderItems}
           setReorderItems={setReorderItems}
           reorderChecked={reorderChecked}
+          onTrueFalseSubmit={handleTrueFalseSubmit}
         />
       </div>
 
@@ -376,13 +389,10 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose }: LessonPlaye
           exercise={exercise}
           selectedOption={selectedOption}
           textInputs={textInputs}
-          matchDone={matchDone}
           reorderChecked={reorderChecked}
           onInfoContinue={handleInfoContinue}
           onMcqSubmit={handleMcqSubmit}
-          onTrueFalseSubmit={handleTrueFalseSubmit}
           onFillBlankSubmit={handleFillBlankSubmit}
-          onMatchCheck={() => {}} // match auto-validates
           onReorderCheck={handleReorderCheck}
           onReflectionContinue={handleReflectionContinue}
         />
@@ -460,10 +470,12 @@ interface ExerciseRendererProps {
   setTextInputs: (v: string[]) => void;
   matchSelected: number | null;
   matchDone: { l: number; r: number }[];
+  shuffledMatchRight: string[];
   handleMatchPick: (side: "left" | "right", idx: number) => void;
   reorderItems: string[];
   setReorderItems: (v: string[]) => void;
   reorderChecked: boolean;
+  onTrueFalseSubmit: (v: boolean) => void;
 }
 
 function ExerciseRenderer(props: ExerciseRendererProps) {
@@ -526,17 +538,22 @@ function ExerciseRenderer(props: ExerciseRendererProps) {
           <p className="font-display text-lg font-bold text-foreground leading-snug">{exercise.statement}</p>
         </div>
         <div className="flex gap-3">
-          {[true, false].map(v => (
+          {([true, false] as const).map(v => (
             <button
               key={String(v)}
               disabled={answered}
-              onClick={() => !answered && props.setSelectedOption(v ? 1 : 0)}
+              onClick={() => {
+                if (!answered) {
+                  props.setSelectedOption(v ? 1 : 0);
+                  props.onTrueFalseSubmit(v);
+                }
+              }}
               className={`flex-1 py-5 rounded-2xl text-base font-bold border-2 transition-all ${
                 !answered
                   ? "border-border hover:border-primary text-foreground hover:bg-primary/5"
-                  : answered && v === exercise.isTrue
+                  : v === exercise.isTrue
                   ? "border-green bg-green/10 text-green"
-                  : answered && props.selectedOption === (v ? 1 : 0) && v !== exercise.isTrue
+                  : props.selectedOption === (v ? 1 : 0) && v !== exercise.isTrue
                   ? "border-error bg-error/10 text-error"
                   : "border-border text-muted"
               }`}
@@ -592,8 +609,7 @@ function ExerciseRenderer(props: ExerciseRendererProps) {
   }
 
   if (exercise.type === "match") {
-    // Stable shuffled right column
-    const rightItems = useStableShuffledRight(exercise.pairs);
+    const rightItems = props.shuffledMatchRight;
     return (
       <div className="flex flex-col gap-4 mt-2">
         <p className="font-display text-base font-bold text-foreground">Associe chaque élément :</p>
@@ -724,20 +740,17 @@ function ExerciseRenderer(props: ExerciseRendererProps) {
 // ─── Barre d'action ───────────────────────────────────────────────────────────
 
 function ActionBar({
-  exercise, selectedOption, textInputs, matchDone, reorderChecked,
-  onInfoContinue, onMcqSubmit, onTrueFalseSubmit, onFillBlankSubmit,
+  exercise, selectedOption, textInputs, reorderChecked,
+  onInfoContinue, onMcqSubmit, onFillBlankSubmit,
   onReorderCheck, onReflectionContinue,
 }: {
   exercise: Exercise;
   selectedOption: number | null;
   textInputs: string[];
-  matchDone: { l: number; r: number }[];
   reorderChecked: boolean;
   onInfoContinue: () => void;
   onMcqSubmit: () => void;
-  onTrueFalseSubmit: (v: boolean) => void;
   onFillBlankSubmit: () => void;
-  onMatchCheck: () => void;
   onReorderCheck: () => void;
   onReflectionContinue: () => void;
 }) {
@@ -781,18 +794,7 @@ function ActionBar({
   }
 
   if (exercise.type === "true_false") {
-    return (
-      <div className="shrink-0 px-4 py-4 border-t border-border">
-        <div className="flex gap-3">
-          <button onClick={() => onTrueFalseSubmit(true)} className="flex-1 py-3 rounded-xl bg-green text-white font-bold text-sm hover:opacity-90 transition-opacity">
-            ✓ Vrai
-          </button>
-          <button onClick={() => onTrueFalseSubmit(false)} className="flex-1 py-3 rounded-xl bg-error text-white font-bold text-sm hover:opacity-90 transition-opacity">
-            ✗ Faux
-          </button>
-        </div>
-      </div>
-    );
+    return null; // buttons are in ExerciseRenderer, submit on click
   }
 
   if (exercise.type === "fill_blank") {
@@ -854,21 +856,3 @@ function shuffleArray<T>(arr: T[]): T[] {
   return a;
 }
 
-// Stable shuffle for match right column (stable across re-renders for same exercise)
-function useStableShuffledRight(pairs: { left: string; right: string }[]): string[] {
-  const ref = useRef<string[] | null>(null);
-  const keyRef = useRef<string>("");
-  const key = pairs.map(p => p.right).join("|");
-  if (keyRef.current !== key || ref.current === null) {
-    keyRef.current = key;
-    ref.current = shuffleArray(pairs.map(p => p.right));
-  }
-  return ref.current;
-}
-
-// Get right column index for a given right value
-function shuffledRight(pairs: { left: string; right: string }[]): string[] {
-  // This is called during event handlers, needs to use the same shuffle as render
-  // We can't access the ref here, so we'll pass shuffled from parent
-  return pairs.map(p => p.right);
-}

@@ -183,9 +183,10 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
           lesson={task.lesson}
           taskId={task.id}
           taskTitle={task.title}
-          onClose={() => {
+          onClose={() => setCourseOpen(false)}
+          onComplete={(r) => {
             setCourseOpen(false);
-            onQuizCompleted({ passed: true, score: 100, xpEarned: task.xp, badgesUnlocked: [] });
+            onQuizCompleted({ passed: true, score: 100, xpEarned: r.xpEarned, badgesUnlocked: r.badgesUnlocked });
           }}
         />
       )}
