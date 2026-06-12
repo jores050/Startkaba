@@ -135,6 +135,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
     const xp = (exercise as { xp: number }).xp;
     setTotalXp(t => t + xp);
     showXpPopup(xp);
+    setLastCorrect(true);
     setKabaMsg(rnd(KABA_INFO));
     setPhase("feedback");
   }
@@ -266,137 +267,143 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
   }
 
   return (
+    // Outer: full-screen overlay, scrollable on very long content
     <div
-      className="fixed inset-0 z-50 flex flex-col bg-background"
+      className="fixed inset-0 z-50 bg-background overflow-y-auto"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Header */}
-      <div className="shrink-0 px-4 pt-safe pt-4 pb-3">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2 min-w-0">
-            <button onClick={onClose} className="text-muted hover:text-foreground shrink-0 p-1">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              </svg>
-            </button>
-            <span className="text-sm text-muted truncate">{taskTitle}</span>
-          </div>
-          {/* Hearts */}
-          <div className="flex gap-1 shrink-0">
-            {Array.from({ length: MAX_HEARTS }).map((_, i) => (
-              <span key={i} className={`text-lg transition-all ${i < hearts ? "" : "opacity-20 grayscale"}`}>❤️</span>
-            ))}
-          </div>
-        </div>
+      {/* Inner: centered column, phone-width on desktop, full height */}
+      <div className="min-h-full max-w-xl mx-auto flex flex-col">
 
-        {/* Progress bar */}
-        <div className="flex gap-1">
-          {lesson.exercises.map((_, i) => (
-            <div
-              key={i}
-              className={`h-2 flex-1 rounded-full transition-all duration-300 ${
-                i < idx ? "bg-primary" : i === idx ? "bg-primary/50" : "bg-border"
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* XP counter */}
-        <div className="flex justify-between items-center mt-1">
-          <span className="text-xs text-muted">{idx + 1} / {lesson.exercises.length}</span>
-          <span className="text-xs font-bold text-primary">⚡ {totalXp} XP</span>
-        </div>
-      </div>
-
-      {/* Exercise content */}
-      <div className="flex-1 overflow-y-auto px-4 py-2 relative">
-        {/* XP popups */}
-        {xpPopups.map(p => (
-          <div key={p.id} className="absolute top-2 right-6 pointer-events-none z-10 animate-xp-float">
-            <span className="text-primary font-bold text-sm">+{p.amount} XP</span>
-          </div>
-        ))}
-
-        <ExerciseRenderer
-          exercise={exercise}
-          phase={phase}
-          lastCorrect={lastCorrect}
-          selectedOption={selectedOption}
-          setSelectedOption={setSelectedOption}
-          textInputs={textInputs}
-          setTextInputs={setTextInputs}
-          matchSelected={matchSelected}
-          matchDone={matchDone}
-          shuffledMatchRight={shuffledMatchRight}
-          handleMatchPick={handleMatchPick}
-          reorderItems={reorderItems}
-          setReorderItems={setReorderItems}
-          reorderChecked={reorderChecked}
-          onTrueFalseSubmit={handleTrueFalseSubmit}
-        />
-      </div>
-
-      {/* Kaba mascot + feedback bar */}
-      {phase !== "answering" && (
-        <div
-          className={`shrink-0 px-4 py-4 border-t transition-colors ${
-            phase === "dead"
-              ? "bg-error/10 border-error/30"
-              : lastCorrect
-              ? "bg-green/10 border-green/30"
-              : "bg-error/10 border-error/30"
-          }`}
-        >
-          <div className="flex items-start gap-3 mb-3">
-            <span className="text-2xl">
-              {phase === "dead" ? "💔" : lastCorrect ? "✅" : "❌"}
-            </span>
-            <div className="flex-1 min-w-0">
-              <p className={`font-bold text-sm mb-1 ${
-                phase === "dead" ? "text-error" : lastCorrect ? "text-green" : "text-error"
-              }`}>
-                {phase === "dead" ? "Plus de cœurs !" : kabaMsg}
-              </p>
-              {!lastCorrect && phase !== "dead" && exercise.type !== "info" && exercise.type !== "reflection" && (
-                <p className="text-foreground text-sm leading-relaxed">
-                  {getExplanation(exercise)}
-                </p>
-              )}
-              {phase === "dead" && (
-                <p className="text-muted text-sm">Recommence depuis le début pour garder tes XP.</p>
-              )}
+        {/* Header */}
+        <div className="shrink-0 px-4 pt-4 pb-3">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2 min-w-0">
+              <button onClick={onClose} className="text-muted hover:text-foreground shrink-0 p-1">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+              </button>
+              <span className="text-sm text-muted truncate">{taskTitle}</span>
+            </div>
+            {/* Hearts */}
+            <div className="flex gap-1 shrink-0">
+              {Array.from({ length: MAX_HEARTS }).map((_, i) => (
+                <span key={i} className={`text-lg transition-all ${i < hearts ? "" : "opacity-20 grayscale"}`}>❤️</span>
+              ))}
             </div>
           </div>
-          <button
-            onClick={goNext}
-            className={`w-full py-3 rounded-xl text-sm font-bold transition-opacity hover:opacity-90 ${
+
+          {/* Progress bar */}
+          <div className="flex gap-1">
+            {lesson.exercises.map((_, i) => (
+              <div
+                key={i}
+                className={`h-2 flex-1 rounded-full transition-all duration-300 ${
+                  i < idx ? "bg-primary" : i === idx ? "bg-primary/50" : "bg-border"
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* XP counter */}
+          <div className="flex justify-between items-center mt-1">
+            <span className="text-xs text-muted">{idx + 1} / {lesson.exercises.length}</span>
+            <span className="text-xs font-bold text-primary">⚡ {totalXp} XP</span>
+          </div>
+        </div>
+
+        {/* Exercise content — grows to fill space, no forced min-height */}
+        <div className="flex-1 px-4 py-4 relative">
+          {/* XP popups */}
+          {xpPopups.map(p => (
+            <div key={p.id} className="absolute top-2 right-4 pointer-events-none z-10 animate-xp-float">
+              <span className="text-primary font-bold text-sm">+{p.amount} XP</span>
+            </div>
+          ))}
+
+          <ExerciseRenderer
+            exercise={exercise}
+            phase={phase}
+            lastCorrect={lastCorrect}
+            selectedOption={selectedOption}
+            setSelectedOption={setSelectedOption}
+            textInputs={textInputs}
+            setTextInputs={setTextInputs}
+            matchSelected={matchSelected}
+            matchDone={matchDone}
+            shuffledMatchRight={shuffledMatchRight}
+            handleMatchPick={handleMatchPick}
+            reorderItems={reorderItems}
+            setReorderItems={setReorderItems}
+            reorderChecked={reorderChecked}
+            onTrueFalseSubmit={handleTrueFalseSubmit}
+          />
+        </div>
+
+        {/* Feedback bar (after answering) */}
+        {phase !== "answering" && (
+          <div
+            className={`shrink-0 px-4 py-4 border-t transition-colors ${
               phase === "dead"
-                ? "bg-error text-white"
+                ? "bg-error/10 border-error/30"
                 : lastCorrect
-                ? "bg-green text-white"
-                : "bg-primary text-white"
+                ? "bg-green/10 border-green/30"
+                : "bg-error/10 border-error/30"
             }`}
           >
-            {phase === "dead" ? "Recommencer la leçon" : isLast ? "Terminer la leçon →" : "Continuer →"}
-          </button>
-        </div>
-      )}
+            <div className="flex items-start gap-3 mb-3">
+              <span className="text-2xl">
+                {phase === "dead" ? "💔" : lastCorrect ? "✅" : "❌"}
+              </span>
+              <div className="flex-1 min-w-0">
+                <p className={`font-bold text-sm mb-1 ${
+                  phase === "dead" ? "text-error" : lastCorrect ? "text-green" : "text-error"
+                }`}>
+                  {phase === "dead" ? "Plus de cœurs !" : kabaMsg}
+                </p>
+                {!lastCorrect && phase !== "dead" && exercise.type !== "info" && exercise.type !== "reflection" && (
+                  <p className="text-foreground text-sm leading-relaxed">
+                    {getExplanation(exercise)}
+                  </p>
+                )}
+                {phase === "dead" && (
+                  <p className="text-muted text-sm">Recommence depuis le début pour garder tes XP.</p>
+                )}
+              </div>
+            </div>
+            <button
+              onClick={goNext}
+              className={`w-full py-3 rounded-xl text-sm font-bold transition-opacity hover:opacity-90 ${
+                phase === "dead"
+                  ? "bg-error text-white"
+                  : lastCorrect
+                  ? "bg-green text-white"
+                  : "bg-primary text-white"
+              }`}
+            >
+              {phase === "dead" ? "Recommencer la leçon" : isLast ? "Terminer la leçon →" : "Continuer →"}
+            </button>
+          </div>
+        )}
 
-      {/* Action button when answering */}
-      {phase === "answering" && (
-        <ActionBar
-          exercise={exercise}
-          selectedOption={selectedOption}
-          textInputs={textInputs}
-          reorderChecked={reorderChecked}
-          onInfoContinue={handleInfoContinue}
-          onMcqSubmit={handleMcqSubmit}
-          onFillBlankSubmit={handleFillBlankSubmit}
-          onReorderCheck={handleReorderCheck}
-          onReflectionContinue={handleReflectionContinue}
-        />
-      )}
+        {/* Action bar (while answering) */}
+        {phase === "answering" && (
+          <ActionBar
+            exercise={exercise}
+            selectedOption={selectedOption}
+            textInputs={textInputs}
+            reorderChecked={reorderChecked}
+            onInfoContinue={handleInfoContinue}
+            onMcqSubmit={handleMcqSubmit}
+            onFillBlankSubmit={handleFillBlankSubmit}
+            onReorderCheck={handleReorderCheck}
+            onReflectionContinue={handleReflectionContinue}
+          />
+        )}
+
+      </div>
     </div>
   );
 }
@@ -419,7 +426,8 @@ function CompletionScreen({
   exerciseCount: number;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background px-6 text-center">
+    <div className="fixed inset-0 z-50 bg-background overflow-y-auto">
+    <div className="min-h-full max-w-xl mx-auto flex flex-col items-center justify-center px-6 py-12 text-center">
       <span className="text-6xl mb-4 animate-badge-pop">🏆</span>
       <h2 className="font-display text-2xl font-bold text-foreground mb-2">Leçon terminée !</h2>
       <p className="text-muted mb-6">{exerciseCount} exercices · {totalXp} XP gagnés</p>
@@ -454,6 +462,7 @@ function CompletionScreen({
       >
         {submitting ? "Enregistrement..." : "Retour au parcours"}
       </button>
+    </div>
     </div>
   );
 }
