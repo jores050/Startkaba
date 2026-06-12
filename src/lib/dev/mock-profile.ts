@@ -18,7 +18,13 @@ export interface FullProfile {
   isAdmin: boolean;
   createdAt: string;
   badges: { badgeId: number; earnedAt: string }[];
-  stats: { tasksCompleted: number; activeDays: number };
+  stats: {
+    tasksCompleted: number;
+    activeDays: number;
+    streakDays?: number;
+    xpToday?: number;
+    weekly?: { tasksCompleted: number; xpEarned: number; badgeName: string | null };
+  };
 }
 
 // Singleton sur globalThis — en dev Next.js, les modules ne sont pas
@@ -46,7 +52,13 @@ const seed: FullProfile = {
     { badgeId: 2, earnedAt: "2026-05-02T14:30:00.000Z" },
     { badgeId: 3, earnedAt: "2026-05-20T09:15:00.000Z" },
   ],
-  stats: { tasksCompleted: 7, activeDays: 23 },
+  stats: {
+    tasksCompleted: 7,
+    activeDays: 23,
+    streakDays: 5,
+    xpToday: 50,
+    weekly: { tasksCompleted: 4, xpEarned: 350, badgeName: "Marché Validé ✅" },
+  },
 };
 
 export const mockProfile: FullProfile = globalForMock.mockProfile ?? seed;

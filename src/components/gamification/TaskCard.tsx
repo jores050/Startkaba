@@ -1,8 +1,66 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { TaskWithProgress } from "@/hooks/use-progress";
 import { QuizModal, type QuizResult } from "./QuizModal";
+import { Button } from "@/components/ui/Button";
+
+function TaskNotes({ taskId }: { taskId: number }) {
+  const [note, setNote] = useState("");
+  const [loaded, setLoaded] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    fetch(`/api/tasks/${taskId}/notes`)
+      .then((r) => r.json())
+      .then((d) => {
+        setNote(d.note ?? "");
+        setLoaded(true);
+      })
+      .catch(() => setLoaded(true));
+  }, [taskId]);
+
+  async function save() {
+    setSaving(true);
+    setSaved(false);
+    await fetch(`/api/tasks/${taskId}/notes`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ note }),
+    });
+    setSaving(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  }
+
+  if (!loaded) return <p className="text-muted text-xs">Chargement des notes...</p>;
+
+  return (
+    <div className="flex flex-col gap-2">
+      <textarea
+        value={note}
+        onChange={(e) => setNote(e.target.value)}
+        rows={3}
+        maxLength={2000}
+        placeholder="Tes idées, tes apprentissages, tes liens utiles pour cette tâche..."
+        className="px-3 py-2 rounded-xl bg-background border border-border text-foreground text-sm placeholder:text-muted/60 focus:border-primary focus:outline-none transition-colors w-full"
+      />
+      <div className="flex items-center gap-3">
+        <Button
+          variant="primary"
+          onClick={save}
+          loading={saving}
+          loadingText="..."
+          className="!px-3 !py-1.5 text-xs"
+        >
+          Enregistrer
+        </Button>
+        {saved && <span className="text-green text-xs font-medium">✓ Note enregistrée</span>}
+      </div>
+    </div>
+  );
+}
 
 interface TaskCardProps {
   task: TaskWithProgress;
@@ -15,6 +73,7 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [quizOpen, setQuizOpen] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
 
   async function handleStart() {
     setStarting(true);
@@ -91,6 +150,21 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
       </div>
 
       {error && <p className="text-error text-sm pl-11">{error}</p>}
+
+      {/* Notes personnelles */}
+      <div className="pl-0 sm:pl-11">
+        <button
+          onClick={() => setNotesOpen(!notesOpen)}
+          className="text-xs text-muted hover:text-primary transition-colors"
+        >
+          {notesOpen ? "▾" : "▸"} Notes personnelles
+        </button>
+        {notesOpen && (
+          <div className="mt-2">
+            <TaskNotes taskId={task.id} />
+          </div>
+        )}
+      </div>
 
       {quizOpen && (
         <QuizModal

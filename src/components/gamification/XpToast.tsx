@@ -1,6 +1,25 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+// Compteur qui s'incrémente visuellement jusqu'à la valeur cible.
+function CountUp({ target }: { target: number }) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    const duration = 900;
+    const start = performance.now();
+    let raf: number;
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setValue(Math.round(eased * target));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target]);
+  return <>{value}</>;
+}
 
 export interface ToastData {
   id: number;
@@ -25,7 +44,7 @@ export function XpToast({ toast, onDone }: XpToastProps) {
   if (toast.type === "xp") {
     return (
       <div className="animate-toast pointer-events-none flex items-center gap-2 px-5 py-3 rounded-2xl bg-green text-white font-display font-bold text-lg shadow-lg">
-        ⚡ +{toast.xp} XP
+        ⚡ +<CountUp target={toast.xp ?? 0} /> XP
       </div>
     );
   }

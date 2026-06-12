@@ -2,7 +2,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="min-h-screen bg-background text-foreground">
       <nav className="border-b border-border bg-surface px-8 py-4 flex items-center gap-6">
-        <span className="font-display text-lg font-bold text-primary">
+        <span className="font-display text-xl font-bold text-primary">
           StartKaba Admin
         </span>
         {[

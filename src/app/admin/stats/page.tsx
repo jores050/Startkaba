@@ -18,14 +18,14 @@ export default function AdminStatsPage() {
 
   return (
     <div className="max-w-4xl">
-      <h1 className="font-display text-3xl font-bold text-foreground mb-8">
+      <h1 className="font-display text-3xl font-extrabold text-foreground mb-8">
         Statistiques
       </h1>
 
       <div className="grid md:grid-cols-2 gap-6">
         {/* Progression par niveau */}
         <div className="bg-surface border border-border rounded-2xl p-6">
-          <h2 className="font-display font-bold text-foreground mb-4">
+          <h2 className="font-display text-xl font-bold text-foreground mb-4">
             Utilisateurs par niveau
           </h2>
           <div className="flex flex-col gap-3">
@@ -50,7 +50,7 @@ export default function AdminStatsPage() {
 
         {/* Rétention hebdomadaire */}
         <div className="bg-surface border border-border rounded-2xl p-6">
-          <h2 className="font-display font-bold text-foreground mb-4">
+          <h2 className="font-display text-xl font-bold text-foreground mb-4">
             Rétention hebdomadaire
           </h2>
           <div className="flex items-end gap-2 h-44">

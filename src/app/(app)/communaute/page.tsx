@@ -40,7 +40,7 @@ export default function CommunautePage() {
 
   return (
     <div className="max-w-lg">
-      <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
+      <h1 className="font-display text-3xl font-extrabold text-foreground mb-2">
         Communauté
       </h1>
       <p className="text-muted mb-8">

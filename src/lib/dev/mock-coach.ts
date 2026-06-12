@@ -50,13 +50,30 @@ export function addMockMessage(
 }
 
 // Réponse Kaba simulée pour le dev local (API Anthropic non disponible).
+const PROVERBES = [
+  "C'est au bout de l'ancienne corde qu'on tisse la nouvelle.",
+  "Si tu veux aller vite, marche seul ; si tu veux aller loin, marchons ensemble.",
+  "La pluie ne tombe pas sur un seul toit.",
+  "Petit à petit, l'oiseau fait son nid.",
+  "Celui qui rame dans le sens du courant fait rire les crocodiles.",
+];
+
+const EXEMPLES = [
+  "Regarde Wave au Sénégal : ils n'ont pas inventé le Mobile Money, ils ont juste rendu les frais transparents — et tout le marché a suivi.",
+  "Shola Akinlade a commencé Paystack en résolvant SON propre problème de paiement. Pas en rêvant grand, en réglant petit.",
+  "Tony Elumelu le répète : l'Afrique n'a pas besoin d'aide, elle a besoin d'entrepreneurs disciplinés. La discipline, c'est tes tâches du niveau en cours.",
+  "Gozem a démarré au Togo avec quelques motos. Ils ont validé une ville avant d'en ouvrir dix.",
+];
+
 export function mockKabaReply(userMessage: string, levelId: number): string {
+  const p = PROVERBES[userMessage.length % PROVERBES.length];
+  const e = EXEMPLES[(userMessage.length + levelId) % EXEMPLES.length];
   return (
     `Je t'entends. « ${userMessage.slice(0, 80)}${userMessage.length > 80 ? "..." : ""} » — ` +
     `c'est une vraie question d'entrepreneur.\n\n` +
-    `Comme on dit chez nous : c'est au bout de l'ancienne corde qu'on tisse la nouvelle. ` +
-    `Avant de chercher une réponse toute faite, regarde ce que ton niveau ${levelId} t'a déjà appris. ` +
-    `Les réponses durables viennent du terrain, pas des théories.\n\n` +
+    `Comme on dit chez nous : ${p} ` +
+    `Avant de chercher une réponse toute faite, regarde ce que ton niveau ${levelId} t'a déjà appris.\n\n` +
+    `${e}\n\n` +
     `Dis-moi : qu'est-ce que tu as déjà essayé concrètement, et qu'est-ce qui t'a surpris dans le résultat ?\n\n` +
     `*(Réponse simulée — connecte une vraie clé Anthropic pour parler au vrai Kaba.)*`
   );

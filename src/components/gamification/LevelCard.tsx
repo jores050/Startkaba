@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { LevelSummary } from "@/lib/progress/compute";
 import { getBadgeById } from "@/data/badges";
+import { LEVEL_TIME_ESTIMATES } from "@/data/level-meta";
 
 const STATUS_META: Record<
   LevelSummary["status"],
@@ -55,10 +56,15 @@ export function LevelCard({ level }: { level: LevelSummary }) {
             {level.id}
           </span>
           <div>
-            <h3 className="font-display font-bold text-foreground">
+            <h3 className="font-display text-xl font-bold text-foreground">
               {level.title}
             </h3>
             <p className="text-muted text-sm">{level.subtitle}</p>
+            {level.taskCount > 0 && (
+              <p className="text-muted text-xs mt-0.5">
+                ⏱ {LEVEL_TIME_ESTIMATES[level.id]}
+              </p>
+            )}
           </div>
         </div>
         <span title={meta.label} className="text-xl shrink-0">

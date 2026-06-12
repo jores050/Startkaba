@@ -65,7 +65,7 @@ export default function ProfilEditPage() {
       setAvatarUrl(data.publicUrl);
     } catch {
       setErrorMsg(
-        "Upload de l'avatar impossible (Supabase Storage non disponible en local). La photo sera ignorée."
+        "Upload de l'avatar impossible en local. La photo sera ignorée."
       );
     } finally {
       setUploading(false);
@@ -108,25 +108,38 @@ export default function ProfilEditPage() {
   }
 
   if (isLoading || !user) {
-    return <p className="text-muted">Chargement...</p>;
+    return (
+      <div className="max-w-2xl">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 w-56 rounded-2xl bg-[#E8EAF0]" />
+          <div className="h-64 rounded-2xl bg-[#E8EAF0]" />
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="max-w-2xl">
+      {/* Header */}
       <div className="flex items-center justify-between mb-8">
-        <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground">
-          Modifier mon profil
-        </h1>
-        <Link href="/profil" className="text-muted hover:text-primary transition-colors">
+        <div>
+          <h1 className="font-display text-3xl font-extrabold text-[#0A0E2A]">
+            Modifier mon profil
+          </h1>
+          <p className="text-[#8892C8] text-sm mt-1">Tes informations sont privées par défaut.</p>
+        </div>
+        <Link href="/profil" className="text-[#8892C8] hover:text-[#0722AB] transition-colors text-sm font-medium">
           Annuler
         </Link>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         {/* Avatar */}
-        <div className="flex items-center gap-6">
+        <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 flex items-center gap-5 shadow-sm">
           <Avatar fullName={fullName || user.fullName} avatarUrl={avatarUrl} size="lg" />
           <div>
+            <p className="font-semibold text-[#0A0E2A] text-sm mb-1">Photo de profil</p>
+            <p className="text-[#8892C8] text-xs mb-3">PNG, JPG ou WebP — max 2 Mo</p>
             <input
               ref={fileInputRef}
               type="file"
@@ -149,66 +162,74 @@ export default function ProfilEditPage() {
           </div>
         </div>
 
-        <Input
-          id="fullName"
-          label="Nom complet"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          required
-          error={fieldErrors.fullName}
-        />
+        {/* Infos perso */}
+        <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 flex flex-col gap-5 shadow-sm">
+          <p className="font-display font-bold text-[#0A0E2A] text-sm tracking-wide uppercase text-[#8892C8]">
+            Informations personnelles
+          </p>
+          <Input
+            id="fullName"
+            label="Nom complet"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+            error={fieldErrors.fullName}
+          />
+          <Select
+            id="city"
+            label="Ville"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            error={fieldErrors.city}
+          >
+            {CITIES.map((c) => (
+              <option key={c.value} value={c.value}>
+                {c.label}
+              </option>
+            ))}
+          </Select>
+          <Textarea
+            id="bio"
+            label="Bio"
+            hint={`(${bio.length}/200)`}
+            value={bio}
+            onChange={(e) => setBio(e.target.value.slice(0, 200))}
+            rows={3}
+            maxLength={200}
+            placeholder="Qui es-tu en quelques mots ?"
+            error={fieldErrors.bio}
+          />
+        </div>
 
-        <Select
-          id="city"
-          label="Ville"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          error={fieldErrors.city}
-        >
-          {CITIES.map((c) => (
-            <option key={c.value} value={c.value}>
-              {c.label}
-            </option>
-          ))}
-        </Select>
-
-        <Textarea
-          id="bio"
-          label="Bio"
-          hint={`(${bio.length}/200)`}
-          value={bio}
-          onChange={(e) => setBio(e.target.value.slice(0, 200))}
-          rows={3}
-          maxLength={200}
-          placeholder="Qui es-tu en quelques mots ?"
-          error={fieldErrors.bio}
-        />
-
-        <Input
-          id="projectName"
-          label="Nom du projet"
-          value={projectName}
-          onChange={(e) => setProjectName(e.target.value)}
-          placeholder="Ex : FraisLocal"
-          error={fieldErrors.projectName}
-        />
-
-        <Textarea
-          id="projectDescription"
-          label="Description du projet"
-          value={projectDescription}
-          onChange={(e) => setProjectDescription(e.target.value)}
-          rows={4}
-          placeholder="Quel problème résous-tu, pour qui ?"
-          error={fieldErrors.projectDescription}
-        />
+        {/* Projet */}
+        <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 flex flex-col gap-5 shadow-sm">
+          <p className="font-display font-bold text-[#0A0E2A] text-sm tracking-wide uppercase text-[#8892C8]">
+            Mon projet
+          </p>
+          <Input
+            id="projectName"
+            label="Nom du projet"
+            value={projectName}
+            onChange={(e) => setProjectName(e.target.value)}
+            placeholder="Ex : FraisLocal"
+            error={fieldErrors.projectName}
+          />
+          <Textarea
+            id="projectDescription"
+            label="Description du projet"
+            value={projectDescription}
+            onChange={(e) => setProjectDescription(e.target.value)}
+            rows={4}
+            placeholder="Quel problème résous-tu, pour qui ?"
+            error={fieldErrors.projectDescription}
+          />
+        </div>
 
         {/* Compétences */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="skillInput" className="text-sm font-medium">
-            Compétences{" "}
-            <span className="text-muted font-normal">({skills.length}/15)</span>
-          </label>
+        <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
+          <p className="font-display font-bold text-[#0A0E2A] text-sm tracking-wide uppercase text-[#8892C8]">
+            Compétences ({skills.length}/15)
+          </p>
           <div className="flex gap-2">
             <input
               id="skillInput"
@@ -228,18 +249,18 @@ export default function ProfilEditPage() {
             </Button>
           </div>
           {skills.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-2">
+            <div className="flex flex-wrap gap-2">
               {skills.map((skill) => (
                 <span
                   key={skill}
-                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EEF1FF] text-[#0722AB] text-sm font-semibold"
                 >
                   {skill}
                   <button
                     type="button"
                     onClick={() => setSkills(skills.filter((s) => s !== skill))}
                     aria-label={`Supprimer ${skill}`}
-                    className="hover:text-error font-bold"
+                    className="hover:text-red-500 font-bold leading-none"
                   >
                     ×
                   </button>
@@ -248,18 +269,18 @@ export default function ProfilEditPage() {
             </div>
           )}
           {fieldErrors.skills && (
-            <p className="text-error text-sm">{fieldErrors.skills}</p>
+            <p className="text-red-600 text-sm">{fieldErrors.skills}</p>
           )}
         </div>
 
         {errorMsg && (
-          <p className="text-error text-sm bg-error/10 border border-error/30 rounded-lg px-4 py-2">
+          <div className="bg-red-50 border border-red-200 rounded-2xl px-4 py-3 text-red-600 text-sm">
             {errorMsg}
-          </p>
+          </div>
         )}
 
-        <Button type="submit" loading={saving} loadingText="Enregistrement...">
-          Enregistrer les modifications
+        <Button type="submit" loading={saving} loadingText="Enregistrement..." full>
+          Sauvegarder les modifications
         </Button>
       </form>
     </div>

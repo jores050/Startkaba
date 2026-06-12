@@ -44,7 +44,7 @@ export function Leaderboard({ defaultCity = "" }: { defaultCity?: string }) {
   return (
     <div className="bg-surface border border-border rounded-2xl p-6">
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-        <h2 className="font-display text-lg font-bold text-foreground">
+        <h2 className="font-display text-xl font-bold text-foreground">
           🏆 Classement
         </h2>
         <div className="flex gap-1 flex-wrap">
@@ -82,7 +82,7 @@ export function Leaderboard({ defaultCity = "" }: { defaultCity?: string }) {
               <tr
                 key={e.id}
                 className={`border-b border-border/50 ${
-                  isMe ? "bg-green-light/20 font-semibold" : ""
+                  isMe ? "bg-primary-light font-semibold" : ""
                 }`}
               >
                 <td className="py-2 pr-2">

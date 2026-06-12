@@ -45,6 +45,8 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/parcours") ||
     pathname.startsWith("/coach") ||
+    pathname.startsWith("/badges") ||
+    pathname.startsWith("/classement") ||
     pathname.startsWith("/communaute") ||
     pathname.startsWith("/ressources") ||
     pathname.startsWith("/profil");

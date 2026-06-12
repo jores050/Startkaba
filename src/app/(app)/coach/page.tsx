@@ -23,6 +23,52 @@ interface Quota {
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
+// Suggestions rapides contextuelles par niveau
+const SUGGESTIONS: Record<number, string[]> = {
+  1: ["Comment valider mon idée ?", "Qui est ma cible ?", "Je suis bloqué"],
+  2: ["Comment trouver des gens à interviewer ?", "Quelles questions poser ?", "Mes interviews se passent mal"],
+  3: ["Comment remplir mon BMC ?", "Comment fixer mes prix en FCFA ?", "Quelles sources de revenus choisir ?"],
+  4: ["Quel type de MVP choisir ?", "Comment trouver mes 10 premiers utilisateurs ?", "Mon MVP ne convainc pas"],
+  5: ["Comment me faire connaître sans budget ?", "Quels réseaux sociaux prioriser ?", "Je suis bloqué"],
+  6: ["SARL ou SAS en OHADA ?", "Comment obtenir mon RCCM ?", "Combien coûte la création ?"],
+  7: ["Bootstrap ou lever des fonds ?", "Comment approcher un business angel ?", "Préparer mon pitch"],
+  8: ["Comment réussir mon lancement ?", "Comment créer du bouche-à-oreille ?", "Et après le lancement ?"],
+};
+
+function ThinkingDots() {
+  return (
+    <span className="inline-flex items-center gap-1 py-3 text-muted text-sm">
+      Kaba réfléchit
+      <span className="inline-flex gap-0.5">
+        {[0, 1, 2].map((i) => (
+          <span
+            key={i}
+            className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce"
+            style={{ animationDelay: `${i * 0.15}s` }}
+          />
+        ))}
+      </span>
+    </span>
+  );
+}
+
+function CopyButton({ content }: { content: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      onClick={() => {
+        navigator.clipboard.writeText(content);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }}
+      className="text-xs text-muted hover:text-primary transition-colors mt-1"
+      aria-label="Copier la réponse"
+    >
+      {copied ? "✓ Copié" : "⧉ Copier"}
+    </button>
+  );
+}
+
 function KabaAvatar() {
   return (
     <div className="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center text-lg shrink-0">
@@ -31,19 +77,28 @@ function KabaAvatar() {
   );
 }
 
-function Bubble({ msg }: { msg: { role: string; content: string } }) {
+function Bubble({
+  msg,
+  copyable = false,
+}: {
+  msg: { role: string; content: string };
+  copyable?: boolean;
+}) {
   const isKaba = msg.role === "ASSISTANT";
   return (
     <div className={`flex gap-3 ${isKaba ? "" : "flex-row-reverse"}`}>
       {isKaba && <KabaAvatar />}
-      <div
-        className={`max-w-[85%] sm:max-w-[75%] px-4 py-3 rounded-2xl whitespace-pre-wrap text-sm leading-relaxed ${
-          isKaba
-            ? "bg-surface border border-border text-foreground rounded-tl-sm"
-            : "bg-primary text-white rounded-tr-sm"
-        }`}
-      >
-        {msg.content}
+      <div className={`max-w-[85%] sm:max-w-[75%] flex flex-col ${isKaba ? "items-start" : "items-end"}`}>
+        <div
+          className={`px-4 py-3 rounded-2xl whitespace-pre-wrap text-sm leading-relaxed ${
+            isKaba
+              ? "bg-surface border border-border text-foreground rounded-tl-sm"
+              : "bg-primary text-white rounded-tr-sm"
+          }`}
+        >
+          {msg.content}
+        </div>
+        {isKaba && copyable && <CopyButton content={msg.content} />}
       </div>
     </div>
   );
@@ -74,8 +129,8 @@ function CoachChat() {
   const quota = data?.quota;
   const quotaExhausted = quota && !quota.isPremium && quota.remaining <= 0;
 
-  async function send() {
-    const message = input.trim();
+  async function send(text?: string) {
+    const message = (text ?? input).trim();
     if (!message || streaming) return;
     setInput("");
     setError(null);
@@ -138,7 +193,7 @@ function CoachChat() {
         <div className="flex items-center gap-3">
           <KabaAvatar />
           <div>
-            <h1 className="font-display text-xl font-bold text-foreground">
+            <h1 className="font-display text-2xl font-bold text-foreground">
               Kaba — ton coach
             </h1>
             <p className="text-muted text-sm">
@@ -158,24 +213,25 @@ function CoachChat() {
           >
             {quota.isPremium
               ? "Premium — illimité"
-              : `${quota.remaining}/${quota.total} messages restants`}
+              : `${quota.remaining} message${quota.remaining > 1 ? "s" : ""} restant${quota.remaining > 1 ? "s" : ""} ce niveau`}
           </span>
         )}
       </div>
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto py-6 flex flex-col gap-4">
-        {(!data || data.messages.length === 0) && !pendingUserMsg && (
-          <div className="text-center text-muted py-12">
-            <span className="text-4xl block mb-3">🤖</span>
-            <p>
-              Pose ta première question à Kaba sur le niveau {levelId}.
-              <br />
-              Il connaît ton projet et ton parcours.
-            </p>
-          </div>
+        {data && data.messages.length === 0 && !pendingUserMsg && (
+          <Bubble
+            copyable={false}
+            msg={{
+              role: "ASSISTANT",
+              content: `Bienvenue ${user?.fullName?.split(" ")[0] ?? ""} 👋🏾 Je suis Kaba, ton coach. Je connais ton projet${user?.projectName ? ` (${user.projectName})` : ""} et ton parcours — on est au niveau ${levelId} : ${level?.title}.\n\nComme on dit : si tu veux aller loin, marchons ensemble. Pose-moi ta question, ou choisis une suggestion ci-dessous.`,
+            }}
+          />
         )}
-        {data?.messages.map((m) => <Bubble key={m.id} msg={m} />)}
+        {data?.messages.map((m) => (
+          <Bubble key={m.id} msg={m} copyable={m.role === "ASSISTANT"} />
+        ))}
         {pendingUserMsg && <Bubble msg={{ role: "USER", content: pendingUserMsg }} />}
         {streaming && streamText && (
           <Bubble msg={{ role: "ASSISTANT", content: streamText }} />
@@ -183,9 +239,7 @@ function CoachChat() {
         {streaming && !streamText && (
           <div className="flex gap-3">
             <KabaAvatar />
-            <span className="text-muted text-sm py-3 animate-pulse">
-              Kaba réfléchit...
-            </span>
+            <ThinkingDots />
           </div>
         )}
         {error && (
@@ -204,6 +258,20 @@ function CoachChat() {
             de plus, ou passe en <span className="text-cta font-semibold">Premium</span>.
           </p>
         ) : (
+          <>
+          {!streaming && (
+            <div className="flex gap-2 flex-wrap mb-3">
+              {(SUGGESTIONS[levelId] ?? SUGGESTIONS[1]).map((s) => (
+                <button
+                  key={s}
+                  onClick={() => send(s)}
+                  className="px-3 py-1.5 rounded-full border border-primary/30 text-primary text-xs sm:text-sm hover:bg-primary hover:text-white transition-colors"
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          )}
           <div className="flex gap-3">
             <textarea
               value={input}
@@ -219,13 +287,14 @@ function CoachChat() {
               className="flex-1 px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted/60 focus:border-primary focus:outline-none transition-colors resize-none"
             />
             <button
-              onClick={send}
+              onClick={() => send()}
               disabled={streaming || !input.trim()}
               className="px-6 py-3 rounded-xl bg-cta text-white font-bold hover:opacity-90 transition-opacity disabled:opacity-50"
             >
               Envoyer
             </button>
           </div>
+          </>
         )}
       </div>
     </div>
