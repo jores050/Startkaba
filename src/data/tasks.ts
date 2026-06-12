@@ -109,6 +109,18 @@ export const tasks: Task[] = [
           variables: ["qui", "probleme", "benefice"],
           xp: 5,
         },
+        // 10 — Self-check : test de la grand-mère (0 XP bonus — total de base reste 50 XP)
+        {
+          type: "self_check",
+          title: "Le test de la grand-mère 👵",
+          description: "Relis ta proposition de valeur à voix haute. Sans jargon, sans \"révolutionnaire\" — une phrase simple que tu pourrais dire à ta grand-mère. Si elle comprend, tu es sur la bonne voie.",
+          checklist: [
+            { id: "no_jargon", label: "Pas de mot technique ou anglophone incompris" },
+            { id: "grandma_test", label: "Ma grand-mère comprendrait cette phrase" },
+            { id: "specific", label: "Elle parle d\'UNE personne précise, pas de \"tout le monde\"" },
+          ],
+          xp: 0,
+        },
       ],
     },
   },

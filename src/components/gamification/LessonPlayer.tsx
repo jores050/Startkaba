@@ -77,6 +77,8 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
   const reflectionsRef = useRef<Map<number, string>>(new Map());
   // Accumulate micro_input answers: storageKey → value
   const microInputsRef = useRef<Map<string, string>>(new Map());
+  // self_check checklist state: checkboxId → checked
+  const [checklistState, setChecklistState] = useState<Record<string, boolean>>({});
 
   const exercise = lesson.exercises[idx];
   const isLast = idx === lesson.exercises.length - 1;
@@ -96,6 +98,9 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
     }
     if (exercise.type === "match") {
       setShuffledMatchRight(shuffleArray(exercise.pairs.map(p => p.right)));
+    }
+    if (exercise.type === "self_check") {
+      setChecklistState({});
     }
     if (exercise.type === "reflection_template") {
       const assembled = exercise.template.replace(
@@ -172,6 +177,18 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
     showXpPopup(xp);
     setLastCorrect(true);
     setKabaMsg("Brique ajoutée ! ✏️ On continue à construire.");
+    setPhase("feedback");
+  }
+
+  function handleSelfCheckContinue() {
+    if (exercise.type !== "self_check") return;
+    const allChecked = exercise.checklist.every(c => checklistState[c.id]);
+    setLastCorrect(true);
+    setKabaMsg(
+      allChecked
+        ? "Parfait, ta grand-mère comprendrait ! 🎉"
+        : "Pas de souci — tu peux modifier ta phrase avant de passer à la suite. 💪"
+    );
     setPhase("feedback");
   }
 
@@ -384,6 +401,8 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
             setReorderItems={setReorderItems}
             reorderChecked={reorderChecked}
             onTrueFalseSubmit={handleTrueFalseSubmit}
+            checklistState={checklistState}
+            setChecklistState={setChecklistState}
           />
         </div>
 
@@ -400,7 +419,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
                 }`}>
                   {phase === "dead" ? "Plus de cœurs !" : kabaMsg}
                 </p>
-                {!lastCorrect && phase !== "dead" && exercise.type !== "info" && exercise.type !== "reflection" && exercise.type !== "reflection_template" && exercise.type !== "micro_input" && (
+                {!lastCorrect && phase !== "dead" && exercise.type !== "info" && exercise.type !== "reflection" && exercise.type !== "reflection_template" && exercise.type !== "micro_input" && exercise.type !== "self_check" && (
                   <p className="text-foreground text-sm leading-relaxed">{getExplanation(exercise)}</p>
                 )}
                 {phase === "dead" && (
@@ -436,6 +455,7 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
               onReflectionContinue={handleReflectionContinue}
               onMicroInputSubmit={handleMicroInputSubmit}
               onReflectionTemplateContinue={handleReflectionTemplateContinue}
+              onSelfCheckContinue={handleSelfCheckContinue}
             />
           </div>
         )}
@@ -522,6 +542,8 @@ interface ExerciseRendererProps {
   setReorderItems: (v: string[]) => void;
   reorderChecked: boolean;
   onTrueFalseSubmit: (v: boolean) => void;
+  checklistState: Record<string, boolean>;
+  setChecklistState: (v: Record<string, boolean>) => void;
 }
 
 function ExerciseRenderer(props: ExerciseRendererProps) {
@@ -806,6 +828,54 @@ function ExerciseRenderer(props: ExerciseRendererProps) {
     );
   }
 
+  if (exercise.type === "self_check") {
+    const allChecked = exercise.checklist.every(c => props.checklistState[c.id]);
+    const checkedCount = exercise.checklist.filter(c => props.checklistState[c.id]).length;
+    return (
+      <div className="flex flex-col gap-4 mt-2">
+        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
+          <h2 className="font-display text-base font-bold text-foreground mb-2">{exercise.title}</h2>
+          <p className="text-sm text-foreground leading-relaxed">{exercise.description}</p>
+        </div>
+        <div className="flex flex-col gap-3">
+          {exercise.checklist.map(item => (
+            <label
+              key={item.id}
+              className={`flex items-start gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all select-none ${
+                answered
+                  ? props.checklistState[item.id]
+                    ? "border-green bg-green/10"
+                    : "border-border bg-surface opacity-60"
+                  : props.checklistState[item.id]
+                  ? "border-green bg-green/10"
+                  : "border-border bg-surface hover:border-green/50"
+              }`}
+            >
+              <input
+                type="checkbox"
+                disabled={answered}
+                checked={!!props.checklistState[item.id]}
+                onChange={e => {
+                  if (answered) return;
+                  props.setChecklistState({ ...props.checklistState, [item.id]: e.target.checked });
+                }}
+                className="mt-0.5 w-4 h-4 accent-green shrink-0"
+              />
+              <span className="text-sm text-foreground leading-snug">{item.label}</span>
+            </label>
+          ))}
+        </div>
+        {!answered && (
+          <p className="text-xs text-muted text-center">
+            {allChecked
+              ? "✓ Ta grand-mère approuve ! Tu peux continuer."
+              : `${checkedCount}/${exercise.checklist.length} critères cochés — continue quand tu es prêt`}
+          </p>
+        )}
+      </div>
+    );
+  }
+
   if (exercise.type === "reflection_template") {
     const value = props.textInputs[0] ?? "";
     return (
@@ -840,7 +910,7 @@ function ActionBar({
   exercise, selectedOption, textInputs, reorderChecked,
   onInfoContinue, onMcqSubmit, onFillBlankSubmit,
   onReorderCheck, onReflectionContinue,
-  onMicroInputSubmit, onReflectionTemplateContinue,
+  onMicroInputSubmit, onReflectionTemplateContinue, onSelfCheckContinue,
 }: {
   exercise: Exercise;
   selectedOption: number | null;
@@ -853,6 +923,7 @@ function ActionBar({
   onReflectionContinue: () => void;
   onMicroInputSubmit: () => void;
   onReflectionTemplateContinue: () => void;
+  onSelfCheckContinue: () => void;
 }) {
   if (exercise.type === "info") {
     return (
@@ -948,6 +1019,18 @@ function ActionBar({
     );
   }
 
+  if (exercise.type === "self_check") {
+    // Toujours accessible — auto-évaluation non bloquante
+    return (
+      <button
+        onClick={onSelfCheckContinue}
+        className="w-full py-3 rounded-xl bg-cta text-white font-bold text-sm hover:opacity-90 transition-opacity"
+      >
+        Continuer →
+      </button>
+    );
+  }
+
   return null;
 }
 
@@ -966,7 +1049,7 @@ function getExplanation(exercise: Exercise): string {
 // La barre de progression doit refléter les micro_inputs avec un style différent.
 // (utilisé dans le header — les segments micro_input sont plus fins)
 function isMicroInput(exercise: Exercise): boolean {
-  return exercise.type === "micro_input";
+  return exercise.type === "micro_input" || exercise.type === "self_check";
 }
 
 function shuffleArray<T>(arr: T[]): T[] {

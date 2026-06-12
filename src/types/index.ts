@@ -92,7 +92,9 @@ export type Exercise =
   // Reflection template (assemblage de micro_inputs — format tâche 101+)
   | { type: "reflection_template"; intro: string; template: string; variables: string[]; xp: number }
   // Micro-input : saisie courte attachée à l'exercice précédent, crée une "brique"
-  | { type: "micro_input"; prompt: string; placeholder: string; storageKey: string; xp: number };
+  | { type: "micro_input"; prompt: string; placeholder: string; storageKey: string; xp: number }
+  // Self-check : auto-évaluation par checklist (non bloquant, xp bonus optionnel)
+  | { type: "self_check"; title: string; description: string; checklist: { id: string; label: string }[]; xp: number };
 
 export interface Lesson {
   title: string;
