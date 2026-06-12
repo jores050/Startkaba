@@ -10,10 +10,6 @@ interface EnsureProfileParams {
   avatarUrl?: string;
 }
 
-// Crée ou retrouve le profil au premier login.
-// Gère le cas où l'email est déjà pris par un ancien compte (après clean-db ou
-// recréation d'un compte Supabase Auth avec le même email) :
-// dans ce cas on retrouve le profil existant par email et on l'utilise.
 export async function ensureProfile({
   userId,
   email,
@@ -21,30 +17,55 @@ export async function ensureProfile({
   city,
   avatarUrl,
 }: EnsureProfileParams) {
+  const createData = {
+    id: userId,
+    email,
+    fullName,
+    city: city ?? "OTHER",
+    avatarUrl,
+    currentLevelId: 1,
+    totalXp: 0,
+    subscriptionStatus: "FREE" as const,
+  };
+
   try {
     return await prisma.userProfile.upsert({
       where: { id: userId },
       update: {},
-      create: {
-        id: userId,
-        email,
-        fullName,
-        city: city ?? "OTHER",
-        avatarUrl,
-        currentLevelId: 1,
-        totalXp: 0,
-        subscriptionStatus: "FREE",
-      },
+      create: createData,
     });
   } catch (e) {
-    // P2002 = unique constraint violation : l'email existe déjà avec un autre ID.
-    // On retrouve le profil par email pour continuer sans bloquer l'utilisateur.
-    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
-      const existing = await prisma.userProfile.findUnique({
-        where: { email },
-      });
-      if (existing) return existing;
+    if (!(e instanceof Prisma.PrismaClientKnownRequestError) || e.code !== "P2002") {
+      throw e;
     }
-    throw e;
+
+    // Conflit email : un profil existe avec le même email mais un ID différent.
+    // Cas typique : clean-db a supprimé les profils mais pas les comptes Auth,
+    // et l'utilisateur s'est réinscrit avec un nouvel ID.
+    const conflicting = await prisma.userProfile.findUnique({ where: { email } });
+
+    if (conflicting) {
+      // Vérifier si ce profil orphelin a des dépendances (progress, badges…)
+      const [progressCount, badgeCount] = await Promise.all([
+        prisma.userProgress.count({ where: { userId: conflicting.id } }),
+        prisma.userBadge.count({ where: { userId: conflicting.id } }),
+      ]);
+
+      if (progressCount === 0 && badgeCount === 0) {
+        // Profil sans données : on le remplace par le bon (avec le bon auth ID).
+        await prisma.userProfile.delete({ where: { id: conflicting.id } });
+        return prisma.userProfile.create({ data: createData });
+      }
+
+      // Profil avec des données existantes : on met à jour l'email pour libérer
+      // la contrainte, puis on crée le nouveau profil propre.
+      // L'utilisateur perd ses anciennes données mais peut avancer.
+      await prisma.userProfile.update({
+        where: { id: conflicting.id },
+        data: { email: `__orphan__${conflicting.id}@startkaba.invalid` },
+      });
+    }
+
+    return prisma.userProfile.create({ data: createData });
   }
 }
