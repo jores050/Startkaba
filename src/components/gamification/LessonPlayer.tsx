@@ -266,20 +266,19 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
     />;
   }
 
-  // Footer color class (shared between mobile-fixed and desktop-static)
-  const footerColorCls =
-    phase === "dead"        ? "bg-error/10 border-error/30"
-    : lastCorrect           ? "bg-green/10 border-green/30"
-    :                         "bg-error/10 border-error/30";
+  const feedbackColorCls =
+    phase === "dead"  ? "bg-error/10 border-error/30"
+    : lastCorrect     ? "bg-green/10 border-green/30"
+    :                   "bg-error/10 border-error/30";
 
   return (
+    // Full-screen overlay — scrollable, no forced height on children
     <div
       className="fixed inset-0 z-50 bg-background overflow-y-auto"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Scrollable content — no forced height, pb clears the fixed footer on mobile */}
-      <div className="max-w-xl mx-auto px-4 pb-28 md:pb-8">
+      <div className="max-w-xl mx-auto px-4">
 
         {/* Header */}
         <div className="pt-4 pb-3">
@@ -298,7 +297,6 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
               ))}
             </div>
           </div>
-
           <div className="flex gap-1">
             {lesson.exercises.map((_, i) => (
               <div
@@ -309,14 +307,13 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
               />
             ))}
           </div>
-
           <div className="flex justify-between items-center mt-1">
             <span className="text-xs text-muted">{idx + 1} / {lesson.exercises.length}</span>
             <span className="text-xs font-bold text-primary">⚡ {totalXp} XP</span>
           </div>
         </div>
 
-        {/* Exercise body */}
+        {/* Exercise — natural height, no stretching */}
         <div className="py-2 relative">
           {xpPopups.map(p => (
             <div key={p.id} className="absolute top-2 right-0 pointer-events-none z-10 animate-xp-float">
@@ -342,15 +339,9 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
           />
         </div>
 
-      </div>
-
-      {/* ── Footer ──────────────────────────────────────────────────────────────
-          Mobile  : fixed bottom-0 full-width, content centered to max-w-xl
-          Desktop : static, max-w-xl centered, appears directly below content  */}
-
-      {phase !== "answering" && (
-        <div className={`fixed bottom-0 inset-x-0 border-t transition-colors md:static md:max-w-xl md:mx-auto ${footerColorCls}`}>
-          <div className="max-w-xl mx-auto px-4 py-4 md:mx-0 md:max-w-none">
+        {/* Feedback — immediately after content, no gap */}
+        {phase !== "answering" && (
+          <div className={`mt-6 rounded-2xl border p-4 transition-colors ${feedbackColorCls}`}>
             <div className="flex items-start gap-3 mb-3">
               <span className="text-2xl">
                 {phase === "dead" ? "💔" : lastCorrect ? "✅" : "❌"}
@@ -380,24 +371,26 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
               {phase === "dead" ? "Recommencer la leçon" : isLast ? "Terminer la leçon →" : "Continuer →"}
             </button>
           </div>
-        </div>
-      )}
+        )}
 
-      {phase === "answering" && (
-        <div className="fixed bottom-0 inset-x-0 bg-background md:static md:max-w-xl md:mx-auto">
-          <ActionBar
-            exercise={exercise}
-            selectedOption={selectedOption}
-            textInputs={textInputs}
-            reorderChecked={reorderChecked}
-            onInfoContinue={handleInfoContinue}
-            onMcqSubmit={handleMcqSubmit}
-            onFillBlankSubmit={handleFillBlankSubmit}
-            onReorderCheck={handleReorderCheck}
-            onReflectionContinue={handleReflectionContinue}
-          />
-        </div>
-      )}
+        {/* Action bar — immediately after content */}
+        {phase === "answering" && (
+          <div className="mt-6 pb-8">
+            <ActionBar
+              exercise={exercise}
+              selectedOption={selectedOption}
+              textInputs={textInputs}
+              reorderChecked={reorderChecked}
+              onInfoContinue={handleInfoContinue}
+              onMcqSubmit={handleMcqSubmit}
+              onFillBlankSubmit={handleFillBlankSubmit}
+              onReorderCheck={handleReorderCheck}
+              onReflectionContinue={handleReflectionContinue}
+            />
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }
@@ -421,7 +414,7 @@ function CompletionScreen({
 }) {
   return (
     <div className="fixed inset-0 z-50 bg-background overflow-y-auto">
-    <div className="min-h-full max-w-xl mx-auto flex flex-col items-center justify-center px-6 py-12 text-center">
+    <div className="max-w-xl mx-auto px-6 py-16 text-center">
       <span className="text-6xl mb-4 animate-badge-pop">🏆</span>
       <h2 className="font-display text-2xl font-bold text-foreground mb-2">Leçon terminée !</h2>
       <p className="text-muted mb-6">{exerciseCount} exercices · {totalXp} XP gagnés</p>
@@ -759,40 +752,34 @@ function ActionBar({
 }) {
   if (exercise.type === "info") {
     return (
-      <div className="shrink-0 px-4 py-4 border-t border-border">
-        <button onClick={onInfoContinue} className="w-full py-3 rounded-xl bg-cta text-white font-bold text-sm hover:opacity-90 transition-opacity">
-          Continuer →
-        </button>
-      </div>
+      <button onClick={onInfoContinue} className="w-full py-3 rounded-xl bg-cta text-white font-bold text-sm hover:opacity-90 transition-opacity">
+        Continuer →
+      </button>
     );
   }
 
   if (exercise.type === "reflection") {
     const hasText = (textInputs[0] ?? "").trim().length > 0;
     return (
-      <div className="shrink-0 px-4 py-4 border-t border-border">
-        <button
-          disabled={!hasText}
-          onClick={onReflectionContinue}
-          className="w-full py-3 rounded-xl font-bold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-cta text-white hover:opacity-90"
-        >
-          {hasText ? "Continuer →" : "Écris ta réflexion d'abord"}
-        </button>
-      </div>
+      <button
+        disabled={!hasText}
+        onClick={onReflectionContinue}
+        className="w-full py-3 rounded-xl font-bold text-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed bg-cta text-white hover:opacity-90"
+      >
+        {hasText ? "Continuer →" : "Écris ta réflexion d'abord"}
+      </button>
     );
   }
 
   if (exercise.type === "mcq" || exercise.type === "scenario") {
     return (
-      <div className="shrink-0 px-4 py-4 border-t border-border">
-        <button
-          disabled={selectedOption === null}
-          onClick={onMcqSubmit}
-          className="w-full py-3 rounded-xl bg-primary text-white font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          {selectedOption === null ? "Choisis une réponse" : "Vérifier →"}
-        </button>
-      </div>
+      <button
+        disabled={selectedOption === null}
+        onClick={onMcqSubmit}
+        className="w-full py-3 rounded-xl bg-primary text-white font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        {selectedOption === null ? "Choisis une réponse" : "Vérifier →"}
+      </button>
     );
   }
 
@@ -805,15 +792,13 @@ function ActionBar({
       ? true
       : textInputs.every(t => t.trim().length > 0);
     return (
-      <div className="shrink-0 px-4 py-4 border-t border-border">
-        <button
-          disabled={!allFilled}
-          onClick={onFillBlankSubmit}
-          className="w-full py-3 rounded-xl bg-primary text-white font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
-        >
-          {allFilled ? "Vérifier →" : "Remplis tous les champs"}
-        </button>
-      </div>
+      <button
+        disabled={!allFilled}
+        onClick={onFillBlankSubmit}
+        className="w-full py-3 rounded-xl bg-primary text-white font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        {allFilled ? "Vérifier →" : "Remplis tous les champs"}
+      </button>
     );
   }
 
@@ -823,15 +808,13 @@ function ActionBar({
 
   if (exercise.type === "reorder") {
     return (
-      <div className="shrink-0 px-4 py-4 border-t border-border">
-        <button
-          disabled={reorderChecked}
-          onClick={onReorderCheck}
-          className="w-full py-3 rounded-xl bg-primary text-white font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-40"
-        >
-          Vérifier l'ordre →
-        </button>
-      </div>
+      <button
+        disabled={reorderChecked}
+        onClick={onReorderCheck}
+        className="w-full py-3 rounded-xl bg-primary text-white font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-40"
+      >
+        Vérifier l'ordre →
+      </button>
     );
   }
 
