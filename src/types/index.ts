@@ -77,6 +77,19 @@ export interface QuizAnswer {
   selectedIndex: number;
 }
 
+export type CourseStep =
+  | { type: "concept"; icon: string; title: string; content: string }
+  | { type: "example"; icon: string; title: string; content: string }
+  | { type: "reflection"; icon: string; question: string; placeholder: string }
+  | { type: "check"; icon: string; question: string; options: string[]; correctIndex: number; explanation: string }
+  | { type: "takeaway"; icon: string; content: string };
+
+export interface Course {
+  title: string;
+  readingTime: string;
+  steps: CourseStep[];
+}
+
 export interface Task {
   id: number;
   levelId: number;
@@ -84,6 +97,7 @@ export interface Task {
   description: string;
   xp: number;
   quiz: QuizQuestion[];
+  course?: Course;
 }
 
 export interface Level {
