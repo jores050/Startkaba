@@ -6,13 +6,17 @@ import { getTaskById } from "@/data/tasks";
 import { getCurrentLevel, getTotalXp } from "@/lib/utils/xp";
 import { checkAndAwardBadges } from "@/lib/utils/badges";
 import { getBadgeById } from "@/data/badges";
-import { mockProgress, recordMockLessonComplete } from "@/lib/dev/mock-progress";
+import { mockProgress, recordMockLessonComplete, upsertMockReflection } from "@/lib/dev/mock-progress";
 import { mockProfile } from "@/lib/dev/mock-profile";
 
 const isDev = process.env.NODE_ENV !== "production";
 
 const bodySchema = z.object({
   xpEarned: z.number().int().min(0).max(500),
+  reflections: z.array(z.object({
+    exerciseIndex: z.number().int().min(0),
+    answer: z.string().max(10000),
+  })).optional().default([]),
 });
 
 interface LessonResponse {
@@ -20,7 +24,7 @@ interface LessonResponse {
   badgesUnlocked: { id: number; name: string; icon: string; description: string }[];
 }
 
-// POST — marque une leçon comme complétée et attribue l'XP.
+// POST — marque une leçon comme complétée, attribue l'XP, sauvegarde les réflexions.
 export async function POST(
   request: Request,
   { params }: { params: { id: string } }
@@ -40,29 +44,38 @@ export async function POST(
     return NextResponse.json({ error: "xpEarned requis (entier 0-500)" }, { status: 400 });
   }
 
-  const { xpEarned } = parsed.data;
+  const { xpEarned, reflections } = parsed.data;
 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
     if (isDev) {
-      return NextResponse.json(completeMock(taskId, task.levelId, xpEarned));
+      return NextResponse.json(completeMock(taskId, task.levelId, xpEarned, reflections));
     }
     return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
   }
 
   try {
-    return NextResponse.json(await completeReal(user.id, taskId, task.levelId, xpEarned));
+    return NextResponse.json(await completeReal(user.id, taskId, task.levelId, xpEarned, reflections));
   } catch (e) {
     console.error("[/api/tasks/[id]/complete-lesson] erreur:", e);
     return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
   }
 }
 
-function completeMock(taskId: number, levelId: number, xpEarned: number): LessonResponse {
-  // Allow completing even if not IN_PROGRESS (lesson started inline)
+function completeMock(
+  taskId: number,
+  levelId: number,
+  xpEarned: number,
+  reflections: { exerciseIndex: number; answer: string }[]
+): LessonResponse {
   recordMockLessonComplete(taskId, levelId, xpEarned);
+
+  const now = new Date().toISOString();
+  for (const r of reflections) {
+    upsertMockReflection({ userId: "mock", taskId, levelId, exerciseIndex: r.exerciseIndex, answer: r.answer, createdAt: now });
+  }
 
   const rows = Array.from(mockProgress.values());
   mockProfile.totalXp = getTotalXp(rows);
@@ -73,7 +86,6 @@ function completeMock(taskId: number, levelId: number, xpEarned: number): Lesson
     { rows, earnedBadgeIds: mockProfile.badges.map(b => b.badgeId) },
     "TASK_COMPLETED"
   );
-  const now = new Date().toISOString();
   for (const id of newBadgeIds) {
     mockProfile.badges.push({ badgeId: id, earnedAt: now });
   }
@@ -91,14 +103,25 @@ async function completeReal(
   userId: string,
   taskId: number,
   levelId: number,
-  xpEarned: number
+  xpEarned: number,
+  reflections: { exerciseIndex: number; answer: string }[]
 ): Promise<LessonResponse> {
-  // Upsert progress — la leçon peut être lancée sans appel à /start
   await prisma.userProgress.upsert({
     where: { userId_taskId: { userId, taskId } },
     update: { status: "COMPLETED", xpEarned, completedAt: new Date() },
     create: { userId, taskId, levelId, status: "COMPLETED", xpEarned, completedAt: new Date() },
   });
+
+  // Upsert reflections
+  if (reflections.length > 0) {
+    await Promise.all(reflections.map(r =>
+      prisma.taskReflection.upsert({
+        where: { userId_taskId_exerciseIndex: { userId, taskId, exerciseIndex: r.exerciseIndex } },
+        update: { answer: r.answer },
+        create: { userId, taskId, levelId, exerciseIndex: r.exerciseIndex, answer: r.answer },
+      })
+    ));
+  }
 
   const [rows, earnedBadges] = await Promise.all([
     prisma.userProgress.findMany({

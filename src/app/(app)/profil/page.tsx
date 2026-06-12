@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import useSWR from "swr";
 import Link from "next/link";
+import type { ReflectionWithMeta } from "@/app/api/reflections/route";
 import { useUser, type FullProfile } from "@/hooks/use-user";
 import { isSoundEnabled, setSoundEnabled } from "@/lib/sound";
 import { Avatar } from "@/components/ui/Avatar";
@@ -64,6 +66,57 @@ function SoundToggle() {
         <span className={`block w-5 h-5 rounded-full bg-white transition-transform shadow-sm ${on ? "translate-x-5" : ""}`} />
       </span>
     </button>
+  );
+}
+
+const fetcher = (url: string) => fetch(url).then(r => r.json());
+
+function ReflectionsSection() {
+  const { data, isLoading } = useSWR<ReflectionWithMeta[]>("/api/reflections", fetcher);
+
+  if (isLoading) {
+    return (
+      <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 shadow-sm animate-pulse">
+        <div className="h-5 bg-[#E8EAF0] rounded w-48 mb-4" />
+        <div className="flex flex-col gap-3">
+          <div className="h-20 bg-[#E8EAF0] rounded-xl" />
+          <div className="h-20 bg-[#E8EAF0] rounded-xl" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!data || data.length === 0) return null;
+
+  // Group by levelId
+  const byLevel = data.reduce<Record<number, ReflectionWithMeta[]>>((acc, r) => {
+    (acc[r.levelId] ??= []).push(r);
+    return acc;
+  }, {});
+
+  return (
+    <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 shadow-sm">
+      <h2 className="font-display text-xl font-bold text-[#0A0E2A] mb-1">Mes réflexions</h2>
+      <p className="text-[#8892C8] text-sm mb-5">Tes réponses aux exercices de réflexion, par niveau.</p>
+      {Object.entries(byLevel)
+        .sort(([a], [b]) => Number(a) - Number(b))
+        .map(([levelId, refs]) => (
+          <div key={levelId} className="mb-6 last:mb-0">
+            <p className="text-xs font-bold text-[#0722AB] uppercase tracking-wider mb-3">
+              Niveau {levelId}
+            </p>
+            <div className="flex flex-col gap-4">
+              {refs.map((r) => (
+                <div key={`${r.taskId}-${r.exerciseIndex}`} className="bg-[#F8F9FF] border border-[#E8EAF0] rounded-xl p-4">
+                  <p className="text-xs font-semibold text-[#8892C8] mb-1">{r.taskTitle}</p>
+                  <p className="text-sm font-medium text-[#0A0E2A] mb-2">💭 {r.question}</p>
+                  <p className="text-sm text-[#4A5280] leading-relaxed whitespace-pre-wrap">{r.answer}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+    </div>
   );
 }
 
@@ -285,6 +338,9 @@ export default function ProfilPage() {
           </div>
         )}
       </div>
+
+      {/* Réflexions */}
+      <ReflectionsSection />
 
       {/* Préférences */}
       <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 shadow-sm">

@@ -27,6 +27,7 @@ model UserProfile {
   earnedBadges  UserBadge[]
   coachMessages CoachMessage[]
   notifications Notification[]
+  reflections   TaskReflection[]
 
   @@map("user_profiles")
 }
@@ -119,4 +120,20 @@ enum NotificationType {
   TASK_COMPLETED
   MESSAGE_RECEIVED
   SYSTEM
+}
+
+model TaskReflection {
+  id             String   @id @default(uuid())
+  userId         String
+  taskId         Int
+  levelId        Int
+  exerciseIndex  Int
+  answer         String   @db.Text
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@unique([userId, taskId, exerciseIndex])
+  @@map("task_reflections")
 }

@@ -87,6 +87,38 @@ export function recordMockLessonComplete(
   return entry;
 }
 
+// ─── Mock reflections ─────────────────────────────────────────────────────────
+
+export interface ReflectionEntry {
+  userId: string;
+  taskId: number;
+  levelId: number;
+  exerciseIndex: number;
+  answer: string;
+  createdAt: string;
+}
+
+const globalForReflections = globalThis as unknown as {
+  mockReflections?: ReflectionEntry[];
+};
+export const mockReflections: ReflectionEntry[] =
+  globalForReflections.mockReflections ?? [];
+globalForReflections.mockReflections = mockReflections;
+
+export function upsertMockReflection(entry: ReflectionEntry): void {
+  const i = mockReflections.findIndex(
+    r => r.userId === entry.userId && r.taskId === entry.taskId && r.exerciseIndex === entry.exerciseIndex
+  );
+  if (i >= 0) mockReflections[i] = entry;
+  else mockReflections.push(entry);
+}
+
+export function getMockReflections(userId: string): ReflectionEntry[] {
+  return mockReflections.filter(r => r.userId === userId);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 export function startMockTask(taskId: number, levelId: number): ProgressEntry {
   const existing = mockProgress.get(taskId);
   if (existing && existing.status !== "NOT_STARTED") return existing;

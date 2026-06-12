@@ -73,6 +73,8 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
   const [reorderItems, setReorderItems] = useState<string[]>([]);
   const [reorderChecked, setReorderChecked] = useState(false);
   const [shuffledMatchRight, setShuffledMatchRight] = useState<string[]>([]);
+  // Accumulate reflection answers: exerciseIndex → answer text
+  const reflectionsRef = useRef<Map<number, string>>(new Map());
 
   const exercise = lesson.exercises[idx];
   const isLast = idx === lesson.exercises.length - 1;
@@ -146,6 +148,9 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
     showXpPopup(xp);
     setLastCorrect(true);
     setKabaMsg("Bien réfléchi ! Chaque réflexion renforce ta vision. 💭");
+    // Persist reflection answer before moving on
+    const answer = (textInputs[0] ?? "").trim();
+    if (answer) reflectionsRef.current.set(idx, answer);
     setPhase("feedback");
   }
 
@@ -227,11 +232,14 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
   const completeLessonApi = useCallback(async () => {
     setSubmitting(true);
     setPhase("complete");
+    const reflections = Array.from(reflectionsRef.current.entries()).map(
+      ([exerciseIndex, answer]) => ({ exerciseIndex, answer })
+    );
     try {
       const res = await fetch(`/api/tasks/${taskId}/complete-lesson`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ xpEarned: totalXp }),
+        body: JSON.stringify({ xpEarned: totalXp, reflections }),
       });
       const data = await res.json().catch(() => null);
       if (!res.ok) {
