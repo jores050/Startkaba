@@ -136,6 +136,7 @@ export const tasks: Task[] = [
     lesson: {
       title: "Ton moteur intérieur — pourquoi toi, pourquoi maintenant",
       exercises: [
+        // 0 — Info
         {
           type: "info",
           icon: "🔥",
@@ -143,6 +144,7 @@ export const tasks: Task[] = [
           content: "La plupart des startups ne meurent pas à cause d\'une mauvaise idée — elles meurent parce que le fondateur a abandonné au premier moment difficile. \'Parce que c\'est rentable\' ne suffit pas quand tu n\'as pas dormi depuis 3 jours et que ton premier client demande un remboursement.",
           xp: 5,
         },
+        // 1 — MCQ : enseigne "motivation durable"
         {
           type: "mcq",
           question: "Parmi ces motivations, laquelle est la plus durable sur 5 ans ?",
@@ -155,6 +157,15 @@ export const tasks: Task[] = [
           explanation: "La motivation \'problème personnel\' est la plus durable parce qu\'elle ne dépend pas de facteurs externes. Les entrepreneurs qui ont vécu le problème ont une compréhension profonde de la douleur de leurs clients — et ça ne se simule pas. Les deux autres s\'effondrent au premier obstacle.",
           xp: 10,
         },
+        // 2 — Micro-input : brique "motivation"
+        {
+          type: "micro_input",
+          prompt: "Quelle est ta raison profonde à toi — celle qui tiendra quand ce sera difficile ? (Vécu personnel, problème observé de près, conviction forte...)",
+          placeholder: "Ex : j\'ai vu ma mère passer des heures à chercher un médecin pour mon frère, et aucun système fiable n\'existait dans notre quartier...",
+          storageKey: "motivation",
+          xp: 2,
+        },
+        // 3 — True/false
         {
           type: "true_false",
           statement: "Si ton idée ne te passionne pas complètement dès le départ, tu ne devrais pas la poursuivre.",
@@ -162,6 +173,7 @@ export const tasks: Task[] = [
           explanation: "Faux. La passion peut venir après la maîtrise et les premiers succès. Ce qui compte : es-tu motivé par le PROBLÈME que tu veux résoudre ? Certains grands entrepreneurs n\'aimaient pas leur secteur au départ mais croyaient profondément à l\'impact qu\'ils pouvaient avoir.",
           xp: 5,
         },
+        // 4 — Info : Ikigai
         {
           type: "info",
           icon: "⚡",
@@ -169,6 +181,7 @@ export const tasks: Task[] = [
           content: "4 cercles qui, à leur intersection, créent un projet durable : ce que tu AIMES faire, ce en quoi tu es BON (prouvé), ce dont le monde a BESOIN (quelqu\'un paie pour ça), ce pour quoi on te PAIERA. Manquer un cercle, c\'est construire sur du sable.",
           xp: 5,
         },
+        // 5 — Scénario : enseigne "compétence alignée"
         {
           type: "scenario",
           context: "Moussa à Bamako a 3 idées. Idée 1 : livraison de médicaments (marché évident, mais aucune connexion avec le secteur santé). Idée 2 : formation Excel pour PME (il a 8 ans de comptabilité, il connaît exactement les lacunes). Idée 3 : appli de dating (il a vu que ça marche en Europe).",
@@ -180,14 +193,23 @@ export const tasks: Task[] = [
           ],
           correctIndex: 1,
           explanation: "Idée 2 est l\'alignement parfait : Moussa a vécu le problème (8 ans à voir les PME galèrer avec Excel), il a la compétence technique, et il connaît ses futurs clients. C\'est exactement ce que les investisseurs et les clients recherchent : l\'expert du problème.",
-          xp: 15,
+          xp: 16,
         },
+        // 6 — Micro-input : brique "competence"
         {
-          type: "reflection",
-          icon: "🤔",
-          question: "Écris tes 3 raisons profondes",
-          placeholder: "Raison 1 (vécu personnel) : Quelle expérience dans ta vie t\'a montré que ce problème est réel et important pour toi ?\n\nRaison 2 (compétence) : Qu\'est-ce que tu sais faire — prouvé par des expériences passées — qui te rend particulièrement apte à résoudre ce problème ?\n\nRaison 3 (mission) : Si ton projet réussit dans 5 ans, qu\'est-ce qui change concrètement dans la vie des gens que tu sers ?",
-          xp: 10,
+          type: "micro_input",
+          prompt: "Quelle est ta compétence prouvée pour résoudre ce problème ? (Ce que tu sais déjà faire, démontré par une expérience réelle — pas ce que tu veux apprendre.)",
+          placeholder: "Ex : 6 ans de gestion d\'une boutique en ligne, je connais tous les obstacles des commerçants numériques débutants...",
+          storageKey: "competence",
+          xp: 2,
+        },
+        // 7 — Reflection template : assemblage final
+        {
+          type: "reflection_template",
+          intro: "Tes deux ancrages sont posés. Voilà ce que ça donne assemblé — ajuste les mots si besoin.",
+          template: "Je me lance dans ce projet parce que {motivation}. Je suis particulièrement bien placé pour ça parce que {competence}.",
+          variables: ["motivation", "competence"],
+          xp: 5,
         },
       ],
     },
@@ -203,6 +225,7 @@ export const tasks: Task[] = [
     lesson: {
       title: "Penser problème, pas solution — la discipline qui sauve les startups",
       exercises: [
+        // 0 — Info
         {
           type: "info",
           icon: "🔍",
@@ -210,6 +233,7 @@ export const tasks: Task[] = [
           content: "La plupart des entrepreneurs passent leurs premières semaines à décrire leur produit. C\'est l\'erreur classique de quelqu\'un amoureux de sa solution. Tu peux construire quelque chose de techniquement parfait qui ne résout aucun problème que les gens sont prêts à payer pour résoudre.",
           xp: 5,
         },
+        // 1 — MCQ : enseigne "symptôme vs vrai problème"
         {
           type: "mcq",
           question: "Yao dit : \'Je veux créer une appli de gestion de boutique car les outils existants sont mauvais.\' Quel est le problème avec cette approche ?",
@@ -222,6 +246,15 @@ export const tasks: Task[] = [
           explanation: "Yao part d\'une solution technique et cherche à la justifier. Le bon point de départ : \'Qu\'est-ce qui frustre vraiment les propriétaires de boutiques au quotidien ?\' La réponse pourrait mener à une appli — ou à une formation, un service, ou autre chose entièrement.",
           xp: 10,
         },
+        // 2 — Micro-input : brique "probleme_principal"
+        {
+          type: "micro_input",
+          prompt: "Quel est le VRAI problème que tu veux résoudre — formulé du côté de ton client, pas du tien ? (Pas \'il n\'existe pas mon produit\', mais la douleur concrète qu\'il vit.)",
+          placeholder: "Ex : les artisans de Dakar perdent 3 clients par semaine faute de pouvoir prouver leur sérieux — pas de portfolio, pas d\'avis vérifiés, pas de contact fiable...",
+          storageKey: "probleme_principal",
+          xp: 2,
+        },
+        // 3 — True/false
         {
           type: "true_false",
           statement: "Un bon entrepreneur doit avoir une idée de solution précise avant de commencer ses recherches.",
@@ -229,6 +262,7 @@ export const tasks: Task[] = [
           explanation: "Faux. Les meilleurs entrepreneurs commencent par observer un problème réel, l\'étudient en profondeur, et laissent la solution émerger des données terrain. Airbnb n\'a pas commencé par \'créons une plateforme\' — ils ont commencé par \'nous n\'avons pas d\'argent pour le loyer, des gens ont des chambres vides\'.",
           xp: 5,
         },
+        // 4 — Info : 5 Pourquoi
         {
           type: "info",
           icon: "🌳",
@@ -236,13 +270,15 @@ export const tasks: Task[] = [
           content: "Inventée chez Toyota : à chaque réponse, tu poses un nouveau \'Pourquoi ?\' jusqu\'à 5 fois pour atteindre la cause racine. \'Mes clients annulent\' → Pourquoi ? → \'Livraisons en retard\' → Pourquoi ? → \'Fournisseurs imprévisibles\' → Pourquoi ? → Voilà le vrai problème à résoudre.",
           xp: 5,
         },
+        // 5 — Fill blank
         {
           type: "fill_blank",
           template: "La méthode des 5 Pourquoi part du {0} visible pour atteindre la {1} racine du problème.",
           blanks: ["symptôme", "cause"],
           isOpenAnswer: false,
-          xp: 10,
+          xp: 8,
         },
+        // 6 — Scénario : enseigne "cause_racine via 5 Pourquoi"
         {
           type: "scenario",
           context: "Moussa à Bamako remarque que les commerçants du marché Médine perdent beaucoup de marchandise périmée. Après 5 Pourquoi : ils commandent trop → ne savent pas ce qui se vend → pas de registre de ventes → trop compliqué → ça prend 1h par soir.",
@@ -256,6 +292,15 @@ export const tasks: Task[] = [
           explanation: "La cause racine est le temps (1h/soir trop long). La 2ème adresse exactement ça : rendre le suivi rapide. La réfrigération et la formation adressent des symptômes, pas la cause. C\'est la puissance des 5 Pourquoi : éviter de résoudre le mauvais problème.",
           xp: 15,
         },
+        // 7 — Micro-input : brique "cause_racine"
+        {
+          type: "micro_input",
+          prompt: "Après avoir posé 5 Pourquoi sur ton problème, quelle est la cause racine — la vraie source profonde, pas le symptôme visible ?",
+          placeholder: "Ex : cause racine = les commerçants n\'ont aucun moyen simple de collecter des avis clients depuis leur téléphone basique, donc ils ne peuvent pas prouver leur fiabilité...",
+          storageKey: "cause_racine",
+          xp: 2,
+        },
+        // 8 — Reorder
         {
           type: "reorder",
           items: [
@@ -265,13 +310,14 @@ export const tasks: Task[] = [
             "Reformuler le problème avec précision (qui, quoi, conséquence)",
             "Valider que d\'autres personnes ont le même problème",
           ],
-          xp: 10,
+          xp: 8,
         },
+        // 9 — Reflection template : assemblage final
         {
-          type: "reflection",
-          icon: "🤔",
-          question: "Quel est le vrai problème que tu veux résoudre ?",
-          placeholder: "Commence par le symptôme, puis applique les 5 Pourquoi :\n\nSymptôme observé : ...\nPourquoi ? → ...\nPourquoi ? → ...\nPourquoi ? → ...\nPourquoi ? → ...\nPourquoi ? → ...\n\nCause racine identifiée : ...\n\nFormulation finale du problème :\n\'Les [qui] qui [contexte] ont du mal à [quoi] parce que [cause racine], et ça leur coûte [conséquence].\'",
+          type: "reflection_template",
+          intro: "Le vrai problème que tu résous est maintenant formulé avec précision. Relis et ajuste les mots si besoin.",
+          template: "Le problème principal que je résous : {probleme_principal}. Sa cause racine (après 5 Pourquoi) : {cause_racine}.",
+          variables: ["probleme_principal", "cause_racine"],
           xp: 15,
         },
       ],
@@ -287,6 +333,7 @@ export const tasks: Task[] = [
     lesson: {
       title: "Construire ta persona — mettre un visage sur ton marché",
       exercises: [
+        // 0 — Info
         {
           type: "info",
           icon: "👤",
@@ -294,6 +341,7 @@ export const tasks: Task[] = [
           content: "Un personnage semi-fictif qui représente ton client idéal — avec un nom, une histoire, des habitudes et des frustrations précises. Sans persona précise, tu construis pour tout le monde, ce qui veut dire pour personne. Elle guide chaque décision : produit, prix, canal, message.",
           xp: 5,
         },
+        // 1 — MCQ
         {
           type: "mcq",
           question: "À quoi sert concrètement une persona dans la création d\'un business ?",
@@ -306,6 +354,7 @@ export const tasks: Task[] = [
           explanation: "La persona guide toutes les micro-décisions : \'Ma persona utilise WhatsApp ou Instagram ?\', \'Elle préfère payer avant ou après ?\', \'Elle lit les descriptions longues ?\'. Sans réponses précises à ces questions, tu dépenses ton argent sur les mauvais canaux.",
           xp: 10,
         },
+        // 2 — True/false
         {
           type: "true_false",
           statement: "Plus ta persona est large (ex: \'femmes 18-45 ans\'), plus tu touches de clientes potentielles.",
@@ -313,6 +362,7 @@ export const tasks: Task[] = [
           explanation: "Faux. Une persona trop large = message trop générique = personne ne se reconnaît. \'Mamans de 28-38 ans à Lomé qui travaillent et cherchent des solutions de garde fiables pour moins de 15 000 FCFA/semaine\' est bien plus puissant. La précision permet un message qui résonne vraiment.",
           xp: 5,
         },
+        // 3 — Info
         {
           type: "info",
           icon: "🗂️",
@@ -320,6 +370,7 @@ export const tasks: Task[] = [
           content: "Démographique (âge, ville, situation familiale), Professionnel (métier, revenus approximatifs), Comportemental (habitudes mobile, achat), Frustrations (ce qui l\'énerve dans les solutions actuelles), Motivations (ce qu\'il/elle veut vraiment), Médias (WhatsApp ? Facebook ? Terrain ?).",
           xp: 5,
         },
+        // 4 — MCQ
         {
           type: "mcq",
           question: "Quelle est la source de données la plus fiable pour construire une persona ?",
@@ -332,6 +383,7 @@ export const tasks: Task[] = [
           explanation: "Les interviews réelles révèlent ce que les gens ne disent pas : comportements réels, vraies frustrations, mots exacts qu\'ils utilisent. L\'intuition biaise, les stats nationales sont trop macro. Une persona construite sur des citations réelles est une arme — une persona imaginée est une illusion.",
           xp: 10,
         },
+        // 5 — Scénario : enseigne "frustration + comportement = clés de la persona"
         {
           type: "scenario",
           context: "Fatou vend des pagnes au marché d\'Adidogomé à Lomé. 32 ans, 2 enfants, utilise WhatsApp Business, gère son stock sur carnet (abandonne souvent après 2 semaines). Revenu : 180-250k FCFA/mois. Frustration principale : ne sait jamais combien elle a gagné à la fin du mois.",
@@ -345,13 +397,23 @@ export const tasks: Task[] = [
           explanation: "Fatou utilise WhatsApp, abandonne les solutions qui demandent trop d\'effort (cahier = abandon), et a besoin de rapidité. Le bot WhatsApp correspond exactement à ses habitudes et à sa contrainte. Formation = trop cher et long, PC = hors de son usage quotidien.",
           xp: 15,
         },
+        // 6 — Micro-input : brique "frustration"
+        {
+          type: "micro_input",
+          prompt: "Quelle est la frustration principale de ton client avec les solutions actuelles — ce qu\'il se dit quand ça ne marche pas ?",
+          placeholder: "Ex : elle doit appeler 5 couturières différentes à chaque commande, aucune ne répond à l\'heure, et les prix changent sans prévenir...",
+          storageKey: "frustration",
+          xp: 2,
+        },
+        // 7 — Fill blank
         {
           type: "fill_blank",
           template: "Une persona efficace décrit un client {0} — pas un groupe {1}. Elle est construite sur des {2} réelles, pas sur des {3}.",
           blanks: ["précis", "vague", "données", "suppositions"],
           isOpenAnswer: false,
-          xp: 10,
+          xp: 8,
         },
+        // 8 — Match
         {
           type: "match",
           pairs: [
@@ -360,8 +422,9 @@ export const tasks: Task[] = [
             { left: "Frustrations", right: "Ce que la solution actuelle ne résout pas" },
             { left: "Motivations", right: "Ce qu\'il veut vraiment accomplir dans sa vie" },
           ],
-          xp: 10,
+          xp: 8,
         },
+        // 9 — MCQ : enseigne "précision du profil client"
         {
           type: "mcq",
           question: "Tu as 2 personas. A = \'femmes entrepreneurs à Dakar\'. B = \'femmes dirigeantes de PME 3-15 employés à Dakar Plateau, 30-45 ans, qui gèrent leur compta sur Excel et perdent 1h/jour à corriger des erreurs\'. Laquelle est utilisable ?",
@@ -374,11 +437,20 @@ export const tasks: Task[] = [
           explanation: "B est la seule utilisable. Avec A, impossible de savoir où les trouver, quel message leur envoyer, quel prix elles accepteront. Avec B : elles sont sur LinkedIn Dakar et dans les réseaux PME, le message est \'finissez avec Excel\', le prix peut se calculer à partir de l\'heure perdue.",
           xp: 10,
         },
+        // 10 — Micro-input : brique "profil_client"
         {
-          type: "reflection",
-          icon: "🤔",
-          question: "Construis ta persona principale en 6 dimensions",
-          placeholder: "Prénom fictif + âge : ...\n\n📍 Démographique (ville, quartier, situation familiale) :\n💼 Professionnel (métier, revenus approximatifs en FCFA) :\n📱 Comportemental (mobile, habitudes d\'achat, canal préféré) :\n😤 Frustrations (3 choses qui l\'énervent dans les solutions actuelles) :\n🎯 Motivation profonde (ce qu\'elle/il veut vraiment) :\n📢 Médias (WhatsApp ? Facebook ? Terrain ? Radio ?) :\n\nUne citation typique qu\'il/elle dirait sur son problème :",
+          type: "micro_input",
+          prompt: "Décris ton client idéal précisément : qui est-il, où est-il, quelle est sa situation quotidienne ? (Âge approximatif, ville, métier, revenu estimé en FCFA)",
+          placeholder: "Ex : femme de 30-42 ans, commerçante à Abidjan Adjamé, 2-3 enfants, revenu ~250k FCFA/mois, utilise WhatsApp tout le temps, gère ses comptes sur carnet...",
+          storageKey: "profil_client",
+          xp: 2,
+        },
+        // 11 — Reflection template : assemblage final
+        {
+          type: "reflection_template",
+          intro: "Ta persona principale prend forme. Voilà ce que donnent tes deux briques assemblées — enrichis le texte librement.",
+          template: "Mon client idéal : {profil_client}. Sa frustration principale avec les solutions actuelles : {frustration}.",
+          variables: ["profil_client", "frustration"],
           xp: 20,
         },
       ],
@@ -394,6 +466,7 @@ export const tasks: Task[] = [
     lesson: {
       title: "L\'UVP — l\'arme de communication la plus puissante de ton business",
       exercises: [
+        // 0 — Info
         {
           type: "info",
           icon: "💎",
@@ -401,6 +474,7 @@ export const tasks: Task[] = [
           content: "Ta proposition de valeur définit ce que tu offres (interne). Ton UVP est la formulation externe, la phrase que tu dis à un client : \'Pourquoi moi ?\' Elle doit déclencher \'Ah, c\'est exactement ce qu\'il me faut !\' — pas \'c\'est intéressant\'. Si c\'est intéressant, c\'est pas assez fort.",
           xp: 5,
         },
+        // 1 — MCQ
         {
           type: "mcq",
           question: "Quel est l\'objectif principal d\'une bonne UVP ?",
@@ -413,6 +487,7 @@ export const tasks: Task[] = [
           explanation: "Une UVP n\'a pas besoin d\'expliquer tout le produit. Son objectif est précis : faire en sorte que la bonne personne se reconnaisse immédiatement et veuille en savoir plus. Un médecin qui lit \'pour les médecins débordés qui veulent faire des ordonnances en 30 secondes\' clique — même sans savoir comment ça marche.",
           xp: 15,
         },
+        // 2 — True/false : enseigne "précision = force / cibler tout le monde = faiblesse"
         {
           type: "true_false",
           statement: "Une UVP qui plaît à tout le monde est une UVP efficace.",
@@ -420,6 +495,15 @@ export const tasks: Task[] = [
           explanation: "Faux. Une UVP qui plaît à tout le monde ne choisit pas — et ne résonne fort pour personne. Les meilleures UVP polarisent : elles font dire \'c\'est exactement pour moi\' à certains et \'ça ne me concerne pas\' à d\'autres. C\'est le signe qu\'elles sont suffisamment précises.",
           xp: 5,
         },
+        // 3 — Micro-input : brique "cible_uvp"
+        {
+          type: "micro_input",
+          prompt: "Pour qui EXACTEMENT est ton offre ? Sois aussi précis que dans ta persona — une situation concrète, pas \'tout le monde\'.",
+          placeholder: "Ex : les propriétaires de boutiques de prêt-à-porter à Cotonou qui font 150-400k FCFA/mois et gèrent encore leur stock à la main...",
+          storageKey: "cible_uvp",
+          xp: 2,
+        },
+        // 4 — Info
         {
           type: "info",
           icon: "🏗️",
@@ -427,6 +511,7 @@ export const tasks: Task[] = [
           content: "Structure éprouvée : \'Pour [CIBLE PRÉCISE] qui [PROBLÈME PRINCIPAL], [PRODUIT/SERVICE] est [CATÉGORIE] qui [BÉNÉFICE UNIQUE] contrairement à [ALTERNATIVE ACTUELLE].\' Chaque partie élimine quelqu\'un — et c\'est une bonne chose. La précision, c\'est de la force.",
           xp: 10,
         },
+        // 5 — Fill blank
         {
           type: "fill_blank",
           template: "Une bonne UVP doit être comprise en moins de {0} secondes, et dire en quoi tu es {1} des alternatives existantes.",
@@ -434,6 +519,7 @@ export const tasks: Task[] = [
           isOpenAnswer: false,
           xp: 15,
         },
+        // 6 — Scénario : enseigne "bénéfice concret + différenciant"
         {
           type: "scenario",
           context: "Bintou à Dakar lance un service de coiffure à domicile. Elle hésite entre 3 formulations.",
@@ -447,6 +533,15 @@ export const tasks: Task[] = [
           explanation: "La 2ème est concrète et résout un vrai problème (rendez-vous ratés, trajet). La 1ère est vague (\'qualité\' dit tout le monde). La 3ème est poétique mais vide — \'femme moderne avec du goût\' ne dit rien sur le problème résolu. Une cliente qui lit la 2ème dit immédiatement \'j\'en ai marre des rendez-vous ratés\'.",
           xp: 20,
         },
+        // 7 — Micro-input : brique "benefice_differenciateur"
+        {
+          type: "micro_input",
+          prompt: "Quel est ton bénéfice concret et différenciant — précis, mesurable si possible — et en quoi te différencies-tu des alternatives que ton client utilise aujourd\'hui ?",
+          placeholder: "Ex : bilan financier automatique chaque soir en 2 min, contrairement au cahier qui prend 1h et aux logiciels PC que les commerçants n\'utilisent jamais...",
+          storageKey: "benefice_differenciateur",
+          xp: 2,
+        },
+        // 8 — Match
         {
           type: "match",
           pairs: [
@@ -457,6 +552,7 @@ export const tasks: Task[] = [
           ],
           xp: 15,
         },
+        // 9 — Reorder
         {
           type: "reorder",
           items: [
@@ -468,6 +564,7 @@ export const tasks: Task[] = [
           ],
           xp: 15,
         },
+        // 10 — MCQ
         {
           type: "mcq",
           question: "Comment tester si ton UVP est assez forte ?",
@@ -480,6 +577,7 @@ export const tasks: Task[] = [
           explanation: "Le vrai test : ta cible entend ton UVP et dit \'comment tu fais ça ?\' ou \'c\'est exactement mon problème !\' — signe d\'intérêt réel. Si la réaction est polie mais neutre, ce n\'est pas encore assez précis. Les proches sont trop bienveillants — cherche des inconnus qui correspondent à ta cible.",
           xp: 10,
         },
+        // 11 — Info
         {
           type: "info",
           icon: "🧪",
@@ -487,12 +585,13 @@ export const tasks: Task[] = [
           content: "Test Grand-mère : lis ton UVP à quelqu\'un hors du secteur. Si elle comprend en 10 secondes ce que tu fais et pour qui — elle est claire. Test Concurrent : remplace ton nom par celui d\'un concurrent. Si l\'UVP reste vraie pour lui aussi — elle n\'est pas assez différenciante.",
           xp: 5,
         },
+        // 12 — Reflection template : assemblage final
         {
-          type: "reflection",
-          icon: "🤔",
-          question: "Rédige ton UVP finale en utilisant le framework complet",
-          placeholder: "\'Pour [ta persona précise — reprise de la tâche 4]\nqui [son problème principal en ses mots],\n[ton produit/service] est [catégorie]\nqui [bénéfice concret, si possible chiffré]\ncontrairement à [ce que ta cible utilise aujourd\'hui].\'\n\nRésultat du test Grand-mère :\nRésultat du test Concurrent :\nCe que tu as ajusté après les tests :",
-          xp: 30,
+          type: "reflection_template",
+          intro: "Tu as tous les éléments pour une UVP complète. Voilà ce que donnent tes briques assemblées — édite jusqu\'à ce que ça sonne juste pour quelqu\'un de ta cible.",
+          template: "Pour {cible_uvp}, mon offre apporte {benefice_differenciateur} — contrairement aux alternatives actuelles.",
+          variables: ["cible_uvp", "benefice_differenciateur"],
+          xp: 31,
         },
       ],
     },
