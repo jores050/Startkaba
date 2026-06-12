@@ -13,6 +13,7 @@ export interface TaskWithProgress {
   xpEarned: number;
   completedAt: string | null;
   lesson?: Lesson;
+  recapLabel?: string;
 }
 
 export interface LevelDetail extends LevelSummary {
