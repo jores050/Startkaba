@@ -6,7 +6,6 @@ import { useParams } from "next/navigation";
 import { useSWRConfig } from "swr";
 import { useLevelDetail, useStartTask } from "@/hooks/use-progress";
 import { TaskCard } from "@/components/gamification/TaskCard";
-import { XpBar } from "@/components/gamification/XpBar";
 import { ToastStack, type ToastData } from "@/components/gamification/XpToast";
 import { Confetti } from "@/components/gamification/Confetti";
 import type { QuizResult } from "@/components/gamification/QuizModal";
