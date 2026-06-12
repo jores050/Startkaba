@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/client";
 import { ensureProfile } from "@/lib/auth/ensure-profile";
 import { profileUpdateSchema } from "@/lib/validations/profile";
+import { getBadgeById } from "@/data/badges";
 import { mockProfile, updateMockProfile } from "@/lib/dev/mock-profile";
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -32,20 +33,38 @@ export async function GET() {
       avatarUrl: user.user_metadata.avatar_url as string | undefined,
     });
 
-    const [badges, tasksCompleted, activeDaysRows] = await Promise.all([
-      prisma.userBadge.findMany({
-        where: { userId: user.id },
-        select: { badgeId: true, earnedAt: true },
-        orderBy: { earnedAt: "asc" },
-      }),
-      prisma.userProgress.count({
-        where: { userId: user.id, status: "COMPLETED" },
-      }),
-      prisma.$queryRaw<{ count: bigint }[]>`
-        SELECT COUNT(DISTINCT DATE("updatedAt")) AS count
-        FROM "user_progress" WHERE "userId" = ${user.id}
-      `,
-    ]);
+    const weekStart = new Date();
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay()); // dimanche
+    weekStart.setHours(0, 0, 0, 0);
+
+    const [badges, tasksCompleted, activeDaysRows, weeklyProgress, weeklyBadge] =
+      await Promise.all([
+        prisma.userBadge.findMany({
+          where: { userId: user.id },
+          select: { badgeId: true, earnedAt: true },
+          orderBy: { earnedAt: "asc" },
+        }),
+        prisma.userProgress.count({
+          where: { userId: user.id, status: "COMPLETED" },
+        }),
+        prisma.$queryRaw<{ count: bigint }[]>`
+          SELECT COUNT(DISTINCT DATE("updatedAt")) AS count
+          FROM "user_progress" WHERE "userId" = ${user.id}
+        `,
+        prisma.userProgress.aggregate({
+          where: {
+            userId: user.id,
+            status: "COMPLETED",
+            completedAt: { gte: weekStart },
+          },
+          _count: { id: true },
+          _sum: { xpEarned: true },
+        }),
+        prisma.userBadge.findFirst({
+          where: { userId: user.id, earnedAt: { gte: weekStart } },
+          orderBy: { earnedAt: "desc" },
+        }),
+      ]);
 
     return NextResponse.json({
       ...profile,
@@ -53,6 +72,13 @@ export async function GET() {
       stats: {
         tasksCompleted,
         activeDays: Number(activeDaysRows[0]?.count ?? 0),
+        weekly: {
+          tasksCompleted: weeklyProgress._count.id,
+          xpEarned: weeklyProgress._sum.xpEarned ?? 0,
+          badgeName: weeklyBadge
+            ? getBadgeById(weeklyBadge.badgeId)?.name
+            : undefined,
+        },
       },
     });
   } catch (e) {

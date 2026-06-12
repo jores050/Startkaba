@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 
 export default function Error({
@@ -9,6 +10,18 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  // En dev, les chunks sont compilés à la demande. Si le chunk de la page
+  // n'est pas encore prêt au moment de la navigation (race condition), on
+  // force un rechargement complet pour laisser Next.js le compiler.
+  useEffect(() => {
+    if (
+      error?.name === "ChunkLoadError" ||
+      error?.message?.includes("Loading chunk")
+    ) {
+      window.location.reload();
+    }
+  }, [error]);
+
   return (
     <div className="min-h-screen bg-app flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-sm border border-border text-center">
