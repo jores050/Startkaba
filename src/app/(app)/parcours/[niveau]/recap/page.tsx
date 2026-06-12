@@ -1,47 +1,132 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import useSWR from "swr";
 import { useLevelDetail } from "@/hooks/use-progress";
-import { Card } from "@/components/ui/Card";
 import { getBadgeById } from "@/data/badges";
-import { LEVEL_LEARNINGS } from "@/data/level-meta";
+import { getLevelById } from "@/data/levels";
+import { LEVEL_KABA_MESSAGES, LEVEL_RECAP_CARDS } from "@/data/level-meta";
+import { Confetti } from "@/components/gamification/Confetti";
+import type { ReflectionWithMeta } from "@/app/api/reflections/route";
+
+// ─── XP Counter animation ─────────────────────────────────────────────────────
+
+function XpCounter({ target }: { target: number }) {
+  const [displayed, setDisplayed] = useState(0);
+
+  useEffect(() => {
+    if (target === 0) return;
+    const steps = 40;
+    const increment = target / steps;
+    let current = 0;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        setDisplayed(target);
+        clearInterval(timer);
+      } else {
+        setDisplayed(Math.round(current));
+      }
+    }, 40);
+    return () => clearInterval(timer);
+  }, [target]);
+
+  return <span>{displayed}</span>;
+}
+
+// ─── Reflection card ──────────────────────────────────────────────────────────
+
+interface ReflectionCardProps {
+  icon: string;
+  title: string;
+  answer: string | null;
+  index: number;
+}
+
+function ReflectionCard({ icon, title, answer, index }: ReflectionCardProps) {
+  return (
+    <div
+      className="bg-surface border border-border rounded-2xl p-5 opacity-0 animate-card-in"
+      style={{ animationDelay: `${0.3 + index * 0.12}s`, animationFillMode: "forwards" }}
+    >
+      <div className="flex items-center gap-2 mb-2">
+        <span className="text-xl">{icon}</span>
+        <h3 className="font-semibold text-foreground text-sm">{title}</h3>
+      </div>
+      {answer ? (
+        <p className="text-foreground text-sm leading-relaxed bg-background rounded-xl px-4 py-3 border border-border/60">
+          {answer}
+        </p>
+      ) : (
+        <p className="text-muted text-sm italic">
+          Non complété — tu peux y revenir depuis le parcours.
+        </p>
+      )}
+    </div>
+  );
+}
+
+// ─── Main page ────────────────────────────────────────────────────────────────
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 export default function RecapPage() {
   const params = useParams<{ niveau: string }>();
   const levelId = Number(params.niveau);
-  const { level, error, isLoading } = useLevelDetail(levelId);
+  const { level, isLoading } = useLevelDetail(levelId);
+  const [confetti, setConfetti] = useState(true);
 
-  if (isLoading) return <p className="text-muted">Chargement...</p>;
-  if (error || !level) {
+  const { data: reflections } = useSWR<ReflectionWithMeta[]>("/api/reflections", fetcher);
+
+  const levelData = getLevelById(levelId);
+  const nextLevelId = levelId < 8 ? levelId + 1 : null;
+  const nextLevelData = nextLevelId ? getLevelById(nextLevelId) : null;
+  const badges = (levelData?.badgeIds ?? [])
+    .map(getBadgeById)
+    .filter((b): b is NonNullable<typeof b> => Boolean(b));
+
+  const recapCards = LEVEL_RECAP_CARDS[levelId] ?? [];
+  const kabaMessage = LEVEL_KABA_MESSAGES[levelId] ?? `Tu viens de compléter le Niveau ${levelId}. Continue sur cette lancée !`;
+
+  // Build reflection lookup: taskId → answer
+  const reflectionByTask = new Map<number, string>();
+  if (reflections) {
+    for (const r of reflections) {
+      if (r.levelId === levelId) {
+        reflectionByTask.set(r.taskId, r.answer);
+      }
+    }
+  }
+
+  if (!Number.isInteger(levelId) || levelId < 1 || levelId > 8) {
+    return <p className="text-muted p-8">Niveau introuvable.</p>;
+  }
+
+  if (isLoading) {
     return (
-      <div>
-        <p className="text-error mb-4">{error?.message ?? "Niveau introuvable."}</p>
-        <Link href="/parcours" className="text-primary hover:underline">
-          ← Retour au parcours
-        </Link>
+      <div className="max-w-xl mx-auto px-4 py-12">
+        <div className="animate-pulse space-y-4">
+          <div className="h-10 bg-border/40 rounded-2xl w-2/3 mx-auto" />
+          <div className="h-6 bg-border/40 rounded-xl w-1/2 mx-auto" />
+          <div className="h-40 bg-border/40 rounded-2xl" />
+        </div>
       </div>
     );
   }
 
-  const completed = level.status === "COMPLETED";
-  const badges = level.badgeIds
-    .map(getBadgeById)
-    .filter((b): b is NonNullable<typeof b> => Boolean(b));
-  const learnings = LEVEL_LEARNINGS[levelId] ?? [];
-  const nextLevelId = levelId < 8 ? levelId + 1 : null;
+  const completed = level?.status === "COMPLETED";
 
   if (!completed) {
     return (
-      <div className="max-w-2xl text-center py-12">
+      <div className="max-w-xl mx-auto px-4 py-12 text-center">
         <span className="text-5xl block mb-4">🔒</span>
         <h1 className="font-display text-2xl font-bold text-foreground mb-2">
           Récap pas encore disponible
         </h1>
         <p className="text-muted mb-6">
-          Complète les {level.taskCount} tâches du niveau {levelId} pour
-          débloquer ton récapitulatif ({level.completedTasks}/{level.taskCount}{" "}
-          pour l&apos;instant).
+          Complète toutes les tâches du niveau {levelId} pour débloquer ton récapitulatif.
         </p>
         <Link
           href={`/parcours/${levelId}`}
@@ -54,88 +139,129 @@ export default function RecapPage() {
   }
 
   return (
-    <div className="max-w-2xl">
-      <Link
-        href={`/parcours/${levelId}`}
-        className="text-muted hover:text-primary transition-colors text-sm"
-      >
-        ← Niveau {levelId}
-      </Link>
+    <>
+      {confetti && <Confetti onDone={() => setConfetti(false)} />}
 
-      <div className="text-center my-8">
-        <span className="text-6xl block mb-4 animate-badge-pop">🎓</span>
-        <h1 className="font-display text-3xl font-extrabold text-foreground">
-          Niveau {levelId} complété !
-        </h1>
-        <p className="text-muted mt-2 italic">{level.subtitle}</p>
-      </div>
+      <div className="max-w-xl mx-auto px-4 pb-16">
+        {/* ── Hero header ────────────────────────────────────────────── */}
+        <div className="relative rounded-2xl overflow-hidden mb-6 mt-2">
+          <div className="bg-[#0722AB] px-6 py-8 text-center text-white">
+            <div className="text-5xl mb-3 animate-badge-pop">🎊</div>
+            <h1 className="font-display text-3xl font-extrabold mb-1">
+              Niveau {levelId} complété !
+            </h1>
+            {levelData && (
+              <p className="text-white/70 text-sm italic mb-4">{levelData.title}</p>
+            )}
 
-      {/* Chiffres */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <Card className="text-center">
-          <p className="font-display text-3xl font-extrabold text-green">
-            {level.earnedXp} XP
-          </p>
-          <p className="text-muted text-sm mt-1">gagnés sur ce niveau</p>
-        </Card>
-        <Card className="text-center">
-          <p className="font-display text-3xl font-extrabold text-primary">
-            {level.taskCount}
-          </p>
-          <p className="text-muted text-sm mt-1">tâches validées par quiz</p>
-        </Card>
-      </div>
-
-      {/* Ce que tu as appris */}
-      <Card className="mb-6">
-        <h2 className="font-display text-xl font-bold text-foreground mb-4">
-          Ce que tu as appris
-        </h2>
-        <ul className="flex flex-col gap-3">
-          {learnings.map((l) => (
-            <li key={l} className="flex items-start gap-3 text-sm">
-              <span className="text-green mt-0.5">✓</span>
-              <span className="text-foreground">{l}</span>
-            </li>
-          ))}
-        </ul>
-      </Card>
-
-      {/* Badges du niveau */}
-      {badges.length > 0 && (
-        <Card className="mb-6">
-          <h2 className="font-display text-xl font-bold text-foreground mb-4">
-            Badges décrochés
-          </h2>
-          <div className="flex gap-3 flex-wrap">
+            {/* Badge(s) */}
             {badges.map((b) => (
-              <span
+              <div
                 key={b.id}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-green-light/30 border border-green/30 text-green font-medium"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 border border-white/30 mb-4"
               >
-                <span className="text-2xl">{b.icon}</span> {b.name}
-              </span>
+                <span className="text-2xl">{b.icon}</span>
+                <span className="font-bold text-sm">{b.name}</span>
+              </div>
             ))}
-          </div>
-        </Card>
-      )}
 
-      <div className="flex flex-col sm:flex-row gap-3">
-        {nextLevelId && (
-          <Link
-            href={`/parcours/${nextLevelId}`}
-            className="flex-1 px-6 py-3 rounded-xl bg-cta text-white font-bold text-center hover:opacity-90 transition-opacity"
-          >
-            Passer au niveau {nextLevelId} →
-          </Link>
+            {/* XP counter */}
+            <div className="flex items-center justify-center gap-2 mt-1">
+              <span className="font-display text-4xl font-extrabold text-[#AEFF94]">
+                +<XpCounter target={level?.earnedXp ?? 0} /> XP
+              </span>
+            </div>
+
+            {/* Next level badge */}
+            {nextLevelData && (
+              <p className="mt-3 text-sm text-white/80 font-semibold">
+                🔓 Niveau {nextLevelId} débloqué — {nextLevelData.title}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* ── Ce que tu as construit ─────────────────────────────────── */}
+        {recapCards.length > 0 && (
+          <section className="mb-8">
+            <h2 className="font-display text-xl font-bold text-foreground mb-4">
+              Ce que tu as construit
+            </h2>
+            <div className="flex flex-col gap-3">
+              {recapCards.map((card, i) => (
+                <ReflectionCard
+                  key={card.taskId}
+                  icon={card.icon}
+                  title={card.title}
+                  answer={reflectionByTask.get(card.taskId) ?? null}
+                  index={i}
+                />
+              ))}
+            </div>
+          </section>
         )}
-        <Link
-          href="/parcours"
-          className="px-6 py-3 rounded-xl border border-primary text-primary font-semibold text-center hover:bg-primary hover:text-white transition-colors"
-        >
-          Voir le parcours
-        </Link>
+
+        {/* ── Message de Kaba ────────────────────────────────────────── */}
+        <section className="mb-8">
+          <div className="bg-[#EEF1FF] border border-[#0722AB]/20 rounded-2xl p-5 flex gap-4">
+            <div className="shrink-0 w-10 h-10 rounded-full bg-[#0722AB] flex items-center justify-center text-white text-lg font-bold">
+              K
+            </div>
+            <div>
+              <p className="font-semibold text-[#0722AB] text-sm mb-1">Kaba</p>
+              <p className="text-foreground text-sm leading-relaxed">{kabaMessage}</p>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Actions ────────────────────────────────────────────────── */}
+        <div className="flex flex-col gap-3">
+          {nextLevelId ? (
+            <Link
+              href={`/parcours/${nextLevelId}`}
+              className="w-full text-center px-6 py-4 rounded-2xl bg-cta text-white font-bold text-base hover:opacity-90 transition-opacity"
+            >
+              Continuer vers Niveau {nextLevelId} →
+            </Link>
+          ) : (
+            <Link
+              href="/parcours"
+              className="w-full text-center px-6 py-4 rounded-2xl bg-cta text-white font-bold text-base hover:opacity-90 transition-opacity"
+            >
+              Voir mon parcours complet →
+            </Link>
+          )}
+          <Link
+            href="/projet"
+            className="w-full text-center px-6 py-3 rounded-2xl border border-[#0722AB] text-[#0722AB] font-semibold text-sm hover:bg-[#EEF1FF] transition-colors"
+          >
+            Voir mon projet complet
+          </Link>
+          <button
+            disabled
+            className="w-full text-center px-6 py-3 rounded-2xl text-muted text-sm cursor-not-allowed"
+          >
+            Partager ma progression (bientôt)
+          </button>
+        </div>
+
+        {/* ── Lien retour discret ────────────────────────────────────── */}
+        <div className="mt-8 text-center">
+          <Link href={`/parcours/${levelId}`} className="text-muted text-xs hover:text-primary transition-colors">
+            ← Retour au niveau {levelId}
+          </Link>
+        </div>
       </div>
-    </div>
+
+      <style jsx global>{`
+        @keyframes cardIn {
+          from { opacity: 0; transform: translateY(16px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .animate-card-in {
+          animation: cardIn 0.4s ease-out;
+        }
+      `}</style>
+    </>
   );
 }

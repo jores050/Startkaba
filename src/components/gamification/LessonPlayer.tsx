@@ -580,7 +580,6 @@ function ExerciseRenderer(props: ExerciseRendererProps) {
             if (/^\d+$/.test(part)) {
               const blankIdx = parseInt(part);
               const isCorrect = answered && (props.textInputs[blankIdx] ?? "").trim().toLowerCase() === exercise.blanks[blankIdx].toLowerCase();
-              const isWrong = answered && !isCorrect;
               return (
                 <input
                   key={i}
@@ -821,7 +820,7 @@ function ActionBar({
         onClick={onReorderCheck}
         className="w-full py-3 rounded-xl bg-primary text-white font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-40"
       >
-        Vérifier l'ordre →
+        Vérifier l&apos;ordre →
       </button>
     );
   }

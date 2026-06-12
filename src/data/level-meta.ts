@@ -1,3 +1,33 @@
+// Cartes de réflexion affichées sur la page récap — une par tâche ayant une reflection.
+export interface RecapCard {
+  icon: string;
+  title: string;
+  taskId: number;
+  exerciseIndex: number; // index de l'exercise type "reflection" dans lesson.exercises
+}
+
+export const LEVEL_RECAP_CARDS: Record<number, RecapCard[]> = {
+  1: [
+    { icon: "🎯", title: "Ta proposition de valeur", taskId: 101, exerciseIndex: 5 },
+    { icon: "❤️", title: "Pourquoi ce projet te tient à cœur", taskId: 102, exerciseIndex: 5 },
+    { icon: "🔍", title: "Les problèmes que tu résous", taskId: 103, exerciseIndex: 6 },
+    { icon: "👤", title: "Ton client idéal", taskId: 104, exerciseIndex: 6 },
+    { icon: "✨", title: "Ta proposition de valeur (version finale)", taskId: 105, exerciseIndex: 6 },
+  ],
+};
+
+// Message de clôture de Kaba — affiché en bas de la page récap.
+export const LEVEL_KABA_MESSAGES: Record<number, string> = {
+  1: "Tu as maintenant une vision claire de ton client et du problème que tu résous. C'est la base sur laquelle tout le reste va se construire. Niveau 2 : on passe à la validation terrain — parler à de vraies personnes pour confirmer (ou challenger) ce que tu viens de formuler.",
+  2: "Tu sais maintenant si ton idée correspond à un vrai marché. Ces entretiens clients t'ont donné des preuves concrètes — pas des intuitions. Niveau 3 : transformons ces insights en un modèle économique solide.",
+  3: "Ton Business Model Canvas est posé. Tu as une vision claire de comment ton projet crée, délivre et capture de la valeur. Niveau 4 : il est temps de construire le minimum pour tester tout ça dans le monde réel.",
+  4: "Ton MVP est entre les mains de vrais utilisateurs. Tu as appris plus en quelques semaines qu'en mois de théorie. Niveau 5 : captons maintenant tes premiers vrais clients, sans budget publicitaire.",
+  5: "Tu as tes premières acquisitions clients. WhatsApp, ton réseau, ta crédibilité — tes outils les plus puissants. Niveau 6 : protégeons ce que tu bâtis avec un cadre légal adapté à l'Afrique de l'Ouest.",
+  6: "Ton entreprise est structurée légalement. Tu peux signer des contrats, ouvrir un compte pro, répondre à des appels d'offres. Niveau 7 : parlons financement — bootstrap d'abord, puis pitch.",
+  7: "Tu as une stratégie de financement claire et un pitch professionnel. Niveau 8 : le grand saut — on organise ton lancement officiel.",
+  8: "Tu as lancé. Officiellement. Tu fais partie des entrepreneurs qui passent de l'idée à l'action. La vraie aventure commence maintenant.",
+};
+
 // Temps estimé par niveau (affichage parcours).
 export const LEVEL_TIME_ESTIMATES: Record<number, string> = {
   1: "~2 heures",

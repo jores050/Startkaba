@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useSWRConfig } from "swr";
 import { useLevelDetail, useStartTask } from "@/hooks/use-progress";
 import { TaskCard } from "@/components/gamification/TaskCard";
@@ -39,6 +39,7 @@ export default function NiveauPage() {
   const { level, error, isLoading } = useLevelDetail(levelId);
   const { startTask } = useStartTask(levelId);
   const { mutate } = useSWRConfig();
+  const router = useRouter();
   const [toasts, setToasts] = useState<ToastData[]>([]);
   const [confetti, setConfetti] = useState(false);
 
@@ -58,8 +59,12 @@ export default function NiveauPage() {
     ];
     setToasts((prev) => [...prev, ...newToasts]);
     playSuccessSound();
-    if (level && level.completedTasks + 1 === level.taskCount) {
+    const isLevelComplete = level && level.completedTasks + 1 === level.taskCount;
+    if (isLevelComplete) {
       setConfetti(true);
+      setTimeout(() => {
+        router.push(`/parcours/${levelId}/recap`);
+      }, 2800);
     }
     mutate(`/api/levels/${levelId}`);
     mutate("/api/levels");
