@@ -16,7 +16,7 @@ import { playSuccessSound } from "@/lib/sound";
 let toastId = 0;
 
 function Skeleton({ className }: { className?: string }) {
-  return <div className={`animate-pulse rounded-2xl bg-[#E8EAF0] ${className}`} />;
+  return <div className={`animate-pulse rounded-2xl bg-[#E8EAF0] dark:bg-[#1E2540] ${className}`} />;
 }
 
 function NiveauSkeleton() {

@@ -32,14 +32,14 @@ function SecondaryMenu() {
       <button
         onClick={() => setOpen(!open)}
         aria-label="Plus d'options"
-        className="w-[34px] h-[34px] rounded-lg bg-app border border-border flex flex-col items-center justify-center gap-[3px]"
+        className="w-[34px] h-[34px] rounded-lg bg-app border border-border dark:border-[#2A3050] flex flex-col items-center justify-center gap-[3px]"
       >
         <span className="w-4 h-0.5 bg-mid rounded" />
         <span className="w-4 h-0.5 bg-mid rounded" />
         <span className="w-4 h-0.5 bg-mid rounded" />
       </button>
       {open && (
-        <div className="absolute left-0 top-11 w-56 bg-white border border-border rounded-2xl shadow-xl z-50 p-2">
+        <div className="absolute left-0 top-11 w-56 bg-white dark:bg-[#151A2E] border border-border dark:border-[#2A3050] rounded-2xl shadow-xl z-50 p-2">
           {SECONDARY_MOBILE_NAV.map((item) => (
             <Link
               key={item.href}
@@ -70,7 +70,7 @@ export function Topbar() {
   });
 
   return (
-    <header className="bg-white border-b border-border px-4 sm:px-7 h-[60px] flex items-center justify-between sticky top-0 z-10">
+    <header className="bg-white dark:bg-[#151A2E] border-b border-border dark:border-[#2A3050] px-4 sm:px-7 h-[60px] flex items-center justify-between sticky top-0 z-10">
       <div className="flex items-center gap-3">
         <SecondaryMenu />
         <div>

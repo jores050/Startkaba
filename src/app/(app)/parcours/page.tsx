@@ -5,7 +5,7 @@ import { useLevels } from "@/hooks/use-progress";
 import { LevelCard } from "@/components/gamification/LevelCard";
 
 function Skeleton({ className }: { className?: string }) {
-  return <div className={`animate-pulse rounded-2xl bg-[#E8EAF0] ${className}`} />;
+  return <div className={`animate-pulse rounded-2xl bg-[#E8EAF0] dark:bg-[#1E2540] ${className}`} />;
 }
 
 function ParcoursSkeletons() {
@@ -35,7 +35,7 @@ export default function ParcoursPage() {
   if (error || !levels) {
     return (
       <div className="max-w-md">
-        <div className="bg-white border border-[#E8EAF0] rounded-2xl p-8 text-center">
+        <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-8 text-center">
           <p className="text-4xl mb-3">😕</p>
           <h2 className="font-display text-xl font-bold text-[#0A0E2A] mb-2">
             Impossible de charger le parcours
@@ -83,7 +83,7 @@ export default function ParcoursPage() {
       </div>
 
       {/* Progression globale */}
-      <div className="bg-white border border-[#E8EAF0] rounded-2xl p-5 mb-8 shadow-sm">
+      <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-5 mb-8 shadow-sm">
         <div className="flex items-center justify-between mb-3">
           <div>
             <p className="text-[#8892C8] text-sm">Progression globale du parcours MVP</p>

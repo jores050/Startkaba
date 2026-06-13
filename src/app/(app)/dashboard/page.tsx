@@ -103,7 +103,7 @@ export default function DashboardPage() {
 
       {/* c) NIVEAU EN COURS + XP TOTAL */}
       <div className="grid md:grid-cols-2 gap-5">
-        <div className="bg-white border border-border rounded-xl p-5">
+        <div className="bg-white dark:bg-[#151A2E] border border-border rounded-xl p-5">
           <SectionLabel>Niveau en cours</SectionLabel>
           <p className="font-display font-extrabold text-primary mb-3">
             Niveau {currentLevelId} — {summary?.title}
@@ -169,7 +169,7 @@ export default function DashboardPage() {
       {/* d) BADGES + TÂCHES + KABA */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         {/* Badges */}
-        <div className="bg-white border border-border rounded-xl overflow-hidden">
+        <div className="bg-white dark:bg-[#151A2E] border border-border rounded-xl overflow-hidden">
           <div className="px-5 pt-4 flex justify-between items-center">
             <span className="text-base font-bold">Derniers badges</span>
             <Link href="/badges" className="text-xs font-semibold text-primary">
@@ -207,7 +207,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Tâches du jour */}
-        <div className="bg-white border border-border rounded-xl overflow-hidden">
+        <div className="bg-white dark:bg-[#151A2E] border border-border rounded-xl overflow-hidden">
           <div className="px-5 pt-4 flex justify-between items-center">
             <span className="text-base font-bold">Tâches du jour</span>
             <Link
@@ -319,7 +319,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="bg-white border border-border rounded-xl p-5">
+        <div className="bg-white dark:bg-[#151A2E] border border-border rounded-xl p-5">
           <p className="text-base font-bold mb-4">Cette semaine</p>
           <div className="flex gap-6">
             <div>

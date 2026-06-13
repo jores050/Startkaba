@@ -33,7 +33,7 @@ function EditableCard({ taskId, recapLabel, initialAnswer }: {
   }
 
   return (
-    <div className="bg-[#EEF1FF] border border-[#0722AB]/20 rounded-2xl p-4 flex flex-col gap-3">
+    <div className="bg-[#EEF1FF] dark:bg-[#1A2040] border border-[#0722AB]/20 dark:border-[#4D6FFF]/20 rounded-2xl p-4 flex flex-col gap-3">
       <div className="flex items-center justify-between gap-2">
         <span className="text-xs font-bold text-[#0722AB] uppercase tracking-wider">{recapLabel}</span>
         {!editing && (
@@ -111,7 +111,7 @@ function LevelSection({ section }: { section: ProjetSection }) {
   const total = section.reflections.length;
 
   return (
-    <div className={`bg-white border rounded-2xl overflow-hidden shadow-sm ${
+    <div className={`bg-white dark:bg-[#151A2E] border rounded-2xl overflow-hidden shadow-sm ${
       section.isUnlocked ? "border-[#E8EAF0]" : "border-[#E8EAF0] opacity-60"
     }`}>
       {/* Section header */}
@@ -240,7 +240,7 @@ export default function ProjetPage() {
   return (
     <div className="max-w-3xl flex flex-col gap-6">
       {/* Header */}
-      <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 shadow-sm">
+      <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-6 shadow-sm">
         <h1 className="font-display text-3xl font-extrabold text-[#0A0E2A]">Mon Projet</h1>
         <p className="text-[#8892C8] text-sm mt-1">
           Tout ce que tu as construit, étape par étape.
@@ -284,7 +284,7 @@ export default function ProjetPage() {
 
       {/* Footer — Export PDF */}
       {data && (
-        <div className="bg-white border border-[#E8EAF0] rounded-2xl p-5 shadow-sm flex items-center justify-between gap-4">
+        <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-5 shadow-sm flex items-center justify-between gap-4">
           <div>
             <p className="font-semibold text-[#0A0E2A] text-sm">Exporter mon projet</p>
             <p className="text-[#8892C8] text-xs mt-0.5">

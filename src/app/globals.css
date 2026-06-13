@@ -2,26 +2,89 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Design tokens light mode ─────────────────────────────────────── */
 :root {
-  /* Charte graphique officielle StartKaba */
-  --background: #FFFFFF;
-  --foreground: #000000;
+  --sk-bg:            #F5F6FA;
+  --sk-surface:       #FFFFFF;
+  --sk-border:        #E8EAF0;
+  --sk-text:          #0A0E2A;
+  --sk-muted:         #8892C8;
+  --sk-mid:           #4A5280;
+  --sk-primary:       #0722AB;
+  --sk-primary-light: #EEF1FF;
+  --sk-green:         #1A6B00;
+  --sk-green-light:   #AEFF94;
+  --sk-green-bg:      #F0FAF0;
+  --sk-cta:           #F77E2D;
+  --sk-cta-bg:        #FFF4EC;
+  --sk-error:         #C03A1B;
+
+  /* legacy aliases */
+  --background: #F5F6FA;
+  --foreground: #0A0E2A;
   --primary: #0722AB;
   --green: #1A6B00;
   --green-light: #AEFF94;
   --cta: #F77E2D;
-  /* Tokens fonctionnels dérivés */
   --surface: #FFFFFF;
-  --border: #E2E4F0;
-  --muted: #5C5F6E;
+  --border: #E8EAF0;
+  --muted: #8892C8;
   --error: #C03A1B;
 }
 
+/* ── Design tokens dark mode ──────────────────────────────────────── */
+.dark {
+  --sk-bg:            #0B0F1A;
+  --sk-surface:       #151A2E;
+  --sk-border:        #2A3050;
+  --sk-text:          #F5F6FA;
+  --sk-muted:         #8892C8;
+  --sk-mid:           #A0A8C8;
+  --sk-primary:       #4D6FFF;
+  --sk-primary-light: #1A2040;
+  --sk-green:         #4ADE80;
+  --sk-green-light:   #AEFF94;
+  --sk-green-bg:      #0A2010;
+  --sk-cta:           #F77E2D;
+  --sk-cta-bg:        #2A1A08;
+  --sk-error:         #FF6B6B;
+
+  --background: #0B0F1A;
+  --foreground: #F5F6FA;
+  color-scheme: dark;
+}
+
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--sk-text);
+  background: var(--sk-bg);
   font-family: var(--font-montserrat), system-ui, sans-serif;
 }
+
+/* ── Global dark-mode overrides for hardcoded Tailwind classes ────── */
+/* These cover the widespread bg-white / #E8EAF0 patterns used across
+   all pages without needing individual dark: prefixes on every element */
+.dark .bg-white               { background-color: var(--sk-surface); }
+.dark .bg-\[#F5F6FA\]         { background-color: var(--sk-bg); }
+.dark .bg-\[#EEF1FF\]         { background-color: var(--sk-primary-light); }
+.dark .bg-\[#E8EAF0\]         { background-color: #2A3050; }
+.dark .bg-\[#F0FAF0\]         { background-color: var(--sk-green-bg); }
+.dark .bg-\[#FFF4EC\]         { background-color: var(--sk-cta-bg); }
+.dark .bg-white\/95           { background-color: rgba(21, 26, 46, 0.95); }
+.dark .border-\[#E8EAF0\]     { border-color: var(--sk-border); }
+.dark .border-white           { border-color: rgba(255,255,255,0.15); }
+.dark .text-\[#0A0E2A\]       { color: var(--sk-text); }
+.dark .text-\[#4A5280\]       { color: var(--sk-mid); }
+.dark .text-\[#8892C8\]       { color: var(--sk-muted); }
+.dark .text-\[#1A6B00\]       { color: #4ADE80; }
+.dark .text-\[#0722AB\]       { color: #4D6FFF; }
+.dark .text-\[#5C5F6E\]       { color: var(--sk-muted); }
+.dark .divide-\[#E8EAF0\]    > * + * { border-color: var(--sk-border); }
+
+/* Skeleton pulses */
+.dark .bg-\[#E8EAF0\].animate-pulse { background-color: #1E2540; }
+
+/* Landing page */
+.dark .bg-\[#F5F6FA\]         { background-color: var(--sk-bg); }
 
 @layer utilities {
   .text-balance {

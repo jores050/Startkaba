@@ -63,7 +63,7 @@ export function BottomNav() {
 
   return (
     <nav
-      className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-border z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]"
+      className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-[#151A2E] border-t border-border dark:border-[#2A3050] z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.06)]"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="flex justify-around py-2">
@@ -87,7 +87,7 @@ export function BottomNav() {
                 <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary" />
               )}
               {item.href === "/parcours" && user && (
-                <span className="absolute top-0 right-2 w-4 h-4 bg-cta rounded-full border-2 border-white text-xs font-bold text-white flex items-center justify-center">
+                <span className="absolute top-0 right-2 w-4 h-4 bg-cta rounded-full border-2 border-white dark:border-[#151A2E] text-xs font-bold text-white flex items-center justify-center">
                   {user.currentLevelId}
                 </span>
               )}

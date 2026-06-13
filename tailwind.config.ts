@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,22 +11,22 @@ const config: Config = {
     extend: {
       colors: {
         // Charte graphique officielle StartKaba
-        background: "#FFFFFF",
-        foreground: "#000000",
-        primary: "#0722AB", // Bleu principal
-        green: "#1A6B00", // Vert principal
-        "green-light": "#AEFF94", // Vert clair
-        cta: "#F77E2D", // Orange — boutons / CTA
-        // Tokens fonctionnels dérivés
-        surface: "#FFFFFF",
-        border: "#E8EAF0",
-        muted: "#8892C8",
-        mid: "#4A5280",
-        ink: "#0A0E2A",
-        app: "#F5F6FA",
-        "primary-light": "#EEF1FF",
-        "cta-bg": "#FFF4EC",
-        "green-bg": "#F0FAF0",
+        background: "var(--sk-bg)",
+        foreground: "var(--sk-text)",
+        primary: "#0722AB",
+        green: "#1A6B00",
+        "green-light": "#AEFF94",
+        cta: "#F77E2D",
+        // Tokens fonctionnels — liés aux CSS vars, s'adaptent au dark mode
+        surface: "var(--sk-surface)",
+        border: "var(--sk-border)",
+        muted: "var(--sk-muted)",
+        mid: "var(--sk-mid)",
+        ink: "var(--sk-text)",
+        app: "var(--sk-bg)",
+        "primary-light": "var(--sk-primary-light)",
+        "cta-bg": "var(--sk-cta-bg)",
+        "green-bg": "var(--sk-green-bg)",
         error: "#C03A1B",
       },
       fontFamily: {

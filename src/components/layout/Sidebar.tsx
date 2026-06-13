@@ -7,6 +7,7 @@ import { MAIN_NAV, CONTENT_NAV } from "@/lib/nav";
 import { getXpProgress } from "@/lib/utils/xp";
 import { CITIES } from "@/lib/validations/auth";
 import { SignOutButton } from "./SignOutButton";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 function initials(name: string) {
   return name
@@ -182,7 +183,11 @@ export function Sidebar() {
       </nav>
 
       {/* XP mini */}
-      <div className="p-4 border-t border-white/10">
+      <div className="p-4 border-t border-white/10 flex flex-col gap-2">
+        <div className="flex items-center justify-between px-0.5">
+          <span className="text-xs text-white/30 font-medium">Thème</span>
+          <ThemeToggle />
+        </div>
         <div className="bg-white/10 rounded-xl p-3.5">
           <div className="flex justify-between text-xs text-white/50 mb-2">
             <span>XP Total</span>

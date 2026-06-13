@@ -107,7 +107,7 @@ function ReflectionsSection() {
             </p>
             <div className="flex flex-col gap-4">
               {refs.map((r) => (
-                <div key={`${r.taskId}-${r.exerciseIndex}`} className="bg-[#F8F9FF] border border-[#E8EAF0] rounded-xl p-4">
+                <div key={`${r.taskId}-${r.exerciseIndex}`} className="bg-[#F8F9FF] dark:bg-[#1A2040] border border-[#E8EAF0] dark:border-[#2A3050] rounded-xl p-4">
                   <p className="text-xs font-semibold text-[#8892C8] mb-1">{r.taskTitle}</p>
                   <p className="text-sm font-medium text-[#0A0E2A] mb-2">💭 {r.question}</p>
                   <p className="text-sm text-[#4A5280] leading-relaxed whitespace-pre-wrap">{r.answer}</p>
@@ -163,7 +163,7 @@ export default function ProfilPage() {
   return (
     <div className="max-w-3xl flex flex-col gap-6">
       {/* Carte identité */}
-      <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 shadow-sm">
+      <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row items-start gap-5">
           <Avatar fullName={user.fullName} avatarUrl={user.avatarUrl} size="lg" />
           <div className="flex-1 min-w-0">
@@ -203,7 +203,7 @@ export default function ProfilPage() {
           { label: "Série", value: `${user.stats.streakDays}j 🔥`, color: "text-[#F77E2D]" },
           { label: "Tâches", value: String(user.stats.tasksCompleted), color: "text-[#0A0E2A]" },
         ].map((s) => (
-          <div key={s.label} className="bg-white border border-[#E8EAF0] rounded-2xl p-4 text-center shadow-sm">
+          <div key={s.label} className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-4 text-center shadow-sm">
             <p className={`font-display text-2xl font-extrabold ${s.color}`}>{s.value}</p>
             <p className="text-[#8892C8] text-xs mt-0.5">{s.label}</p>
           </div>
@@ -212,7 +212,7 @@ export default function ProfilPage() {
 
       {/* XP + complétude */}
       <div className="grid sm:grid-cols-2 gap-4">
-        <div className="bg-white border border-[#E8EAF0] rounded-2xl p-5 shadow-sm">
+        <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-5 shadow-sm">
           <p className="text-[#8892C8] text-sm mb-3">Progression XP</p>
           <div className="flex justify-between text-xs text-[#8892C8] mb-1.5">
             <span>Niveau {user.currentLevelId}</span>
@@ -229,7 +229,7 @@ export default function ProfilPage() {
           </p>
         </div>
 
-        <div className="bg-white border border-[#E8EAF0] rounded-2xl p-5 shadow-sm">
+        <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-5 shadow-sm">
           <div className="flex items-center justify-between mb-3">
             <p className="text-[#8892C8] text-sm">Complétude du profil</p>
             <p className="font-display font-extrabold text-[#0722AB]">{completeness.score}%</p>
@@ -254,7 +254,7 @@ export default function ProfilPage() {
       </div>
 
       {/* Projet */}
-      <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 shadow-sm">
+      <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-6 shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-display text-xl font-bold text-[#0A0E2A]">Mon projet</h2>
           <Link href="/projet" className="text-xs font-semibold text-[#0722AB] hover:underline">
@@ -291,7 +291,7 @@ export default function ProfilPage() {
       </div>
 
       {/* Badges */}
-      <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 shadow-sm">
+      <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-6 shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-display text-xl font-bold text-[#0A0E2A]">Badges</h2>
           <span className="px-3 py-1 rounded-full bg-[#EEF1FF] text-[#0722AB] text-xs font-bold">
@@ -311,7 +311,7 @@ export default function ProfilPage() {
       </div>
 
       {/* Timeline */}
-      <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 shadow-sm">
+      <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-6 shadow-sm">
         <h2 className="font-display text-xl font-bold text-[#0A0E2A] mb-4">Ma progression</h2>
         {timeline.length > 0 ? (
           <ol className="relative border-l-2 border-[#E8EAF0] ml-3 flex flex-col gap-5">
@@ -348,7 +348,7 @@ export default function ProfilPage() {
       <ReflectionsSection />
 
       {/* Préférences */}
-      <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 shadow-sm">
+      <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-6 shadow-sm">
         <h2 className="font-display text-xl font-bold text-[#0A0E2A] mb-4">Préférences</h2>
         <SoundToggle />
       </div>

@@ -75,9 +75,9 @@ const STATS = [
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen bg-[#F5F6FA] text-[#0A0E2A]">
+    <main className="min-h-screen bg-app text-ink">
       {/* Navbar */}
-      <nav className="flex items-center justify-between px-4 sm:px-10 py-4 border-b border-[#E8EAF0] sticky top-0 bg-white/95 backdrop-blur z-30 shadow-sm">
+      <nav className="flex items-center justify-between px-4 sm:px-10 py-4 border-b border-[#E8EAF0] dark:border-[#2A3050] sticky top-0 bg-white/95 dark:bg-[rgba(21,26,46,0.95)] backdrop-blur z-30 shadow-sm">
         <Link href="/" className="flex items-center gap-2.5">
           <Logo size={32} />
           <span className="font-display text-xl font-extrabold text-[#0722AB] tracking-tight">
@@ -298,7 +298,7 @@ export default function LandingPage() {
       </section>
 
       {/* Fonctionnalités */}
-      <section id="fonctionnalites" className="px-4 sm:px-10 py-20 bg-white border-y border-[#E8EAF0]">
+      <section id="fonctionnalites" className="px-4 sm:px-10 py-20 bg-white dark:bg-[#151A2E] border-y border-[#E8EAF0] dark:border-[#2A3050]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="font-display text-3xl sm:text-4xl font-extrabold text-[#0A0E2A] mb-4">
@@ -396,7 +396,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#E8EAF0] bg-white px-4 sm:px-10 py-8">
+      <footer className="border-t border-[#E8EAF0] dark:border-[#2A3050] bg-white dark:bg-[#151A2E] px-4 sm:px-10 py-8">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2">
             <Logo size={24} />

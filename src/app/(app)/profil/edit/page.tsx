@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUser } from "@/hooks/use-user";
@@ -9,6 +10,46 @@ import { Button } from "@/components/ui/Button";
 import { Input, Select, Textarea, inputClass } from "@/components/ui/Input";
 import { CITIES } from "@/lib/validations/auth";
 import { createClient } from "@/lib/supabase/client";
+
+const THEME_OPTIONS = [
+  { value: "light", label: "Clair", icon: "☀️" },
+  { value: "dark", label: "Sombre", icon: "🌙" },
+  { value: "system", label: "Automatique", icon: "💻" },
+] as const;
+
+function AppearanceSection() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  return (
+    <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
+      <p className="font-display font-bold text-[#0A0E2A] dark:text-[#F5F6FA] text-sm tracking-wide uppercase text-[#8892C8]">
+        Apparence
+      </p>
+      <div className="grid grid-cols-3 gap-3">
+        {THEME_OPTIONS.map((opt) => {
+          const active = mounted && theme === opt.value;
+          return (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => setTheme(opt.value)}
+              className={`flex flex-col items-center gap-2 py-4 rounded-xl border-2 text-sm font-semibold transition-all ${
+                active
+                  ? "border-[#0722AB] dark:border-[#4D6FFF] bg-[#EEF1FF] dark:bg-[#1A2040] text-[#0722AB] dark:text-[#4D6FFF]"
+                  : "border-[#E8EAF0] dark:border-[#2A3050] text-[#4A5280] dark:text-[#A0A8C8] hover:border-[#0722AB]/40"
+              }`}
+            >
+              <span className="text-xl">{opt.icon}</span>
+              {opt.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 export default function ProfilEditPage() {
   const router = useRouter();
@@ -135,7 +176,7 @@ export default function ProfilEditPage() {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         {/* Avatar */}
-        <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 flex items-center gap-5 shadow-sm">
+        <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-6 flex items-center gap-5 shadow-sm">
           <Avatar fullName={fullName || user.fullName} avatarUrl={avatarUrl} size="lg" />
           <div>
             <p className="font-semibold text-[#0A0E2A] text-sm mb-1">Photo de profil</p>
@@ -163,7 +204,7 @@ export default function ProfilEditPage() {
         </div>
 
         {/* Infos perso */}
-        <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 flex flex-col gap-5 shadow-sm">
+        <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-6 flex flex-col gap-5 shadow-sm">
           <p className="font-display font-bold text-[#0A0E2A] text-sm tracking-wide uppercase text-[#8892C8]">
             Informations personnelles
           </p>
@@ -202,7 +243,7 @@ export default function ProfilEditPage() {
         </div>
 
         {/* Projet */}
-        <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 flex flex-col gap-5 shadow-sm">
+        <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-6 flex flex-col gap-5 shadow-sm">
           <p className="font-display font-bold text-[#0A0E2A] text-sm tracking-wide uppercase text-[#8892C8]">
             Mon projet
           </p>
@@ -226,7 +267,7 @@ export default function ProfilEditPage() {
         </div>
 
         {/* Compétences */}
-        <div className="bg-white border border-[#E8EAF0] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
+        <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-6 flex flex-col gap-4 shadow-sm">
           <p className="font-display font-bold text-[#0A0E2A] text-sm tracking-wide uppercase text-[#8892C8]">
             Compétences ({skills.length}/15)
           </p>
@@ -272,6 +313,9 @@ export default function ProfilEditPage() {
             <p className="text-red-600 text-sm">{fieldErrors.skills}</p>
           )}
         </div>
+
+        {/* Apparence */}
+        <AppearanceSection />
 
         {errorMsg && (
           <div className="bg-red-50 border border-red-200 rounded-2xl px-4 py-3 text-red-600 text-sm">
