@@ -58,6 +58,18 @@ async function mockAnalysis(levelId: number): Promise<string> {
 }
 
 export async function POST(request: Request) {
+  try {
+    return await handlePost(request);
+  } catch (err) {
+    console.error("[/api/coach/analyze-level] UNHANDLED:", err);
+    return Response.json(
+      { error: "Erreur inattendue. Réessaie dans quelques instants." },
+      { status: 500 }
+    );
+  }
+}
+
+async function handlePost(request: Request) {
   const body = await request.json().catch(() => null);
   const parsed = schema.safeParse(body);
   if (!parsed.success) {
@@ -70,10 +82,14 @@ export async function POST(request: Request) {
     return Response.json({ error: "Niveau introuvable" }, { status: 404 });
   }
 
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user: { id: string } | null = null;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch (err) {
+    console.error("[/api/coach/analyze-level] Supabase auth error:", err);
+  }
 
   // ── Dev mock (pas de session) ──────────────────────────────────────────────
   if (!user) {
@@ -89,10 +105,10 @@ export async function POST(request: Request) {
   // ── Récupère ou génère l'analyse ──────────────────────────────────────────
   const existing = await prisma.levelAnalysis.findUnique({
     where: { userId_levelId: { userId, levelId } },
-  }).catch(() => null);
+  }).catch((err) => { console.error("[analyze-level] findUnique error:", err); return null; });
 
   // Si une analyse existe et que le client ne force pas la régénération
-  const forceRegen = new URL(request.url).searchParams.get("regen") === "1";
+  const forceRegen = request.url.includes("regen=1");
   if (existing && !forceRegen) {
     return Response.json({ content: existing.content, cached: true });
   }
@@ -106,7 +122,7 @@ export async function POST(request: Request) {
   const rows = await prisma.taskReflection.findMany({
     where: { userId, taskId: { in: reflTaskIds } },
     orderBy: { createdAt: "desc" },
-  }).catch(() => []);
+  }).catch((err) => { console.error("[analyze-level] findMany error:", err); return []; });
 
   // Déduplique par taskId (garde la plus récente)
   const byTask = new Map<number, string>();
@@ -141,7 +157,7 @@ export async function POST(request: Request) {
     await prisma.levelAnalysis.upsert({
       where: { userId_levelId: { userId, levelId } },
       create: { userId, levelId, content },
-      update: { content, createdAt: new Date() },
+      update: { content },
     });
 
     return Response.json({ content, cached: false });
