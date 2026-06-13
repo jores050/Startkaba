@@ -61,30 +61,56 @@ body {
 }
 
 /* ── Global dark-mode overrides for hardcoded Tailwind classes ────── */
-/* These cover the widespread bg-white / #E8EAF0 patterns used across
-   all pages without needing individual dark: prefixes on every element */
-.dark .bg-white               { background-color: var(--sk-surface); }
-.dark .bg-\[#F5F6FA\]         { background-color: var(--sk-bg); }
-.dark .bg-\[#EEF1FF\]         { background-color: var(--sk-primary-light); }
-.dark .bg-\[#E8EAF0\]         { background-color: #2A3050; }
-.dark .bg-\[#F0FAF0\]         { background-color: var(--sk-green-bg); }
-.dark .bg-\[#FFF4EC\]         { background-color: var(--sk-cta-bg); }
-.dark .bg-white\/95           { background-color: rgba(21, 26, 46, 0.95); }
-.dark .border-\[#E8EAF0\]     { border-color: var(--sk-border); }
-.dark .border-white           { border-color: rgba(255,255,255,0.15); }
-.dark .text-\[#0A0E2A\]       { color: var(--sk-text); }
-.dark .text-\[#4A5280\]       { color: var(--sk-mid); }
-.dark .text-\[#8892C8\]       { color: var(--sk-muted); }
-.dark .text-\[#1A6B00\]       { color: #4ADE80; }
-.dark .text-\[#0722AB\]       { color: #4D6FFF; }
-.dark .text-\[#5C5F6E\]       { color: var(--sk-muted); }
-.dark .divide-\[#E8EAF0\]    > * + * { border-color: var(--sk-border); }
-
+/* NOTE: In CSS, # inside a class name selector must be escaped as \#
+   Tailwind generates e.g. .bg-\[\#EEF1FF\] (brackets AND hash escaped).
+   .dark .bg-white is fine (no arbitrary value), everything else needs \# */
+.dark .bg-white                    { background-color: var(--sk-surface); }
+.dark .bg-white\/95                { background-color: rgba(21, 26, 46, 0.95); }
+.dark .bg-\[\#F5F6FA\]             { background-color: var(--sk-bg); }
+.dark .bg-\[\#EEF1FF\]             { background-color: var(--sk-primary-light); }
+.dark .bg-\[\#E8EAF0\]             { background-color: #2A3050; }
+.dark .bg-\[\#F0FAF0\]             { background-color: var(--sk-green-bg); }
+.dark .bg-\[\#FFF4EC\]             { background-color: var(--sk-cta-bg); }
+.dark .bg-\[\#F8F9FF\]             { background-color: #1A2040; }
+.dark .border-\[\#E8EAF0\]         { border-color: var(--sk-border); }
+.dark .border-white                { border-color: rgba(255,255,255,0.15); }
+.dark .text-\[\#0A0E2A\]           { color: var(--sk-text); }
+.dark .text-\[\#4A5280\]           { color: var(--sk-mid); }
+.dark .text-\[\#8892C8\]           { color: var(--sk-muted); }
+.dark .text-\[\#1A6B00\]           { color: #4ADE80; }
+.dark .text-\[\#0722AB\]           { color: #4D6FFF; }
+.dark .text-\[\#5C5F6E\]           { color: var(--sk-muted); }
 /* Skeleton pulses */
-.dark .bg-\[#E8EAF0\].animate-pulse { background-color: #1E2540; }
+.dark .bg-\[\#E8EAF0\]             { background-color: #1E2540; }
 
-/* Landing page */
-.dark .bg-\[#F5F6FA\]         { background-color: var(--sk-bg); }
+/* ── Static Tailwind tokens — text colors adapt in dark mode ─────── */
+/* primary/green/error are hardcoded hex in tailwind.config; override here */
+.dark .text-primary                { color: #4D6FFF; }
+.dark .text-green                  { color: #4ADE80; }
+.dark .text-error                  { color: #FF6B6B; }
+/* hover variants */
+.dark .hover\:text-primary:hover   { color: #4D6FFF; }
+
+/* ── Opacity-modifier variants (token-based) ─────────────────────── */
+/* bg: dark bg with correct hue */
+.dark .bg-primary\/5               { background-color: rgba(77, 111, 255, 0.08); }
+.dark .bg-primary\/10              { background-color: rgba(77, 111, 255, 0.15); }
+.dark .bg-green\/10                { background-color: rgba(74, 222, 128, 0.08); }
+.dark .bg-error\/10                { background-color: rgba(255, 107, 107, 0.10); }
+/* border: visible but subtle */
+.dark .border-primary\/20          { border-color: rgba(77, 111, 255, 0.30); }
+.dark .border-primary\/30          { border-color: rgba(77, 111, 255, 0.40); }
+.dark .border-green\/30            { border-color: rgba(74, 222, 128, 0.30); }
+.dark .border-green\/50            { border-color: rgba(74, 222, 128, 0.50); }
+.dark .border-error\/30            { border-color: rgba(255, 107, 107, 0.30); }
+
+/* ── Opacity-modifier variants (arbitrary hex) ───────────────────── */
+/* border-[#0722AB]/20,30,40 → primary blue in dark */
+.dark .border-\[\#0722AB\]\/20     { border-color: rgba(77, 111, 255, 0.25); }
+.dark .border-\[\#0722AB\]\/30     { border-color: rgba(77, 111, 255, 0.35); }
+.dark .border-\[\#0722AB\]\/40     { border-color: rgba(77, 111, 255, 0.45); }
+/* bg-[#EEF1FF]/30 (reflection_template textarea) */
+.dark .bg-\[\#EEF1FF\]\/30         { background-color: rgba(26, 32, 64, 0.60); }
 
 @layer utilities {
   .text-balance {
