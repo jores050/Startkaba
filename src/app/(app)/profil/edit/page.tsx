@@ -84,6 +84,9 @@ export default function ProfilEditPage() {
   const [skills, setSkills] = useState<string[]>([]);
   const [skillInput, setSkillInput] = useState("");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [isOpenToCofounder, setIsOpenToCofounder] = useState(false);
+  const [lookingFor, setLookingFor] = useState<string[]>([]);
+  const [publicBio, setPublicBio] = useState("");
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -100,6 +103,10 @@ export default function ProfilEditPage() {
       setProjectDescription(user.projectDescription ?? "");
       setSkills(user.skills);
       setAvatarUrl(user.avatarUrl);
+      const u = user as typeof user & { isOpenToCofounder?: boolean; lookingFor?: string[]; publicBio?: string };
+      setIsOpenToCofounder(u.isOpenToCofounder ?? false);
+      setLookingFor(u.lookingFor ?? []);
+      setPublicBio(u.publicBio ?? "");
       setInitialized(true);
     }
   }, [user, initialized]);
@@ -151,6 +158,9 @@ export default function ProfilEditPage() {
         projectDescription,
         skills,
         avatarUrl: avatarUrl ?? "",
+        isOpenToCofounder,
+        lookingFor,
+        publicBio,
       }),
     });
 
@@ -332,6 +342,93 @@ export default function ProfilEditPage() {
           )}
           {fieldErrors.skills && (
             <p className="text-red-600 text-sm">{fieldErrors.skills}</p>
+          )}
+        </div>
+
+        {/* Co-fondateur */}
+        <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-6 flex flex-col gap-5 shadow-sm">
+          <p className="font-display font-bold text-[#8892C8] text-sm tracking-wide uppercase">
+            Communauté
+          </p>
+          {/* Toggle open to cofounder */}
+          <button
+            type="button"
+            onClick={() => setIsOpenToCofounder(!isOpenToCofounder)}
+            className="flex items-center justify-between w-full"
+          >
+            <div>
+              <p className="text-sm font-medium text-[#0A0E2A] dark:text-[#F5F6FA]">
+                Je cherche un co-fondateur / associé
+              </p>
+              <p className="text-xs text-[#8892C8] mt-0.5">
+                Ton profil apparaît dans l&apos;onglet &ldquo;Découvrir&rdquo; de la Communauté
+              </p>
+            </div>
+            <span className={`w-11 h-6 rounded-full p-0.5 transition-colors shrink-0 ${isOpenToCofounder ? "bg-[#0722AB] dark:bg-[#4D6FFF]" : "bg-[#E8EAF0] dark:bg-[#2A3050]"}`}>
+              <span className={`block w-5 h-5 rounded-full bg-white dark:bg-[#0B0F1A] transition-transform shadow-sm ${isOpenToCofounder ? "translate-x-5" : ""}`} />
+            </span>
+          </button>
+
+          {isOpenToCofounder && (
+            <div className="flex flex-col gap-4">
+              {/* lookingFor tags */}
+              <div>
+                <p className="text-sm font-medium text-[#0A0E2A] dark:text-[#F5F6FA] mb-2">
+                  Compétences recherchées ({lookingFor.length}/6)
+                </p>
+                <div className="flex gap-2 flex-wrap mb-2">
+                  {[
+                    "Co-fondateur technique",
+                    "Développeur mobile",
+                    "Développeur web",
+                    "Expert marketing digital",
+                    "Commercial",
+                    "Associé marketing",
+                    "Expert finance",
+                    "Levée de fonds",
+                  ].map((opt) => {
+                    const active = lookingFor.includes(opt);
+                    return (
+                      <button
+                        key={opt}
+                        type="button"
+                        onClick={() =>
+                          setLookingFor(
+                            active
+                              ? lookingFor.filter((s) => s !== opt)
+                              : lookingFor.length < 6
+                              ? [...lookingFor, opt]
+                              : lookingFor
+                          )
+                        }
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+                          active
+                            ? "bg-[#0722AB] dark:bg-[#4D6FFF] text-white"
+                            : "bg-[#EEF1FF] dark:bg-[#1A2040] text-[#0722AB] dark:text-[#4D6FFF] hover:opacity-80"
+                        }`}
+                      >
+                        {opt}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* publicBio */}
+              <div>
+                <label className="text-sm font-medium text-[#0A0E2A] dark:text-[#F5F6FA] block mb-1.5">
+                  Bio publique{" "}
+                  <span className="text-[#8892C8] font-normal">({publicBio.length}/200)</span>
+                </label>
+                <textarea
+                  value={publicBio}
+                  onChange={(e) => setPublicBio(e.target.value.slice(0, 200))}
+                  rows={3}
+                  placeholder="En 2-3 phrases : qui tu es, ce que tu construis, et pourquoi chercher un associé."
+                  className="w-full px-3 py-2 rounded-xl border border-[#E8EAF0] dark:border-[#2A3050] bg-white dark:bg-[#0F1525] text-[#0A0E2A] dark:text-[#F5F6FA] text-sm placeholder:text-[#8892C8] focus:outline-none focus:border-[#0722AB] dark:focus:border-[#4D6FFF] resize-none"
+                />
+              </div>
+            </div>
           )}
         </div>
 

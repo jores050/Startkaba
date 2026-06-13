@@ -3,7 +3,7 @@
 interface AvatarProps {
   fullName: string;
   avatarUrl?: string | null;
-  size?: "md" | "lg";
+  size?: "sm" | "md" | "lg";
 }
 
 function initials(fullName: string): string {
@@ -16,7 +16,10 @@ function initials(fullName: string): string {
 }
 
 export function Avatar({ fullName, avatarUrl, size = "md" }: AvatarProps) {
-  const sizeClass = size === "lg" ? "w-24 h-24 text-3xl" : "w-12 h-12 text-lg";
+  const sizeClass =
+    size === "lg" ? "w-24 h-24 text-3xl" :
+    size === "sm" ? "w-8 h-8 text-xs" :
+    "w-12 h-12 text-lg";
 
   if (avatarUrl) {
     return (

@@ -9,6 +9,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           { href: "/admin", label: "Dashboard" },
           { href: "/admin/users", label: "Utilisateurs" },
           { href: "/admin/stats", label: "Stats" },
+          { href: "/admin/mentors", label: "Mentors" },
         ].map((item) => (
           <a key={item.href} href={item.href} className="text-muted hover:text-primary transition-colors">
             {item.label}

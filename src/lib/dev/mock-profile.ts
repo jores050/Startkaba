@@ -17,6 +17,9 @@ export interface FullProfile {
   subscriptionStatus: string;
   isAdmin: boolean;
   role: "ENTREPRENEUR" | "COACH" | "ADMIN";
+  isOpenToCofounder: boolean;
+  lookingFor: string[];
+  publicBio: string | null;
   createdAt: string;
   badges: { badgeId: number; earnedAt: string }[];
   stats: {
@@ -48,6 +51,9 @@ const seed: FullProfile = {
   subscriptionStatus: "FREE",
   isAdmin: false,
   role: "ENTREPRENEUR",
+  isOpenToCofounder: false,
+  lookingFor: [],
+  publicBio: null,
   createdAt: "2026-04-15T08:00:00.000Z",
   badges: [
     { badgeId: 1, earnedAt: "2026-04-16T10:00:00.000Z" },

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser } from "@/hooks/use-user";
@@ -87,11 +88,13 @@ function NavLink({
   label,
   pathname,
   pill,
+  badge,
 }: {
   href: string;
   label: string;
   pathname: string;
   pill?: string;
+  badge?: number;
 }) {
   const active = pathname.startsWith(href);
   return (
@@ -103,7 +106,14 @@ function NavLink({
           : "text-white/60 font-medium hover:bg-white/10 hover:text-white"
       }`}
     >
-      {ICONS[href]}
+      <span className="relative">
+        {ICONS[href]}
+        {badge ? (
+          <span className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 rounded-full bg-cta text-white text-[9px] font-bold flex items-center justify-center leading-none">
+            {badge > 9 ? "9+" : badge}
+          </span>
+        ) : null}
+      </span>
       {label}
       {pill && (
         <span className="ml-auto bg-cta text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
@@ -117,6 +127,21 @@ function NavLink({
 export function Sidebar() {
   const pathname = usePathname();
   const { user } = useUser();
+  const [pendingConnections, setPendingConnections] = useState(0);
+
+  useEffect(() => {
+    if (!user) return;
+    fetch("/api/community/connections")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.received) {
+          setPendingConnections(
+            d.received.filter((c: { status: string }) => c.status === "PENDING").length
+          );
+        }
+      })
+      .catch(() => {});
+  }, [user]);
 
   const cityLabel = user
     ? (CITIES.find((c) => c.value === user.city)?.label ?? user.city).replace(/ 🇧🇯|🇨🇮|🇸🇳|🇹🇬|🇲🇱/g, "")
@@ -175,7 +200,12 @@ export function Sidebar() {
           Contenu
         </p>
         {CONTENT_NAV.map((item) => (
-          <NavLink key={item.href} {...item} pathname={pathname} />
+          <NavLink
+            key={item.href}
+            {...item}
+            pathname={pathname}
+            badge={item.href === "/communaute" && pendingConnections > 0 ? pendingConnections : undefined}
+          />
         ))}
         <div className="mt-2 [&_button]:text-white/50 [&_button:hover]:text-white [&_button:hover]:bg-white/10">
           <SignOutButton />

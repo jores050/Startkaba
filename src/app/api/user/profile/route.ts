@@ -103,6 +103,9 @@ export async function GET() {
     return NextResponse.json({
       ...profile,
       role: profile.role ?? "ENTREPRENEUR",
+      isOpenToCofounder: profile.isOpenToCofounder ?? false,
+      lookingFor: profile.lookingFor ?? [],
+      publicBio: profile.publicBio ?? null,
       badges,
       stats: {
         tasksCompleted,
@@ -141,6 +144,15 @@ export async function PUT(request: Request) {
     projectDescription: parsed.data.projectDescription || null,
     skills: parsed.data.skills,
     ...(parsed.data.avatarUrl ? { avatarUrl: parsed.data.avatarUrl } : {}),
+    ...(parsed.data.isOpenToCofounder !== undefined
+      ? { isOpenToCofounder: parsed.data.isOpenToCofounder }
+      : {}),
+    ...(parsed.data.lookingFor !== undefined
+      ? { lookingFor: parsed.data.lookingFor }
+      : {}),
+    ...(parsed.data.publicBio !== undefined
+      ? { publicBio: parsed.data.publicBio || null }
+      : {}),
   };
 
   const supabase = await createClient();

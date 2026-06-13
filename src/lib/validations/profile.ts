@@ -25,6 +25,9 @@ export const profileUpdateSchema = z.object({
     .array(z.string().min(1).max(30))
     .max(15, "Maximum 15 compétences"),
   avatarUrl: z.string().url().optional().or(z.literal("")),
+  isOpenToCofounder: z.boolean().optional(),
+  lookingFor: z.array(z.string().max(50)).max(6).optional(),
+  publicBio: z.string().max(200).optional().or(z.literal("")),
 });
 
 export type ProfileUpdateInput = z.infer<typeof profileUpdateSchema>;

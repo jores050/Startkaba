@@ -7,7 +7,52 @@ export type NotificationType =
   | "LEVEL_UNLOCKED"
   | "TASK_COMPLETED"
   | "MESSAGE_RECEIVED"
+  | "CONNECTION_REQUEST"
   | "SYSTEM";
+
+export type MentorStatus = "PENDING" | "APPROVED" | "REJECTED";
+export type ContactMethod = "WHATSAPP" | "EMAIL" | "CALENDLY";
+export type ConnectionStatus = "PENDING" | "ACCEPTED" | "DECLINED";
+
+export interface Mentor {
+  id: string;
+  userId: string | null;
+  name: string;
+  title: string;
+  expertise: string[];
+  bio: string;
+  avatarUrl: string | null;
+  contactMethod: ContactMethod;
+  contactValue: string;
+  availability: string;
+  city: string;
+  status: MentorStatus;
+  createdAt: string;
+}
+
+export interface CommunityProfile {
+  id: string;
+  fullName: string;
+  avatarUrl: string | null;
+  city: string;
+  projectName: string | null;
+  projectDescription: string | null;
+  skills: string[];
+  currentLevelId: number;
+  lookingFor: string[];
+  publicBio: string | null;
+}
+
+export interface ConnectionRequest {
+  id: string;
+  fromUserId: string;
+  toUserId: string;
+  message: string | null;
+  status: ConnectionStatus;
+  createdAt: string;
+  fromUser?: { id: string; fullName: string; avatarUrl: string | null; email: string };
+  toUser?: { id: string; fullName: string; avatarUrl: string | null; email: string };
+}
 
 export interface UserProfile {
   id: string;

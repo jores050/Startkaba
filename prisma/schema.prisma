@@ -23,19 +23,24 @@ model UserProfile {
   role                   UserRole                @default(ENTREPRENEUR)
   payoutInfo             Json?
   coachApplicationStatus CoachApplicationStatus?
+  isOpenToCofounder      Boolean                 @default(false)
+  lookingFor             String[]
+  publicBio              String?
   createdAt              DateTime                @default(now())
   updatedAt              DateTime                @updatedAt
 
-  progress       UserProgress[]
-  earnedBadges   UserBadge[]
-  coachMessages  CoachMessage[]
-  notifications  Notification[]
-  reflections    TaskReflection[]
-  microInputs    UserMicroInput[]
-  levelAnalyses  LevelAnalysis[]
-  products       Product[]       @relation("CoachProducts")
-  purchases      Purchase[]
-  payouts        Payout[]
+  progress            UserProgress[]
+  earnedBadges        UserBadge[]
+  coachMessages       CoachMessage[]
+  notifications       Notification[]
+  reflections         TaskReflection[]
+  microInputs         UserMicroInput[]
+  levelAnalyses       LevelAnalysis[]
+  products            Product[]            @relation("CoachProducts")
+  purchases           Purchase[]
+  payouts             Payout[]
+  sentConnections     ConnectionRequest[]  @relation("SentConnections")
+  receivedConnections ConnectionRequest[]  @relation("ReceivedConnections")
 
   @@map("user_profiles")
 }
@@ -139,6 +144,7 @@ enum NotificationType {
   LEVEL_UNLOCKED
   TASK_COMPLETED
   MESSAGE_RECEIVED
+  CONNECTION_REQUEST
   SYSTEM
 }
 
@@ -267,4 +273,55 @@ model LevelAnalysis {
 
   @@unique([userId, levelId])
   @@map("level_analyses")
+}
+
+enum MentorStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ContactMethod {
+  WHATSAPP
+  EMAIL
+  CALENDLY
+}
+
+enum ConnectionStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+model Mentor {
+  id            String        @id @default(uuid())
+  userId        String?
+  name          String
+  title         String
+  expertise     String[]
+  bio           String        @db.Text
+  avatarUrl     String?
+  contactMethod ContactMethod @default(EMAIL)
+  contactValue  String
+  availability  String
+  city          City          @default(OTHER)
+  status        MentorStatus  @default(PENDING)
+  createdAt     DateTime      @default(now())
+
+  @@map("mentors")
+}
+
+model ConnectionRequest {
+  id         String           @id @default(uuid())
+  fromUserId String
+  toUserId   String
+  message    String?
+  status     ConnectionStatus @default(PENDING)
+  createdAt  DateTime         @default(now())
+
+  fromUser UserProfile @relation("SentConnections",     fields: [fromUserId], references: [id])
+  toUser   UserProfile @relation("ReceivedConnections", fields: [toUserId],   references: [id])
+
+  @@unique([fromUserId, toUserId])
+  @@map("connection_requests")
 }
