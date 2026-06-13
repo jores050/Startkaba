@@ -18,7 +18,6 @@ export default function CoachDashboardPage() {
     return <div className="animate-pulse h-32 bg-[#E8EAF0] rounded-2xl max-w-2xl" />;
   }
 
-  // @ts-expect-error — role is added in schema but may not be in FullProfile yet
   const isCoach = user?.role === "COACH" || user?.isAdmin;
 
   if (!isCoach) {

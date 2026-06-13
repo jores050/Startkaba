@@ -16,6 +16,7 @@ export interface FullProfile {
   totalXp: number;
   subscriptionStatus: string;
   isAdmin: boolean;
+  role: "ENTREPRENEUR" | "COACH" | "ADMIN";
   createdAt: string;
   badges: { badgeId: number; earnedAt: string }[];
   stats: {
@@ -46,6 +47,7 @@ const seed: FullProfile = {
   totalXp: 600,
   subscriptionStatus: "FREE",
   isAdmin: false,
+  role: "ENTREPRENEUR",
   createdAt: "2026-04-15T08:00:00.000Z",
   badges: [
     { badgeId: 1, earnedAt: "2026-04-16T10:00:00.000Z" },

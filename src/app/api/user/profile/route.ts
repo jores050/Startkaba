@@ -38,7 +38,7 @@ export async function GET() {
     weekStart.setDate(weekStart.getDate() - weekStart.getDay());
     weekStart.setHours(0, 0, 0, 0);
 
-    const [badges, tasksCompleted, activeDaysRows] = await Promise.all([
+    const [badges, tasksCompleted, completedDates] = await Promise.all([
       prisma.userBadge.findMany({
         where: { userId: user.id },
         select: { badgeId: true, earnedAt: true },
@@ -47,11 +47,32 @@ export async function GET() {
       prisma.userProgress.count({
         where: { userId: user.id, status: "COMPLETED" },
       }),
-      prisma.$queryRaw<{ count: bigint }[]>`
-        SELECT COUNT(DISTINCT DATE("updatedAt")) AS count
-        FROM "user_progress" WHERE "userId" = ${user.id}
-      `,
+      prisma.userProgress.findMany({
+        where: { userId: user.id, status: "COMPLETED", completedAt: { not: null } },
+        select: { completedAt: true },
+      }),
     ]);
+
+    // Streak : jours consécutifs d'activité jusqu'à aujourd'hui/hier
+    const activeDays = new Set(
+      completedDates.map((r) => r.completedAt!.toISOString().slice(0, 10))
+    );
+    const uniqueDates = Array.from(activeDays).sort().reverse();
+    const today = new Date().toISOString().slice(0, 10);
+    const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+    let streakDays = 0;
+    if (uniqueDates.length > 0 && (uniqueDates[0] === today || uniqueDates[0] === yesterday)) {
+      streakDays = 1;
+      for (let i = 1; i < uniqueDates.length; i++) {
+        const prev = new Date(uniqueDates[i - 1]);
+        const curr = new Date(uniqueDates[i]);
+        if (Math.round((prev.getTime() - curr.getTime()) / 86_400_000) === 1) {
+          streakDays++;
+        } else {
+          break;
+        }
+      }
+    }
 
     let weekly: { tasksCompleted: number; xpEarned: number; badgeName?: string } | undefined;
     try {
@@ -81,10 +102,12 @@ export async function GET() {
 
     return NextResponse.json({
       ...profile,
+      role: profile.role ?? "ENTREPRENEUR",
       badges,
       stats: {
         tasksCompleted,
-        activeDays: Number(activeDaysRows[0]?.count ?? 0),
+        activeDays: activeDays.size,
+        streakDays,
         weekly,
       },
     });

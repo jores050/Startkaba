@@ -10,6 +10,27 @@ import { Button } from "@/components/ui/Button";
 import { Input, Select, Textarea, inputClass } from "@/components/ui/Input";
 import { CITIES } from "@/lib/validations/auth";
 import { createClient } from "@/lib/supabase/client";
+import { isSoundEnabled, setSoundEnabled } from "@/lib/sound";
+
+function SoundToggleEdit() {
+  const [on, setOn] = useState(true);
+  useEffect(() => setOn(isSoundEnabled()), []);
+  return (
+    <button
+      type="button"
+      onClick={() => { setSoundEnabled(!on); setOn(!on); }}
+      className="flex items-center justify-between w-full"
+    >
+      <div>
+        <p className="text-sm font-medium text-[#0A0E2A] dark:text-[#F5F6FA]">Son de validation</p>
+        <p className="text-xs text-[#8892C8] mt-0.5">Joue une mélodie à chaque tâche validée</p>
+      </div>
+      <span className={`w-11 h-6 rounded-full p-0.5 transition-colors shrink-0 ${on ? "bg-[#1A6B00] dark:bg-[#4ADE80]" : "bg-[#E8EAF0] dark:bg-[#2A3050]"}`}>
+        <span className={`block w-5 h-5 rounded-full bg-white dark:bg-[#0B0F1A] transition-transform shadow-sm ${on ? "translate-x-5" : ""}`} />
+      </span>
+    </button>
+  );
+}
 
 const THEME_OPTIONS = [
   { value: "light", label: "Clair", icon: "☀️" },
@@ -314,7 +335,13 @@ export default function ProfilEditPage() {
           )}
         </div>
 
-        {/* Apparence */}
+        {/* Son + Apparence */}
+        <div id="apparence" className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-6 flex flex-col gap-5 shadow-sm">
+          <p className="font-display font-bold text-[#8892C8] text-sm tracking-wide uppercase">
+            Préférences
+          </p>
+          <SoundToggleEdit />
+        </div>
         <AppearanceSection />
 
         {errorMsg && (
