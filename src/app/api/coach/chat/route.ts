@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { anthropic } from "@/lib/anthropic/client";
-import { buildSystemPrompt } from "@/lib/anthropic/build-system-prompt";
+import { genAI } from "@/lib/gemini/client";
+import { buildSystemPrompt } from "@/lib/gemini/build-system-prompt";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/client";
 import { getLevelById } from "@/data/levels";
@@ -33,7 +33,6 @@ function sseResponse(stream: ReadableStream) {
   });
 }
 
-// Streaming mocké : la réponse simulée de Kaba, mot par mot.
 function mockStream(message: string, levelId: number): Response {
   const rows = Array.from(mockProgress.values());
   const userCount = mockCoachMessages.filter((m) => m.role === "USER").length;
@@ -67,7 +66,6 @@ function mockStream(message: string, levelId: number): Response {
   return sseResponse(stream);
 }
 
-// POST /api/coach/chat — envoie un message à Kaba (streaming SSE).
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
   const parsed = chatSchema.safeParse(body);
@@ -75,9 +73,6 @@ export async function POST(request: Request) {
     return Response.json({ error: "Format invalide : { message, levelId }" }, { status: 400 });
   }
   const { message, levelId } = parsed.data;
-
-  let profile: UserProfile | null = null;
-  let uid: string | null = null;
 
   const supabase = await createClient();
   const {
@@ -88,28 +83,27 @@ export async function POST(request: Request) {
     if (isDev) return mockStream(message, levelId);
     return Response.json({ error: "Non authentifié" }, { status: 401 });
   }
-  uid = user.id;
+  const userId = user.id;
 
+  let profile: UserProfile | null = null;
   try {
     profile = (await prisma.userProfile.findUnique({
-      where: { id: user.id },
+      where: { id: userId },
     })) as UserProfile | null;
   } catch (e) {
     console.error("[/api/coach/chat] erreur profil:", e);
     return Response.json({ error: "Service indisponible" }, { status: 503 });
   }
 
-  if (!profile || !uid) {
+  if (!profile) {
     return Response.json({ error: "Profil introuvable" }, { status: 404 });
   }
-  const userId = uid;
 
   const level = getLevelById(levelId);
   if (!level) {
     return Response.json({ error: "Niveau introuvable" }, { status: 404 });
   }
 
-  // Quota : 3 messages × niveaux débloqués (FREE), illimité (PREMIUM)
   const [rows, userCount] = await Promise.all([
     prisma.userProgress.findMany({
       where: { userId },
@@ -117,6 +111,7 @@ export async function POST(request: Request) {
     }),
     prisma.coachMessage.count({ where: { userId, role: "USER" } }),
   ]);
+
   const quota = computeQuota(rows, userCount, profile.subscriptionStatus === "PREMIUM");
   if (!quota.isPremium && quota.remaining <= 0) {
     return Response.json(
@@ -125,7 +120,7 @@ export async function POST(request: Request) {
     );
   }
 
-  // Fenêtre glissante : 20 derniers messages du niveau courant
+  // Historique glissant : 20 derniers messages du niveau courant
   const history = (
     await prisma.coachMessage.findMany({
       where: { userId, levelId },
@@ -133,6 +128,20 @@ export async function POST(request: Request) {
       take: 20,
     })
   ).reverse();
+
+  // Reflections déjà écrites — Kaba connaît le projet réel
+  const reflectionRows = await prisma.taskReflection.findMany({
+    where: { userId },
+    orderBy: { createdAt: "desc" },
+  }).catch(() => []);
+
+  const { tasks } = await import("@/data/tasks");
+  const reflections = reflectionRows
+    .map((r) => {
+      const task = tasks.find((t) => t.id === r.taskId);
+      return task ? { recapLabel: task.recapLabel ?? task.title, answer: r.answer } : null;
+    })
+    .filter((r): r is { recapLabel: string; answer: string } => r !== null);
 
   const completedTasksCount = rows.filter(
     (r) => r.levelId === levelId && r.status === "COMPLETED"
@@ -143,30 +152,28 @@ export async function POST(request: Request) {
   });
 
   try {
-    const anthropicStream = anthropic.messages.stream({
-      model: "claude-sonnet-4-6",
-      max_tokens: 1024,
-      system: buildSystemPrompt({ user: profile, level, completedTasksCount }),
-      messages: [
-        ...history.map((m) => ({
-          role: m.role === "USER" ? ("user" as const) : ("assistant" as const),
-          content: m.content,
-        })),
-        { role: "user" as const, content: message },
-      ],
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction: buildSystemPrompt({ user: profile, level, completedTasksCount, reflections }),
     });
+
+    const geminiHistory = history.map((m) => ({
+      role: m.role === "USER" ? ("user" as const) : ("model" as const),
+      parts: [{ text: m.content }],
+    }));
+
+    const chat = model.startChat({ history: geminiHistory });
+    const result = await chat.sendMessageStream(message);
 
     const stream = new ReadableStream({
       async start(controller) {
         let full = "";
         try {
-          for await (const event of anthropicStream) {
-            if (
-              event.type === "content_block_delta" &&
-              event.delta.type === "text_delta"
-            ) {
-              full += event.delta.text;
-              sse(controller, "delta", { text: event.delta.text });
+          for await (const chunk of result.stream) {
+            const text = chunk.text();
+            if (text) {
+              full += text;
+              sse(controller, "delta", { text });
             }
           }
           await prisma.coachMessage.create({
@@ -175,7 +182,8 @@ export async function POST(request: Request) {
           sse(controller, "done", {
             quotaRemaining: quota.isPremium ? -1 : quota.remaining - 1,
           });
-        } catch {
+        } catch (err) {
+          console.error("[/api/coach/chat] Gemini error:", err);
           sse(controller, "error", {
             message: "Kaba est indisponible pour le moment. Réessaie dans quelques minutes.",
           });
@@ -186,7 +194,8 @@ export async function POST(request: Request) {
     });
 
     return sseResponse(stream);
-  } catch {
+  } catch (err) {
+    console.error("[/api/coach/chat] Gemini init error:", err);
     return Response.json(
       { error: "Kaba est indisponible pour le moment" },
       { status: 503 }

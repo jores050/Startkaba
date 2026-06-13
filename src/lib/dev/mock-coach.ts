@@ -49,7 +49,7 @@ export function addMockMessage(
   return msg;
 }
 
-// Réponse Kaba simulée pour le dev local (API Anthropic non disponible).
+// Réponse Kaba simulée pour le dev local (GEMINI_API_KEY non configurée).
 const PROVERBES = [
   "C'est au bout de l'ancienne corde qu'on tisse la nouvelle.",
   "Si tu veux aller vite, marche seul ; si tu veux aller loin, marchons ensemble.",
@@ -75,6 +75,6 @@ export function mockKabaReply(userMessage: string, levelId: number): string {
     `Avant de chercher une réponse toute faite, regarde ce que ton niveau ${levelId} t'a déjà appris.\n\n` +
     `${e}\n\n` +
     `Dis-moi : qu'est-ce que tu as déjà essayé concrètement, et qu'est-ce qui t'a surpris dans le résultat ?\n\n` +
-    `*(Réponse simulée — connecte une vraie clé Anthropic pour parler au vrai Kaba.)*`
+    `*(Réponse simulée — configure GEMINI_API_KEY sur aistudio.google.com pour parler au vrai Kaba.)*`
   );
 }
