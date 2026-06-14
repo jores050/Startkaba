@@ -28,6 +28,7 @@ export const profileUpdateSchema = z.object({
   isOpenToCofounder: z.boolean().optional(),
   lookingFor: z.array(z.string().max(50)).max(6).optional(),
   publicBio: z.string().max(200).optional().or(z.literal("")),
+  showcaseOptIn: z.boolean().optional(),
 });
 
 export type ProfileUpdateInput = z.infer<typeof profileUpdateSchema>;

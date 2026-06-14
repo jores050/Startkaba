@@ -20,6 +20,7 @@ export interface FullProfile {
   isOpenToCofounder: boolean;
   lookingFor: string[];
   publicBio: string | null;
+  showcaseOptIn: boolean;
   createdAt: string;
   badges: { badgeId: number; earnedAt: string }[];
   stats: {
@@ -54,6 +55,7 @@ const seed: FullProfile = {
   isOpenToCofounder: false,
   lookingFor: [],
   publicBio: null,
+  showcaseOptIn: false,
   createdAt: "2026-04-15T08:00:00.000Z",
   badges: [
     { badgeId: 1, earnedAt: "2026-04-16T10:00:00.000Z" },

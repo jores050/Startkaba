@@ -26,6 +26,7 @@ model UserProfile {
   isOpenToCofounder      Boolean                 @default(false)
   lookingFor             String[]
   publicBio              String?
+  showcaseOptIn          Boolean                 @default(false)
   createdAt              DateTime                @default(now())
   updatedAt              DateTime                @updatedAt
 
@@ -39,8 +40,14 @@ model UserProfile {
   products            Product[]            @relation("CoachProducts")
   purchases           Purchase[]
   payouts             Payout[]
-  sentConnections     ConnectionRequest[]  @relation("SentConnections")
-  receivedConnections ConnectionRequest[]  @relation("ReceivedConnections")
+  sentConnections      ConnectionRequest[]   @relation("SentConnections")
+  receivedConnections  ConnectionRequest[]   @relation("ReceivedConnections")
+  groupPosts           GroupPost[]
+  groupReplies         GroupReply[]
+  helpRequests         HelpRequest[]
+  helpReplies          HelpReply[]
+  accountabilityAsA    AccountabilityPair[]  @relation("PairUserA")
+  accountabilityAsB    AccountabilityPair[]  @relation("PairUserB")
 
   @@map("user_profiles")
 }
@@ -324,4 +331,101 @@ model ConnectionRequest {
 
   @@unique([fromUserId, toUserId])
   @@map("connection_requests")
+}
+
+enum GroupType {
+  CITY
+  LEVEL
+}
+
+model Group {
+  id           String      @id @default(uuid())
+  name         String
+  type         GroupType
+  cityOrLevel  String
+  description  String
+  createdAt    DateTime    @default(now())
+
+  posts GroupPost[]
+
+  @@map("groups")
+}
+
+model GroupPost {
+  id        String       @id @default(uuid())
+  groupId   String
+  userId    String
+  content   String       @db.Text
+  createdAt DateTime     @default(now())
+
+  group   Group        @relation(fields: [groupId], references: [id])
+  user    UserProfile  @relation(fields: [userId], references: [id])
+  replies GroupReply[]
+
+  @@map("group_posts")
+}
+
+model GroupReply {
+  id        String      @id @default(uuid())
+  postId    String
+  userId    String
+  content   String      @db.Text
+  createdAt DateTime    @default(now())
+
+  post GroupPost   @relation(fields: [postId], references: [id])
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@map("group_replies")
+}
+
+enum AccountabilityStatus {
+  ACTIVE
+  PAUSED
+}
+
+model AccountabilityPair {
+  id              String               @id @default(uuid())
+  userAId         String
+  userBId         String
+  status          AccountabilityStatus @default(ACTIVE)
+  matchedAt       DateTime             @default(now())
+  lastCheckInAt   DateTime?
+
+  userA UserProfile @relation("PairUserA", fields: [userAId], references: [id])
+  userB UserProfile @relation("PairUserB", fields: [userBId], references: [id])
+
+  @@map("accountability_pairs")
+}
+
+enum HelpStatus {
+  OPEN
+  RESOLVED
+}
+
+model HelpRequest {
+  id          String      @id @default(uuid())
+  userId      String
+  title       String
+  description String      @db.Text
+  levelTag    Int?
+  status      HelpStatus  @default(OPEN)
+  createdAt   DateTime    @default(now())
+
+  user    UserProfile @relation(fields: [userId], references: [id])
+  replies HelpReply[]
+
+  @@map("help_requests")
+}
+
+model HelpReply {
+  id            String      @id @default(uuid())
+  helpRequestId String
+  userId        String
+  content       String      @db.Text
+  createdAt     DateTime    @default(now())
+
+  request HelpRequest @relation(fields: [helpRequestId], references: [id])
+  user    UserProfile @relation(fields: [userId], references: [id])
+
+  @@map("help_replies")
 }

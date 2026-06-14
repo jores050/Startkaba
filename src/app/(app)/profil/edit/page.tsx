@@ -87,6 +87,7 @@ export default function ProfilEditPage() {
   const [isOpenToCofounder, setIsOpenToCofounder] = useState(false);
   const [lookingFor, setLookingFor] = useState<string[]>([]);
   const [publicBio, setPublicBio] = useState("");
+  const [showcaseOptIn, setShowcaseOptIn] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -103,10 +104,11 @@ export default function ProfilEditPage() {
       setProjectDescription(user.projectDescription ?? "");
       setSkills(user.skills);
       setAvatarUrl(user.avatarUrl);
-      const u = user as typeof user & { isOpenToCofounder?: boolean; lookingFor?: string[]; publicBio?: string };
+      const u = user as typeof user & { isOpenToCofounder?: boolean; lookingFor?: string[]; publicBio?: string; showcaseOptIn?: boolean };
       setIsOpenToCofounder(u.isOpenToCofounder ?? false);
       setLookingFor(u.lookingFor ?? []);
       setPublicBio(u.publicBio ?? "");
+      setShowcaseOptIn(u.showcaseOptIn ?? false);
       setInitialized(true);
     }
   }, [user, initialized]);
@@ -161,6 +163,7 @@ export default function ProfilEditPage() {
         isOpenToCofounder,
         lookingFor,
         publicBio,
+        showcaseOptIn,
       }),
     });
 
@@ -366,6 +369,25 @@ export default function ProfilEditPage() {
             </div>
             <span className={`w-11 h-6 rounded-full p-0.5 transition-colors shrink-0 ${isOpenToCofounder ? "bg-[#0722AB] dark:bg-[#4D6FFF]" : "bg-[#E8EAF0] dark:bg-[#2A3050]"}`}>
               <span className={`block w-5 h-5 rounded-full bg-white dark:bg-[#0B0F1A] transition-transform shadow-sm ${isOpenToCofounder ? "translate-x-5" : ""}`} />
+            </span>
+          </button>
+
+          {/* Toggle showcase */}
+          <button
+            type="button"
+            onClick={() => setShowcaseOptIn(!showcaseOptIn)}
+            className="flex items-center justify-between w-full"
+          >
+            <div>
+              <p className="text-sm font-medium text-[#0A0E2A] dark:text-[#F5F6FA]">
+                Mettre mon projet en avant
+              </p>
+              <p className="text-xs text-[#8892C8] mt-0.5">
+                Ton projet apparaît dans le bandeau &ldquo;Projets de la semaine&rdquo; de la Communauté
+              </p>
+            </div>
+            <span className={`w-11 h-6 rounded-full p-0.5 transition-colors shrink-0 ${showcaseOptIn ? "bg-[#F77E2D]" : "bg-[#E8EAF0] dark:bg-[#2A3050]"}`}>
+              <span className={`block w-5 h-5 rounded-full bg-white dark:bg-[#0B0F1A] transition-transform shadow-sm ${showcaseOptIn ? "translate-x-5" : ""}`} />
             </span>
           </button>
 

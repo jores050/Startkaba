@@ -5,7 +5,7 @@ import { getTasksByLevel } from "@/data/tasks";
 
 // Tâches spéciales liées à des badges
 export const BADGE_TASKS = {
-  INTERVIEWS: 204, // "Conduis 5 interviews" → Ethnographe
+  INTERVIEWS: 109, // "Mène 5 interviews terrain" → Ethnographe
   BMC: 301, // "Remplis les 9 blocs du BMC" → Architecte
   MVP_LINK: 403, // "Crée et publie ton MVP" → Bâtisseur
   TEN_USERS: 404, // "Acquiers tes 10 premiers utilisateurs" → Premier Client

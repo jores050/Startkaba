@@ -599,114 +599,707 @@ export const tasks: Task[] = [
 
   // --- Niveau 2 ---
   {
-    id: 201,
+    id: 106,
     levelId: 2,
-    title: "Recherche et liste 3 concurrents",
-    description: "Directs ou indirects. Aucun concurrent = mauvais signe (pas de marché) ou mauvaise recherche. Analyse leurs forces et faiblesses.",
-    xp: 75,
-    quiz: [
-      {
-        id: 1,
-        question: "Pourquoi une analyse concurrentielle est-elle essentielle ?",
-        options: [
-          "Pour copier les concurrents",
-          "Pour comprendre le marché existant, positionner ton offre et identifier les gaps",
-          "Pour décourager les investisseurs de financer des concurrents",
-          "Elle n'est pas nécessaire si ton idée est vraiment innovante",
-        ],
-        correctIndex: 1,
-        explanation:
-          "L'analyse concurrentielle te permet de comprendre qui existe déjà, ce qui fonctionne, et où se trouvent les opportunités non adressées. Elle renforce ton positionnement.",
-      },
-    ],
+    title: "Analyse tes concurrents",
+    description:
+      "Directs ou indirects. Aucun concurrent = mauvais signe (pas de marché) ou mauvaise recherche. Identifie leurs faiblesses et construis ta différenciation.",
+    xp: 100,
+    recapLabel: "🥊 Tes concurrents",
+    lesson: {
+      title: "Connaître tes concurrents pour mieux te différencier",
+      exercises: [
+        // 0 — Info
+        {
+          type: "info",
+          icon: "🥊",
+          title: "Pourquoi analyser la concurrence — même informelle",
+          content:
+            "Tout marché a des concurrents. Parfois ce sont des entreprises officielles, parfois c\'est l\'habitude de tes clients (cuisiner à la maison, se débrouiller seul, ne rien faire). Identifier ces alternatives te permet de comprendre ce que ton client fait DÉJÀ pour résoudre son problème — et où tu peux faire mieux.",
+          xp: 5,
+        },
+        // 1 — MCQ : enseigne "pas de concurrent = mauvais signal"
+        {
+          type: "mcq",
+          question:
+            "Un entrepreneur dit : \'Je n\'ai aucun concurrent — mon idée est totalement nouvelle.\' Qu\'est-ce que ça signifie le plus souvent ?",
+          options: [
+            "Il a trouvé un marché vierge exceptionnel à saisir immédiatement.",
+            "Sa recherche est incomplète, ou il n\'y a pas encore de marché validé.",
+            "Il est en avance sur son temps — il suffit d\'attendre.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "Un marché sans concurrent est soit inexploré (personne ne veut payer pour ça), soit mal cherché (les concurrents existent mais sont informels ou indirects). Quand Jumia a lancé en Côte d\'Ivoire, les \'concurrents\' étaient les marchés Adjamé et les boutiques de quartier — pas d\'autres sites e-commerce.",
+          xp: 10,
+        },
+        // 2 — Scénario : concurrent informel réel (enseigne "concurrent_1")
+        {
+          type: "scenario",
+          context:
+            "Koffi à Dakar veut lancer LunchKaba, une app de livraison de repas chauds pour les employés de bureau. Il pense n\'avoir aucun concurrent car il n\'existe pas d\'app similaire à Dakar. Mais en faisant ses interviews, il découvre que 7 personnes sur 10 font livrer des plats par leur maman, leur bonne, ou un voisin via WhatsApp.",
+          question: "Quels sont les vrais concurrents de LunchKaba ?",
+          options: [
+            "Aucun — il n\'y a pas d\'app concurrente, donc le marché est libre.",
+            "Les mamans, bonnes et voisins qui livrent via WhatsApp — ce sont des concurrents informels réels.",
+            "Uniquement les restaurants qui font de la livraison officielle.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "Le concurrent de LunchKaba n\'est pas une autre app — c\'est le système WhatsApp + personne de confiance déjà en place. Pour convaincre un client de changer, Koffi doit être MEILLEUR que ce système existant : plus rapide, plus fiable, moins cher, ou les trois. Ignorer l\'informel, c\'est construire dans le vide.",
+          xp: 10,
+        },
+        // 3 — Micro-input : brique "concurrent_1" (suit le scénario qui enseigne le concept de concurrent informel)
+        {
+          type: "micro_input",
+          prompt:
+            "Qui fait déjà ce que tu veux faire — même informellement ? (Habitudes actuelles, système D, concurrents directs ou indirects)",
+          placeholder:
+            "Ex : les artisans du quartier trouvés via bouche-à-oreille, les groupes WhatsApp de recommandation, les marchés ambulants...",
+          storageKey: "concurrent_1",
+          xp: 2,
+        },
+        // 4 — Scénario : enseigne "identifier la faiblesse d'un concurrent"
+        {
+          type: "scenario",
+          context:
+            "Awa à Abidjan veut lancer un service de blanchisserie à domicile. Sa principale concurrente est Mme Bamba, une blanchisseuse de quartier réputée. Points positifs de Mme Bamba : prix bas (500 FCFA/pièce), connue de tous. Points faibles : prend souvent 5-7 jours, rend parfois les vêtements avec une tache ou abîmés, ne répond pas au téléphone.",
+          question:
+            "Quelle faiblesse de Mme Bamba Awa devrait exploiter en priorité pour se différencier ?",
+          options: [
+            "Proposer un prix encore plus bas que 500 FCFA/pièce.",
+            "Garantir un délai de 48h maximum avec suivi WhatsApp — là où Mme Bamba prend 5-7 jours.",
+            "S\'installer dans un autre quartier pour ne pas être en concurrence directe.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "La principale douleur des clients de Mme Bamba, c\'est l\'incertitude : quand ça revient, dans quel état ? Awa peut gagner sur la fiabilité — pas sur le prix. Baisser les prix l\'entraînerait dans une guerre qu\'elle perdrait face à une concurrente établie. Exploiter une faiblesse réelle, c\'est construire une différenciation durable.",
+          xp: 10,
+        },
+        // 5 — Micro-input : brique "faiblesse_concurrent" (suit le scénario qui enseigne comment identifier une faiblesse)
+        {
+          type: "micro_input",
+          prompt:
+            "Quelle est la principale faiblesse de tes concurrents actuels — la frustration que leurs clients mentionnent le plus souvent ?",
+          placeholder:
+            "Ex : trop lent, prix imprévisibles, pas de suivi, qualité irrégulière, impossible à joindre en cas de problème...",
+          storageKey: "faiblesse_concurrent",
+          xp: 2,
+        },
+        // 6 — Info : différenciation directe vs indirecte
+        {
+          type: "info",
+          icon: "🎯",
+          title: "Différenciation directe vs indirecte",
+          content:
+            "Différenciation directe : tu fais la même chose qu\'un concurrent mais MIEUX sur un axe précis (plus rapide, moins cher, plus fiable). Différenciation indirecte : tu résous le même problème d\'une façon totalement différente (là où le concurrent vient chez toi, toi tu vas chez le client). Les deux sont valides — mais chaque différenciateur doit être défendable dans le temps.",
+          xp: 5,
+        },
+        // 7 — True/false
+        {
+          type: "true_false",
+          statement:
+            "Si tu n\'as aucun concurrent direct, tu n\'as pas besoin d\'analyse concurrentielle.",
+          isTrue: false,
+          explanation:
+            "Faux. Même sans concurrent direct, ton client utilise toujours une alternative — souvent une solution informelle ou une habitude (\'je gère moi-même\', \'je demande à un ami\'). Ces alternatives sont tes vrais concurrents. Ne pas les analyser, c\'est construire sans comprendre ce contre quoi tu te bats.",
+          xp: 5,
+        },
+        // 8 — Match
+        {
+          type: "match",
+          pairs: [
+            { left: "Concurrent direct", right: "Même produit, même cible" },
+            { left: "Concurrent indirect", right: "Même besoin, solution différente" },
+            { left: "Alternative informelle", right: "Système D, débrouille, habitude" },
+            { left: "Différenciateur fort", right: "Avantage précis, défendable dans le temps" },
+          ],
+          xp: 8,
+        },
+        // 9 — Reflection template : assemblage (exerciseIndex 9)
+        {
+          type: "reflection_template",
+          intro:
+            "Tu connais maintenant tes concurrents et leur faiblesse principale. Voilà ce que ça donne assemblé — ajuste les mots pour que ça sonne juste.",
+          template:
+            "Mes principaux concurrents sont {concurrent_1}. Leur faiblesse principale : {faiblesse_concurrent}. Je me différencie en résolvant exactement ce point mieux qu\'eux.",
+          variables: ["concurrent_1", "faiblesse_concurrent"],
+          xp: 43,
+        },
+      ],
+    },
   },
+
   {
-    id: 202,
+    id: 107,
     levelId: 2,
     title: "Estime la taille de ton marché",
-    description: "TAM / SAM / SOM simplifié. Pas besoin d'études McKinsey — des estimations raisonnées avec des sources locales.",
+    description:
+      "TAM / SAM / SOM simplifié. Pas besoin d\'études McKinsey — des estimations raisonnées construites depuis le bas.",
     xp: 100,
-    quiz: [
-      {
-        id: 1,
-        question: "Comment estimer un marché sans données officielles ?",
-        options: [
-          "C'est impossible sans études Nielsen ou McKinsey",
-          "Par des estimations bottom-up : nombre de clients potentiels × panier moyen",
-          "En copiant les chiffres de ton concurrent principal",
-          "En multipliant le PIB du pays par 10%",
-        ],
-        correctIndex: 1,
-        explanation:
-          "L'estimation bottom-up consiste à partir de données granulaires accessibles (population cible, fréquence d'achat, prix) pour remonter à une taille de marché. Plus fiable que les estimations top-down en Afrique où les données macro sont souvent incomplètes.",
-      },
-    ],
+    recapLabel: "📊 Ton marché estimé",
+    lesson: {
+      title: "Estimer ton marché sans données officielles",
+      exercises: [
+        // 0 — Info : TAM/SAM/SOM
+        {
+          type: "info",
+          icon: "📊",
+          title: "TAM / SAM / SOM expliqués avec un exemple chiffré",
+          content:
+            "TAM (Total Addressable Market) : tout le monde qui POURRAIT acheter ton produit. SAM (Serviceable Addressable Market) : ceux que tu peux RÉELLEMENT atteindre avec tes canaux. SOM (Serviceable Obtainable Market) : ta cible réaliste dans les 12-24 premiers mois.\n\nExemple : restauration livrée à Abidjan. TAM = toute personne qui commande de la nourriture (~3 millions). SAM = employés de bureau en Plateau/Cocody qui commandent via smartphone (~120 000). SOM = zone Plateau, 1 km autour du bureau pilote (~8 000 personnes).",
+          xp: 5,
+        },
+        // 1 — Scénario : méthode bottom-up (enseigne "marche_cible")
+        {
+          type: "scenario",
+          context:
+            "Issiaka à Bamako veut lancer un service de comptabilité simplifiée pour les petits commerçants. Il hésite entre deux approches pour estimer son marché : A) \'Il y a des millions de commerçants en Afrique de l\'Ouest, donc le marché est énorme.\' B) \'Je cible les boutiques de textile du marché Médine. Je compte 200 boutiques, chacune pourrait payer 10 000 FCFA/mois → SOM = 2 000 000 FCFA/mois.\'",
+          question: "Quelle approche est la plus crédible pour estimer le marché d\'Issiaka ?",
+          options: [
+            "A — le marché total africain est plus impressionnant pour les investisseurs.",
+            "B — elle part de données réelles et donne une estimation défendable et actionnable.",
+            "Les deux sont equivalentes — il suffit de choisir la plus grande.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "L\'approche B est la méthode \'bottom-up\' : partir d\'une unité concrète qu\'on peut observer (une boutique, un bureau, un quartier) et multiplier. Elle est vérifiable et crédible. L\'approche A est du \'top-down\' vague — elle rassure mais ne dit pas si le business est viable dans un contexte précis.",
+          xp: 10,
+        },
+        // 2 — Micro-input : brique "marche_cible" (suit le scénario qui enseigne la méthode bottom-up)
+        {
+          type: "micro_input",
+          prompt:
+            "Combien de personnes ou d\'entreprises dans ta zone correspondent à ton client idéal ? Donne ton estimation avec ta méthode de calcul (bottom-up).",
+          placeholder:
+            "Ex : ~500 restaurants à Dakar Plateau × 2 commandes/semaine × 3 000 FCFA = 3 000 000 FCFA/semaine de marché accessible...",
+          storageKey: "marche_cible",
+          xp: 2,
+        },
+        // 3 — Info : SOM pas limitant
+        {
+          type: "info",
+          icon: "🔬",
+          title: "Pourquoi commencer petit (SOM) est rassurant, pas limitant",
+          content:
+            "Un SOM de 500 clients n\'est pas une ambition timide — c\'est une stratégie intelligente. Maîtriser 500 clients, c\'est comprendre profondément leurs besoins, ajuster ton produit, et construire ta réputation. Beaucoup de succès africains ont commencé par dominer un quartier ou un marché avant de s\'étendre : Wave au Sénégal, Kobo360 au Nigeria. Le \'commencer petit\' est une phase, pas une finalité.",
+          xp: 5,
+        },
+        // 4 — MCQ : check SAM vs SOM
+        {
+          type: "mcq",
+          question:
+            "Fatou lance un service de livraison de pagnes à Cotonou. Son SAM est de 50 000 femmes. Son SOM réaliste en année 1 est de 800 femmes dans son quartier. Que doit-elle cibler en priorité ?",
+          options: [
+            "Toutes les 50 000 femmes du SAM dès le départ pour maximiser la traction.",
+            "Les 800 femmes du SOM — dominer ce sous-segment avant d\'élargir.",
+            "Un marché entre les deux : environ 5 000 femmes.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "Le SOM n\'est pas un plafond — c\'est un point de départ. Dominer 800 clients en profondeur (satisfaction, bouche-à-oreille, fidélité) construit une base solide pour s\'étendre au SAM ensuite. Vouloir tout le SAM dès le départ, c\'est diluer ses efforts et ne convertir personne vraiment.",
+          xp: 10,
+        },
+        // 5 — Fill blank
+        {
+          type: "fill_blank",
+          template:
+            "La méthode {0} part d\'une unité concrète (un client, un quartier) pour estimer le marché, tandis que la méthode {1} part du marché total pour descendre.",
+          blanks: ["bottom-up", "top-down"],
+          isOpenAnswer: false,
+          xp: 8,
+        },
+        // 6 — True/false
+        {
+          type: "true_false",
+          statement:
+            "Un SOM de 200 clients en année 1 est trop petit pour construire un business viable.",
+          isTrue: false,
+          explanation:
+            "Faux. 200 clients fidèles à 50 000 FCFA/an = 10 000 000 FCFA de revenus annuels — largement suffisant pour tester, ajuster et amorcer la croissance. La taille du marché initial compte moins que la profondeur de la maîtrise. Wave a commencé avec quelques dizaines de marchands à Dakar.",
+          xp: 5,
+        },
+        // 7 — Match
+        {
+          type: "match",
+          pairs: [
+            { left: "TAM", right: "Tous ceux qui pourraient théoriquement acheter" },
+            { left: "SAM", right: "Ceux que tu peux atteindre avec tes canaux réels" },
+            { left: "SOM", right: "Ton objectif réaliste en 12-24 mois" },
+            { left: "Bottom-up", right: "Partir d\'une unité concrète et multiplier" },
+          ],
+          xp: 8,
+        },
+        // 8 — Reflection template (exerciseIndex 8)
+        {
+          type: "reflection_template",
+          intro:
+            "Ton marché estimé est maintenant chiffré. Voilà ce que donne ta brique assemblée — précise les chiffres si tu peux.",
+          template:
+            "Mon marché cible estimé (SAM) : {marche_cible}. Pour commencer, je vise un premier sous-segment dans ma ville — mon SOM de départ.",
+          variables: ["marche_cible"],
+          xp: 47,
+        },
+      ],
+    },
   },
+
   {
-    id: 203,
+    id: 108,
     levelId: 2,
-    title: "Prépare ton guide d'entretien client",
-    description: "5-7 questions ouvertes. L'objectif : comprendre les problèmes, pas valider tes hypothèses. Suis les principes du Mom Test.",
+    title: "Prépare ton guide d\'entretien client",
+    description:
+      "5-7 questions ouvertes basées sur le Mom Test. L\'objectif : comprendre les comportements réels, pas valider tes hypothèses.",
     xp: 100,
-    quiz: [
-      {
-        id: 1,
-        question: "Quel est le principe clé du Mom Test pour les interviews clients ?",
-        options: [
-          "Parler à sa mère en premier car elle sera honnête",
-          "Poser des questions sur le passé et les comportements réels, jamais sur les opinions ou le futur",
-          "Toujours enregistrer les entretiens",
-          "Commencer par présenter son idée pour avoir du feedback",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Le Mom Test enseigne à éviter les questions biaisées (\"Tu utiliserais ça ?\") qui donnent des réponses polies mais fausses. On demande plutôt : \"La dernière fois que tu as eu ce problème, qu'est-ce que tu as fait ?\"",
-      },
-    ],
+    recapLabel: "🎙️ Ton guide d\'entretien",
+    lesson: {
+      title: "Préparer des questions qui révèlent la vérité (méthode Mom Test)",
+      exercises: [
+        // 0 — Info : Mom Test
+        {
+          type: "info",
+          icon: "🎙️",
+          title: "Le Mom Test — pourquoi ne pas demander \'tu aimerais mon produit ?\'",
+          content:
+            "Rob Fitzpatrick a écrit le Mom Test après avoir vu des centaines de startups échouer en collectant des faux signaux positifs. Principe : même ta maman te mentira par gentillesse si tu lui demandes \'tu achèterais mon app ?\'. Mais elle ne peut pas mentir sur son propre comportement passé. Demande-lui : \'La dernière fois que tu avais ce problème, qu\'est-ce que tu as fait ?\' — là, tu obtiens de la vraie data.",
+          xp: 5,
+        },
+        // 1 — Scénario : question biaisée vs Mom Test (enseigne "question_1")
+        {
+          type: "scenario",
+          context:
+            "Moussa veut créer une app de gestion de stock pour boutiques à Lomé. Il teste deux approches :\n\nQuestion A : \'Est-ce que tu utiliserais une app pour gérer ton stock si elle coûtait 5 000 FCFA/mois ?\'\n\nQuestion B : \'La semaine dernière, comment tu as géré ton stock ? Tu as eu des ruptures ou des surplus ?\'",
+          question: "Laquelle de ces questions respecte le Mom Test ?",
+          options: [
+            "Question A — elle teste directement l\'intention d\'achat, c\'est ce qui compte.",
+            "Question B — elle explore le comportement réel, pas une intention hypothétique.",
+            "Les deux sont bonnes à utiliser ensemble.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "La question A est un piège classique : les gens disent \'oui\' par politesse même s\'ils n\'achèteront jamais. La question B révèle ce qui se passe vraiment : si la commerçante te répond \'j\'ai eu 3 ruptures cette semaine et j\'ai perdu 2 clients\', c\'est un signal fort. Si elle dit \'ça va, ça se gère\', l\'urgence n\'est peut-être pas là.",
+          xp: 10,
+        },
+        // 2 — Micro-input : brique "question_1" (suit le scénario qui enseigne les questions sur le comportement actuel)
+        {
+          type: "micro_input",
+          prompt:
+            "Écris une question Mom Test sur le comportement ACTUEL de ton client — sur ce qu\'il fait déjà, pas sur ce qu\'il ferait avec ton idée.",
+          placeholder:
+            "Ex : \'Comment tu fais aujourd\'hui pour trouver un artisan de confiance dans ton quartier ?\' ou \'La dernière fois que tu avais besoin de [X], qu\'est-ce que tu as fait ?\' ...",
+          storageKey: "question_1",
+          xp: 2,
+        },
+        // 3 — Scénario : creuser le "pourquoi" (enseigne "question_2")
+        {
+          type: "scenario",
+          context:
+            "Aïcha interviewe une commerçante à Abidjan Adjamé. La commerçante répond : \'Je galère toujours avec les livraisons.\' Aïcha peut s\'arrêter là, ou creuser davantage.",
+          question: "Quelle question permettra à Aïcha d\'obtenir une information vraiment utile ?",
+          options: [
+            "\'Est-ce que mon service de livraison t\'intéresserait ?\' — tester directement l\'intérêt.",
+            "\'Qu\'est-ce qui se passe exactement quand tu galères ? Donne-moi un exemple récent.\' — creuser le problème concret.",
+            "\'Tu penses que combien de commerçants ont ce problème ?\' — valider l\'ampleur.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "\'Je galère avec les livraisons\' est vague. En demandant \'donne-moi un exemple récent\', Aïcha obtient : \'Hier, mon fournisseur de tissus devait livrer à 9h, il est arrivé à 15h, et j\'ai perdu ma cliente de la matinée.\' C\'est concret, citable, et révèle la vraie douleur : le retard qui fait perdre des clients. Creuser transforme une vague plainte en insight exploitable.",
+          xp: 10,
+        },
+        // 4 — Micro-input : brique "question_2" (suit le scénario sur comment creuser)
+        {
+          type: "micro_input",
+          prompt:
+            "Écris une question pour creuser le problème en profondeur — pour obtenir un exemple concret récent, pas une opinion générale.",
+          placeholder:
+            "Ex : \'Donne-moi un exemple récent où ce problème t\'a coûté quelque chose (temps, argent, client perdu).\' ou \'Qu\'est-ce qui s\'est passé exactement la dernière fois ?\' ...",
+          storageKey: "question_2",
+          xp: 2,
+        },
+        // 5 — True/false
+        {
+          type: "true_false",
+          statement:
+            "Si 3 personnes sur 5 disent \'oui, c\'est une bonne idée\', ton idée est validée.",
+          isTrue: false,
+          explanation:
+            "Faux. \'Bonne idée\' est de la politesse, pas de la validation. La validation, c\'est : quelqu\'un te décrit spontanément le problème avec sa propre vie, montre une vraie frustration, ou mieux — te demande quand tu lances pour être le premier client. Un \'oui\' poli sans comportement passé confirmant le problème ne vaut rien.",
+          xp: 5,
+        },
+        // 6 — Fill blank
+        {
+          type: "fill_blank",
+          template:
+            "Le Mom Test dit : ne demande jamais si les gens {0} ton produit. Demande ce qu\'ils {1} déjà pour résoudre le problème.",
+          blanks: ["aimeraient", "font"],
+          isOpenAnswer: false,
+          xp: 8,
+        },
+        // 7 — Info
+        {
+          type: "info",
+          icon: "⚠️",
+          title: "Les 3 questions à ne JAMAIS poser",
+          content:
+            "1. \'Tu utiliserais mon produit ?\' → Opinion future, pas engagement réel.\n2. \'Tu penses que les gens paieraient pour ça ?\' → Ils ne parlent pas pour les autres.\n3. \'C\'est une bonne idée, non ?\' → Tu attends un compliment, pas une info.\n\nRemplace chacune par une question sur le PASSÉ et le COMPORTEMENT RÉEL.",
+          xp: 5,
+        },
+        // 8 — Match
+        {
+          type: "match",
+          pairs: [
+            { left: "\'Tu utiliserais ça ?\'", right: "Question biaisée — opinion future" },
+            { left: "\'Dernière fois que... qu\'est-ce que tu as fait ?\'", right: "Bonne question — comportement passé" },
+            { left: "\'C\'est une bonne idée ?\'", right: "Question biaisée — recherche de validation" },
+            { left: "\'Donne-moi un exemple récent\'", right: "Bonne question — cas concret" },
+          ],
+          xp: 8,
+        },
+        // 9 — Reflection template : assemblage (exerciseIndex 9)
+        {
+          type: "reflection_template",
+          intro:
+            "Tes deux questions clés sont prêtes. Elles forment le cœur de ton guide d\'entretien — complète avec 3-5 questions supplémentaires dans ce style.",
+          template:
+            "Mes 2 questions clés pour mes interviews : 1) {question_1} 2) {question_2}",
+          variables: ["question_1", "question_2"],
+          xp: 45,
+        },
+      ],
+    },
   },
+
   {
-    id: 204,
+    id: 109,
     levelId: 2,
-    title: "Conduis 5 interviews avec des personnes de ta cible",
-    description: "Pas des amis qui valident tout. De vraies personnes de ta cible. Au moins 5. Prends des notes précises — les citations mot pour mot sont de l'or.",
+    title: "Mène 5 interviews terrain",
+    description:
+      "Pas des amis qui valident tout. De vraies personnes de ta cible. Au moins 5. Écoute 90% du temps — parle 10%.",
     xp: 200,
-    quiz: [
-      {
-        id: 1,
-        question: "Quel biais cognitif est le plus dangereux lors des interviews clients ?",
-        options: [
-          "Le biais de disponibilité",
-          "Le biais de confirmation — entendre ce qu'on veut entendre",
-          "Le biais d'ancrage",
-          "Le biais de récence",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Le biais de confirmation pousse les entrepreneurs à sur-interpréter les signaux positifs et ignorer les signaux négatifs. Pour le contrer : cherche activement à te faire réfuter, pas à valider.",
-      },
-    ],
+    recapLabel: "🎤 Tes 5 interviews",
+    lesson: {
+      title: "Sur le terrain — écouter sans diriger",
+      exercises: [
+        // 0 — Info : posture
+        {
+          type: "info",
+          icon: "👂",
+          title: "La règle des 90/10 — écouter plus que parler",
+          content:
+            "Pendant un entretien client, ton rôle est d\'écouter, pas de convaincre. Règle : parle maximum 10% du temps. Résiste à l\'envie d\'expliquer ton idée ou de corriger une mauvaise compréhension — si tu corriges, tu biaises. Si tu expliques, tu vends. Ici, tu cherches à comprendre la réalité de l\'autre, pas à défendre la tienne.",
+          xp: 5,
+        },
+        // 1 — Scénario : signal fort vs politesse (enseigne "signal_fort")
+        {
+          type: "scenario",
+          context:
+            "Bintou mène des interviews pour son service de pressing à Dakar. Elle obtient ces 3 réponses :\n\nRéponse A : \'Oui, c\'est une bonne idée, ça manque dans le quartier.\'\nRéponse B : \'Oh, si tu faisais ça, je t\'enverrais mes vêtements demain matin — j\'ai encore perdu une chemise chez ma blanchisseuse ce mois.\'\nRéponse C : \'Peut-être que j\'essaierais, ça dépend du prix.\'",
+          question: "Quelle réponse est un vrai signal fort que le problème est urgent et réel ?",
+          options: [
+            "Réponse A — elle valide l\'idée clairement.",
+            "Réponse B — elle montre une frustration actuelle ET une intention concrète immédiate.",
+            "Réponse C — elle montre un vrai intérêt sous réserve de prix acceptable.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "La réponse B est le signal le plus fort : la personne décrit une douleur récente (chemise perdue ce mois) ET exprime une intention d\'achat immédiate (\'demain matin\'). C\'est la différence entre \'idée sympa\' et \'je paie pour ça\'. Mémorise ces moments — ils guident ton positionnement.",
+          xp: 15,
+        },
+        // 2 — Micro-input : brique "signal_fort" (suit le scénario sur signal vs politesse)
+        {
+          type: "micro_input",
+          prompt:
+            "Quel est le signal le plus fort que tu as entendu dans tes interviews — une vraie réaction émotionnelle, pas une politesse ? (Cite si possible les mots exacts.)",
+          placeholder:
+            "Ex : \'Une commerçante m\'a dit \'je dépense 15 000 FCFA par mois pour corriger les erreurs de mon comptable — si tu fais mieux pour ce prix, je signe aujourd\'hui\'\' ...",
+          storageKey: "signal_fort",
+          xp: 2,
+        },
+        // 3 — Info : gérer les surprises
+        {
+          type: "info",
+          icon: "💡",
+          title: "Les surprises terrain sont tes meilleures données",
+          content:
+            "Quand une interview te révèle quelque chose d\'inattendu — un usage que tu n\'avais pas prévu, une douleur que tu ne soupçonnais pas, un refus là où tu attendais de l\'enthousiasme — c\'est précieux. Ces surprises valent plus que 50 réponses qui confirment ce que tu pensais déjà. Note-les mot pour mot.",
+          xp: 5,
+        },
+        // 4 — Scénario : gérer un retour négatif/surprise (enseigne "surprise")
+        {
+          type: "scenario",
+          context:
+            "Yao lance une app de mise en relation artisans-clients à Lomé. Il pensait que le problème principal était \'trouver un artisan\'. Mais dans ses 5 interviews, 4 personnes lui disent : \'Les artisans ne sont pas difficiles à trouver — le problème, c\'est qu\'on ne sait jamais s\'ils vont finir le travail à temps et au prix convenu.\'",
+          question: "Comment Yao doit-il réagir à cette surprise ?",
+          options: [
+            "Ignorer — son hypothèse initiale reste valide, il n\'a interviewé que 5 personnes.",
+            "Prendre note et ajuster : son vrai problème à résoudre est la fiabilité et la transparence, pas la mise en relation.",
+            "Arrêter le projet — si ce n\'est pas le problème qu\'il pensait, son idée n\'est pas bonne.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "4 personnes sur 5 qui disent la même chose, c\'est un signal fort. Yao n\'abandonne pas son projet — il l\'ajuste. L\'idée \'artisans + clients\' est bonne, mais la vraie valeur n\'est pas la mise en relation (déjà possible via WhatsApp), c\'est la garantie de fiabilité. Une surprise terrain n\'est pas un échec — c\'est un apprentissage qu\'il a payé avant de construire.",
+          xp: 15,
+        },
+        // 5 — Micro-input : brique "surprise" (suit le scénario sur retour surprise)
+        {
+          type: "micro_input",
+          prompt:
+            "Qu\'est-ce qui t\'a le plus surpris dans tes 5 interviews — ce que tu n\'attendais pas, que ça soit positif ou négatif ?",
+          placeholder:
+            "Ex : je pensais que le prix était le frein principal, mais tous mes interlocuteurs parlaient surtout de la fiabilité et du manque de suivi...",
+          storageKey: "surprise",
+          xp: 2,
+        },
+        // 6 — True/false
+        {
+          type: "true_false",
+          statement:
+            "Si une personne dit \'c\'est intéressant, je pourrais utiliser ça\', c\'est un signal positif fort qui valide ton idée.",
+          isTrue: false,
+          explanation:
+            "Faux. \'C\'est intéressant\' est de la politesse africaine — une façon de ne pas blesser. Les vrais signaux forts : la personne te parle spontanément de ses frustrations actuelles, te demande comment ça fonctionne, ou t\'exprime un intérêt concret lié à un problème récent. La politesse bienveillante est l\'ennemi de la validation réelle.",
+          xp: 5,
+        },
+        // 7 — Fill blank
+        {
+          type: "fill_blank",
+          template:
+            "Pendant une interview, parle maximum {0}% du temps. Ton rôle est d\'{1}, pas de convaincre.",
+          blanks: ["10", "écouter"],
+          isOpenAnswer: false,
+          xp: 8,
+        },
+        // 8 — MCQ
+        {
+          type: "mcq",
+          question:
+            "Comment choisir les 5 personnes à interviewer pour valider ton hypothèse ?",
+          options: [
+            "Tes proches — ils seront honnêtes car ils te connaissent.",
+            "Des personnes qui correspondent précisément à ta persona client — idéalement des inconnus ou des connaissances distantes.",
+            "Des experts du secteur — ils connaissent le marché mieux que les utilisateurs.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "Les proches biaiseront leurs réponses pour te protéger. Les experts te parleront de leur vision du marché, pas de leur vie quotidienne. Seules les personnes qui correspondent à ta persona et vivent le problème au quotidien peuvent te donner des données fiables. Un inconnu qui rit de frustration quand tu décris ton problème vaut plus que 10 amis qui disent \'super idée\'.",
+          xp: 10,
+        },
+        // 9 — Match
+        {
+          type: "match",
+          pairs: [
+            { left: "\'Bonne idée, ça manque ici\'", right: "Politesse — pas un signal fort" },
+            { left: "\'Je dépense X FCFA/mois sur ce problème\'", right: "Signal fort — douleur chiffrée" },
+            { left: "\'Peut-être, ça dépend du prix\'", right: "Intérêt faible — problème pas urgent" },
+            { left: "\'Quand tu lances ? Je suis le premier\'", right: "Signal fort — intention réelle" },
+          ],
+          xp: 8,
+        },
+        // 10 — Reorder : les étapes d\'une bonne interview
+        {
+          type: "reorder",
+          items: [
+            "Commencer par des questions ouvertes sur la vie quotidienne (sans parler de ton idée)",
+            "Laisser la personne décrire son problème dans ses propres mots",
+            "Creuser avec \'donne-moi un exemple récent\'",
+            "Écouter les signaux forts (frustrations chiffrées, intentions concrètes)",
+            "Ne dévoiler ton idée QU\'EN FIN d\'entretien — et noter la première réaction",
+          ],
+          xp: 10,
+        },
+        // 11 — Info
+        {
+          type: "info",
+          icon: "📝",
+          title: "Note les mots exacts — pas tes interprétations",
+          content:
+            "En prenant des notes, écris les mots EXACTS de la personne, pas ton résumé. \'Il a dit qu\'il avait des problèmes de gestion\' est une interprétation. \'Il a dit \'chaque soir je rentre sans savoir si j\'ai gagné ou perdu\'\' est une citation. Les citations mot pour mot sont de l\'or : elles deviennent ton copywriting, tes arguments de vente, ton empathie prouvée.",
+          xp: 5,
+        },
+        // 12 — MCQ
+        {
+          type: "mcq",
+          question:
+            "Tu interviewes quelqu\'un et il dit : \'Honnêtement, je ne sais pas si j\'utiliserais ça régulièrement.\' Que fais-tu ?",
+          options: [
+            "Tu essaies de le convaincre des avantages de ton idée.",
+            "Tu creuses : \'Qu\'est-ce qui ferait que tu l\'utiliserais régulièrement ?\' ou \'Qu\'est-ce qui te freinerait ?\'",
+            "Tu concluiras que cette personne n\'est pas dans ta cible et ignores ce signal.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "Un doute exprimé est une mine d\'or. Creuser \'qu\'est-ce qui ferait la différence pour toi ?\' révèle les vraies conditions d\'adoption. Peut-être le prix, peut-être la confiance, peut-être un usage différent. Si tu ignores ou si tu convaincs, tu rates l\'apprentissage le plus précieux de l\'entretien.",
+          xp: 10,
+        },
+        // 13 — Reflection template : assemblage (exerciseIndex 13)
+        {
+          type: "reflection_template",
+          intro:
+            "Tes 5 interviews sont menées. Voilà ce que tes deux insights clés donnent assemblés — développe librement avec tes notes de terrain.",
+          template:
+            "Sur mes 5 interviews, le signal le plus fort : {signal_fort}. Ce qui m\'a surpris : {surprise}.",
+          variables: ["signal_fort", "surprise"],
+          xp: 100,
+        },
+      ],
+    },
   },
+
   {
-    id: 205,
+    id: 110,
     levelId: 2,
-    title: "Synthétise tes 3 insights clés",
-    description: "Qu'as-tu vraiment appris ? Décide : continuer avec cette idée, pivoter, ou arrêter. Documente ton raisonnement.",
+    title: "Synthèse insights & décision",
+    description:
+      "Qu\'as-tu vraiment appris ? Décide : continuer, ajuster ou pivoter. Documente ton raisonnement — c\'est ta première décision stratégique.",
     xp: 150,
-    quiz: [
-      {
-        id: 1,
-        question: "Qu'est-ce qu'un pivot en entrepreneuriat ?",
-        options: [
-          "Abandonner complètement son projet",
-          "Un changement structuré de stratégie tout en conservant les apprentissages acquis",
-          "Changer de nom d'entreprise",
-          "Lever des fonds supplémentaires",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Un pivot n'est pas un échec — c'est une décision stratégique basée sur des données. Les pivots les plus réussis conservent le problème identifié mais changent la solution, la cible ou le modèle de revenus.",
-      },
-    ],
+    recapLabel: "✅ Marché validé — ta décision",
+    lesson: {
+      title: "Décider : continuer, ajuster ou pivoter",
+      exercises: [
+        // 0 — Info : les 3 issues
+        {
+          type: "info",
+          icon: "🗺️",
+          title: "Les 3 issues possibles après la validation terrain",
+          content:
+            "Issue 1 — Continuer : tes interviews confirment l\'hypothèse principale. Le problème est réel, urgent, et les gens cherchent une solution. Tu avances avec ton idée actuelle.\n\nIssue 2 — Ajuster : le problème est réel mais ta solution initiale est légèrement à côté. Tu gardes la cible et le problème, mais tu modifies l\'approche (canal, format, prix, fonctionnalité).\n\nIssue 3 — Pivoter : les interviews révèlent un problème différent, plus urgent ou plus large, que tu peux aussi résoudre. Tu changes de cap — mais tu conserves tes apprentissages.",
+          xp: 5,
+        },
+        // 1 — Scénario : ajustement basé sur insights (enseigne "ajustement")
+        {
+          type: "scenario",
+          context:
+            "Aminata à Abidjan avait prévu de lancer une app mobile de suivi de dépenses pour les ménages. Après 5 interviews, elle apprend que : 1) Le vrai problème n\'est pas \'suivre les dépenses\' mais \'ne pas savoir combien mettre de côté chaque semaine\'. 2) Les ménages n\'ont pas de smartphone à partager facilement. 3) Ils utilisent déjà WhatsApp tous les jours. → Elle ajuste : un bot WhatsApp qui envoie un rappel d\'épargne chaque vendredi soir.",
+          question: "Est-ce un pivot ou un ajustement pour Aminata ?",
+          options: [
+            "Un pivot — elle abandonne son idée initiale et repart de zéro.",
+            "Un ajustement — elle conserve le problème (finances familiales) et la cible, mais change le canal et le format.",
+            "Un abandon — les ménages ne veulent clairement pas de solution digitale.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "C\'est un ajustement : Aminata n\'a pas changé de problème ni de cible. Elle a affiné sa compréhension du vrai problème (épargne, pas suivi) et adapté le canal à la réalité terrain (WhatsApp > app mobile). C\'est exactement le bon usage de la validation terrain — apprendre pour ajuster, pas pour abandonner.",
+          xp: 15,
+        },
+        // 2 — Micro-input : brique "ajustement" (suit le scénario sur ajustement vs pivot)
+        {
+          type: "micro_input",
+          prompt:
+            "Suite à tes interviews, que vas-tu GARDER, AJUSTER ou ABANDONNER de ton idée initiale ? Sois précis.",
+          placeholder:
+            "Ex : Je garde : la cible (commerçants informels d\'Abidjan) et le problème (suivi des ventes). J\'ajuste : le canal (bot WhatsApp au lieu d\'app), le prix (gratuit au lancement). J\'abandonne : la fonctionnalité de prévisions que personne ne m\'a demandée...",
+          storageKey: "ajustement",
+          xp: 2,
+        },
+        // 3 — Info : pivot ≠ échec
+        {
+          type: "info",
+          icon: "🔄",
+          title: "Pourquoi un pivot n\'est pas un échec",
+          content:
+            "Instagram était une app de géolocalisation (Burbn) avant de pivoter sur les photos. Slack était un jeu vidéo avant de pivoter sur la messagerie d\'équipe. PayPal a pivoté 3 fois. Chaque pivot conserve les apprentissages : tu ne repars pas de zéro, tu repars avec une carte plus précise du marché. Un pivot au Niveau 2 coûte 2 semaines — un pivot au Niveau 5 coûte 18 mois.",
+          xp: 5,
+        },
+        // 4 — MCQ
+        {
+          type: "mcq",
+          question:
+            "Après ses interviews, Kofi réalise que le problème de ses clients n\'est pas \'livraison lente\' mais \'zéro visibilité sur l\'état de la commande\'. Que doit-il faire ?",
+          options: [
+            "Abandonner son idée de livraison — le problème est différent de ce qu\'il pensait.",
+            "Ajuster son positionnement : son vrai avantage devient la transparence du suivi en temps réel.",
+            "Continuer comme prévu — la livraison lente et le suivi sont le même problème.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "Le problème fondamental est bien lié à la livraison — mais l\'angle précis est différent. Kofi ne pivote pas, il affine. Son message devient : \'Tu sais où est ta commande à tout moment\' plutôt que \'on livre plus vite\'. C\'est un ajustement de positionnement basé sur des données réelles — exactement ce que la validation terrain est censée produire.",
+          xp: 10,
+        },
+        // 5 — True/false
+        {
+          type: "true_false",
+          statement:
+            "Si les 5 personnes que tu as interviewées ont des avis différents, ça signifie que ton idée ne tient pas.",
+          isTrue: false,
+          explanation:
+            "Faux. Des avis différents révèlent souvent des segments différents — pas l\'absence de marché. Si 3 personnes disent \'je paierais pour ça maintenant\' et 2 disent \'pas vraiment\', commence par les 3. Ils sont ton SOM de départ. L\'homogénéité de tous tes interlocuteurs n\'est pas requise — la clarté sur qui dit oui et pourquoi, si.",
+          xp: 5,
+        },
+        // 6 — Fill blank
+        {
+          type: "fill_blank",
+          template:
+            "Un pivot conserve les {0} acquis et change la {1}. Un abandon arrête tout. Un ajustement garde la direction et modifie les {2}.",
+          blanks: ["apprentissages", "stratégie", "moyens"],
+          isOpenAnswer: false,
+          xp: 8,
+        },
+        // 7 — Match
+        {
+          type: "match",
+          pairs: [
+            { left: "Signal fort × 4 sur 5", right: "Continuer — validation solide" },
+            { left: "Bon problème, mauvais canal", right: "Ajuster — changer le format" },
+            { left: "Problème différent, même cible", right: "Pivot — garder les apprentissages" },
+            { left: "Aucune urgence dans les interviews", right: "Reconsidérer — pas de marché prêt" },
+          ],
+          xp: 8,
+        },
+        // 8 — Reorder
+        {
+          type: "reorder",
+          items: [
+            "Relire toutes ses notes d\'interviews pour en extraire les récurrences",
+            "Identifier les signaux forts et les surprises",
+            "Décider : continuer, ajuster ou pivoter",
+            "Formuler ce qu\'on garde, change et abandonne",
+            "Documenter le raisonnement avant de passer à la construction",
+          ],
+          xp: 10,
+        },
+        // 9 — Scenario
+        {
+          type: "scenario",
+          context:
+            "Fatou a mené 5 interviews pour son service de traiteur à domicile à Cotonou. Résultats : 4/5 interviewées ont mentionné la même frustration \'je veux cuisiner maison pour mes enfants mais je n\'ai pas le temps en semaine\'. 2/5 ont demandé si Fatou pouvait commencer la semaine prochaine. 1/5 a suggéré un service de \'kits repas\' plutôt que des plats préparés.",
+          question: "Que devrait décider Fatou ?",
+          options: [
+            "Pivoter sur les kits repas — la suggestion est innovante.",
+            "Continuer avec les plats préparés en semaine — 4/5 confirment le problème et 2/5 veulent acheter dès maintenant.",
+            "Faire les deux services en parallèle pour maximiser les opportunités.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "4/5 confirment le problème ET 2/5 expriment une intention immédiate : c\'est une validation solide. La suggestion du kit est intéressante mais non validée — 1 opinion n\'est pas un signal suffisant. Fatou doit d\'abord servir ceux qui veulent acheter maintenant, apprendre de l\'opération, puis envisager d\'élargir.",
+          xp: 15,
+        },
+        // 10 — MCQ
+        {
+          type: "mcq",
+          question:
+            "Après 5 interviews, combien de signaux forts sont nécessaires pour avancer avec confiance ?",
+          options: [
+            "5/5 — unanimité totale seulement.",
+            "3/5 minimum, avec des exemples concrets et une urgence exprimée.",
+            "1 seul signal fort suffit si la personne est vraiment convaincue.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "3 signaux forts sur 5 (60%) est un seuil raisonnable pour continuer. En dessous, considère un ajustement. Au-dessus, tu as une validation solide. \'Signal fort\' = la personne décrit le problème spontanément, avec une frustration récente concrète, pas juste \'c\'est intéressant\'.",
+          xp: 10,
+        },
+        // 11 — Reflection template : assemblage (exerciseIndex 11)
+        {
+          type: "reflection_template",
+          intro:
+            "Ta décision est prise, documentée et ancrée dans des données réelles. Voilà ce que donne ta brique assemblée — développe librement.",
+          template:
+            "Après mes 5 interviews, voici ma décision : {ajustement}. Je continue vers le Niveau 3 avec cette version affinée de mon idée.",
+          variables: ["ajustement"],
+          xp: 57,
+        },
+      ],
+    },
   },
 
   // --- Niveau 3 ---

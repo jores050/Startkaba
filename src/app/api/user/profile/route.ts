@@ -153,6 +153,9 @@ export async function PUT(request: Request) {
     ...(parsed.data.publicBio !== undefined
       ? { publicBio: parsed.data.publicBio || null }
       : {}),
+    ...(parsed.data.showcaseOptIn !== undefined
+      ? { showcaseOptIn: parsed.data.showcaseOptIn }
+      : {}),
   };
 
   const supabase = await createClient();
