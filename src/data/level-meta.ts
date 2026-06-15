@@ -21,6 +21,13 @@ export const LEVEL_RECAP_CARDS: Record<number, RecapCard[]> = {
     { icon: "🎤", title: "Tes 5 interviews", taskId: 109, exerciseIndex: 13 },
     { icon: "✅", title: "Marché validé — ta décision", taskId: 110, exerciseIndex: 11 },
   ],
+  3: [
+    { icon: "🏗️", title: "Ton Business Model Canvas", taskId: 301, exerciseIndex: 11 },
+    { icon: "💰", title: "Tes sources de revenus", taskId: 302, exerciseIndex: 9 },
+    { icon: "💼", title: "Ton budget de démarrage", taskId: 303, exerciseIndex: 11 },
+    { icon: "🏷️", title: "Ta stratégie de prix", taskId: 304, exerciseIndex: 10 },
+    { icon: "🤝", title: "Tes partenaires clés", taskId: 305, exerciseIndex: 9 },
+  ],
 };
 
 // Message de clôture de Kaba — affiché en bas de la page récap.

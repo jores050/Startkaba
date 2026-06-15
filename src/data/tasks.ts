@@ -1309,21 +1309,134 @@ export const tasks: Task[] = [
     title: "Remplis les 9 blocs du Business Model Canvas",
     description: "Segments clients, proposition de valeur, canaux, relations clients, sources de revenus, ressources clés, activités clés, partenaires clés, structure de coûts.",
     xp: 150,
-    quiz: [
-      {
-        id: 1,
-        question: "Quels sont les 9 blocs du Business Model Canvas ?",
-        options: [
-          "Clients, Produit, Prix, Place, Promotion, People, Process, Physical, Partners",
-          "Segments clients, Proposition de valeur, Canaux, Relations clients, Sources de revenus, Ressources clés, Activités clés, Partenaires clés, Structure de coûts",
-          "Vision, Mission, Valeurs, Objectifs, Stratégie, Tactiques, KPIs, Budget, Timeline",
-          "Marché, Concurrents, Différenciation, Pricing, Distribution, Marketing, Ventes, Service, Après-vente",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Le BMC d'Alexander Osterwalder couvre les 9 dimensions essentielles d'un modèle économique, réparties en deux côtés : création de valeur (gauche) et livraison + capture de valeur (droite).",
-      },
-    ],
+    recapLabel: "🏗️ Ton Business Model Canvas",
+    lesson: {
+      title: "Le Business Model Canvas — construis la carte de ton projet",
+      exercises: [
+        // 0 — Info : les 9 blocs
+        {
+          type: "info",
+          icon: "🏗️",
+          title: "Le BMC — la carte de ton business sur une page",
+          content: "Le Business Model Canvas résume ton modèle économique en 9 blocs sur une feuille A3. Il remplace 50 pages de business plan par une hypothèse visuelle que tu peux modifier en 5 minutes.\n\nLes 9 blocs : Segments clients (qui exactement ?), Proposition de valeur (quel problème tu résous ?), Canaux (comment tu atteins tes clients ?), Relations clients (comment tu les gardes ?), Sources de revenus (comment tu gagnes de l'argent ?), Ressources clés (ce dont tu as absolument besoin), Activités clés (ce que tu dois faire chaque jour), Partenaires clés (qui t'aide à faire ce que tu ne peux pas seul ?), Structure de coûts (combien ça coûte de fonctionner ?).\n\nLe BMC n'est pas un document figé — c'est une hypothèse que tu vas tester et ajuster.",
+          xp: 5,
+        },
+        // 1 — Scénario : BMC de QuickDeliv illustré (enseigne les 9 blocs)
+        {
+          type: "scenario",
+          context: "Moussa lance QuickDeliv, livraison de repas à Dakar. Son BMC : Segments clients — travailleurs du Plateau 25-45 ans. Proposition de valeur — repas livrés en 30 min sans quitter son bureau. Canaux — WhatsApp Business + groupes Facebook quartier. Relations clients — suivi par message. Sources de revenus — commission 15% par commande. Ressources clés — 8 traiteurs partenaires, livreurs moto. Activités clés — coordination livraisons. Partenaires clés — traiteurs et livreurs indépendants. Structure de coûts — commissions livreurs 60% revenus. Un concurrent vague dit : \"je livre des repas à tout Dakar\".",
+          question: "Qu'est-ce qui rend le BMC de Moussa solide par rapport au concurrent vague ?",
+          options: [
+            "Il cible un segment précis, des canaux concrets et un modèle de revenus simple — chaque bloc découle du précédent",
+            "Il a plus de partenaires et de livreurs, ce qui garantit la scalabilité",
+            "Il utilise des outils technologiques avancés",
+            "Il vise un marché large pour maximiser les opportunités",
+          ],
+          correctIndex: 0,
+          explanation: "Un BMC solide est précis à chaque bloc. \"Tout Dakar\" est une catastrophe — tu ne peux pas gérer les canaux, les partenaires ni les coûts. Un segment clair tire tout le reste du BMC.",
+          xp: 15,
+        },
+        // 2 — Info : segment précis (enseigne segments_bmc)
+        {
+          type: "info",
+          icon: "🎯",
+          title: "Segments clients — qui exactement, pas \"tout le monde\"",
+          content: "Dans le BMC, \"segments clients\" n'est pas la case pour écrire \"tout le monde\". C'est : qui paie, qui utilise, pourquoi eux ?\n\nUn bon segment répond à 3 questions :\n1. Qui — âge, situation, lieu, revenus\n2. Contexte — dans quelle situation ont-ils ce besoin ?\n3. Décision — qu'est-ce qui les pousse à acheter ?\n\nExemple faible : \"les étudiants\"\nExemple fort : \"étudiants en BTS à Abidjan Cocody, 19-24 ans, sans carte bancaire, qui cherchent des cours de révision avant les examens de juin\"\n\nPlus ton segment est précis, plus les autres blocs du BMC deviennent évidents.",
+          xp: 5,
+        },
+        // 3 — micro_input : brique "segments_bmc"
+        {
+          type: "micro_input",
+          prompt: "Qui est exactement ton segment client principal pour ton BMC ? (âge, situation, lieu, contexte d'achat)",
+          placeholder: "Ex : mamans d'enfants scolarisés, 30-45 ans, quartiers Yopougon et Koumassi à Abidjan, qui cherchent un traiteur fiable pour les repas de midi en période scolaire",
+          storageKey: "segments_bmc",
+          xp: 2,
+        },
+        // 4 — Scénario : canaux (enseigne canaux_bmc)
+        {
+          type: "scenario",
+          context: "AboSoin, service de soins infirmiers à domicile à Ouagadougou. Aïcha hésite entre 3 canaux pour atteindre les familles de personnes âgées (enfants adultes 35-55 ans). Option A : développer une appli mobile pour 800 000 FCFA. Option B : groupe WhatsApp + bouche-à-oreille dans les associations de retraités (0 FCFA). Option C : démarchage direct dans les cliniques partenaires (0 FCFA). Elle a 3 mois avant d'épuiser ses économies.",
+          question: "Quels canaux Aïcha devrait-elle prioriser pour ses 3 premiers mois ?",
+          options: [
+            "Option A — l'appli mobile est plus professionnelle et scalable",
+            "Options B et C — WhatsApp et cliniques : là où le segment existe déjà, sans dépense initiale",
+            "Option C uniquement — les cliniques donnent accès direct aux patients",
+            "Aucun — il faut d'abord créer une page Facebook professionnelle",
+          ],
+          correctIndex: 1,
+          explanation: "Les canaux doivent être là où ton segment EXISTE déjà. Les familles de personnes âgées sont sur WhatsApp et dans les cliniques — pas sur une appli qu'elles ne connaissent pas. Canaux zero-coût d'abord, canaux payants après validation.",
+          xp: 15,
+        },
+        // 5 — micro_input : brique "canaux_bmc"
+        {
+          type: "micro_input",
+          prompt: "Par quels 2 canaux principaux vas-tu atteindre ton segment ? (canaux que tu peux utiliser dès maintenant)",
+          placeholder: "Ex : Canal 1 — groupes WhatsApp des associations de parents d'élèves. Canal 2 — démarchage direct dans les écoles en début de trimestre",
+          storageKey: "canaux_bmc",
+          xp: 2,
+        },
+        // 6 — MCQ : structure de coûts
+        {
+          type: "mcq",
+          question: "Dans le BMC, la \"structure de coûts\" représente…",
+          options: [
+            "La liste exhaustive de tous les coûts imaginables de l'entreprise",
+            "Les coûts directement liés aux ressources clés et aux activités clés — ce qu'il faut pour faire fonctionner le modèle",
+            "Les salaires uniquement",
+            "Le budget marketing annuel",
+          ],
+          correctIndex: 1,
+          explanation: "La structure de coûts découle des ressources et activités clés. Si ton activité clé est \"livraison express\", ton coût principal est \"livreurs + carburant\". Les coûts sans activité correspondante sont des dépenses inutiles.",
+          xp: 10,
+        },
+        // 7 — Vrai/faux : blocs interdépendants
+        {
+          type: "true_false",
+          statement: "On peut remplir un bloc du BMC indépendamment des autres — chaque bloc est autonome.",
+          isTrue: false,
+          explanation: "Les 9 blocs sont interdépendants. Le segment client détermine les canaux, les canaux influencent les relations clients, les activités clés définissent les ressources et la structure de coûts. Changer un bloc impacte plusieurs autres.",
+          xp: 5,
+        },
+        // 8 — Match : 4 blocs ↔ définitions
+        {
+          type: "match",
+          pairs: [
+            { left: "Proposition de valeur", right: "Le problème résolu et comment mieux que les alternatives" },
+            { left: "Relations clients", right: "Comment tu acquiers, gardes et fidélises tes clients" },
+            { left: "Ressources clés", right: "Les actifs indispensables — humains, financiers, intellectuels, physiques" },
+            { left: "Activités clés", right: "Ce que tu dois faire chaque jour pour que le modèle fonctionne" },
+          ],
+          xp: 8,
+        },
+        // 9 — Fill blank : proposition de valeur
+        {
+          type: "fill_blank",
+          template: "La proposition de valeur répond à : \"Pourquoi choisir MON produit plutôt que {0} ?\"",
+          blanks: ["l'alternative existante (concurrent, bricolage, statu quo)"],
+          isOpenAnswer: false,
+          xp: 8,
+        },
+        // 10 — Reorder : ordre logique du BMC
+        {
+          type: "reorder",
+          items: [
+            "Segment clients — qui est ton client cible ?",
+            "Proposition de valeur — quel problème résous-tu pour ce segment ?",
+            "Canaux — comment tu atteins ce segment avec cette valeur ?",
+            "Structure de coûts — combien ça coûte de faire tout ça ?",
+          ],
+          xp: 10,
+        },
+        // 11 — Reflection template : BMC résumé
+        {
+          type: "reflection_template",
+          intro: "Voilà — tu as défini ton segment et tes canaux. Assemble maintenant ton BMC résumé : complète chaque section avec ce que tu sais aujourd'hui.",
+          template: "Mon segment client principal : {segments_bmc}\n\nMes canaux principaux : {canaux_bmc}\n\nMa proposition de valeur pour ce segment :\n[En une phrase : ce que tu fais, pour qui, ce qui te différencie]\n\nMon modèle de revenus :\n[Comment tu gagnes de l'argent avec ce segment via ces canaux]\n\nMes ressources et activités clés :\n[Ce dont tu as absolument besoin pour fonctionner]\n\nMa structure de coûts principale :\n[Les 2-3 postes de coûts incontournables]",
+          variables: ["segments_bmc", "canaux_bmc"],
+          xp: 65,
+        },
+      ],
+    },
   },
   {
     id: 302,
@@ -1331,21 +1444,115 @@ export const tasks: Task[] = [
     title: "Identifie tes 3 sources de revenus potentielles",
     description: "Abonnement, commission, vente directe, freemium, publicité, licence... Laquelle est la plus adaptée à ton marché local ?",
     xp: 100,
-    quiz: [
-      {
-        id: 1,
-        question: "Quel modèle de revenus est le plus adapté à une base clients avec peu de cartes bancaires ?",
-        options: [
-          "Abonnement mensuel par carte de crédit uniquement",
-          "Paiement à l'usage via Mobile Money (Wave, Orange Money, MTN MoMo)",
-          "Modèle publicitaire uniquement",
-          "Freemium avec conversion premium",
-        ],
-        correctIndex: 1,
-        explanation:
-          "En Afrique de l'Ouest, le Mobile Money (Wave, Orange Money, MTN MoMo) est souvent plus accessible que les cartes bancaires. Intégrer ces modes de paiement dès le départ est crucial pour la conversion.",
-      },
-    ],
+    recapLabel: "💰 Tes sources de revenus",
+    lesson: {
+      title: "Sources de revenus — quel modèle pour ton marché ?",
+      exercises: [
+        // 0 — Info : les modèles de revenus
+        {
+          type: "info",
+          icon: "💰",
+          title: "Les modèles de revenus qui marchent en Afrique de l'Ouest",
+          content: "Les 6 modèles les plus adaptés :\n\n1. Vente directe — tu vends un produit ou service à l'acte (le plus simple)\n2. Commission — tu prends un % sur chaque transaction facilitée (Jumia, Wave)\n3. Abonnement — paiement récurrent mensuel ou hebdomadaire (Canal+)\n4. Freemium — version gratuite, premium payante (risqué sans financement)\n5. Marketplace — mets en relation acheteurs et vendeurs, prends une commission\n6. Formation / conseil — monétise ton expertise directement\n\nRéalité terrain : avec Mobile Money (Wave, Orange Money, MTN MoMo), les paiements à l'acte et les micro-abonnements hebdomadaires fonctionnent bien. Les abonnements mensuels longs sont difficiles à collecter.",
+          xp: 5,
+        },
+        // 1 — Scénario : Sama Nettoyage (enseigne modele_revenu)
+        {
+          type: "scenario",
+          context: "Kofi lance Sama Nettoyage, service de ménage à domicile à Accra. Modèle A : abonnement mensuel 150 GHS. Problème : les clients ne connaissent pas Kofi et refusent de s'engager sans avoir testé. Modèle B : paiement à la prestation 35 GHS. Avantage : aucune friction. Problème : revenu variable. Modèle C : première prestation 20 GHS puis abonnement 120 GHS/mois. Avantage : essai sans risque, conversion vers récurrence.",
+          question: "Quel modèle Kofi devrait-il adopter pour les 3 premiers mois ?",
+          options: [
+            "Modèle A — l'abonnement donne de la prévisibilité dès le départ",
+            "Modèle B — le paiement à la prestation est le plus simple à vendre",
+            "Modèle C — l'essai réduit la friction d'entrée et convertit vers la récurrence",
+            "Aucun — il faudrait créer une appli d'abord pour gérer les abonnements",
+          ],
+          correctIndex: 2,
+          explanation: "Kofi n'a pas de réputation — il doit réduire le risque perçu. Un premier paiement bas + conversion vers abonnement est la progression naturelle : acquisition facile, puis fidélisation rentable.",
+          xp: 10,
+        },
+        // 2 — micro_input : brique "modele_revenu"
+        {
+          type: "micro_input",
+          prompt: "Quel modèle de revenu principal vas-tu adopter ? (vente directe, commission, abonnement…) Et sous quelle forme concrète ?",
+          placeholder: "Ex : Paiement à la prestation pour les 2 premiers mois, puis migration vers abonnement hebdomadaire à 2 500 FCFA via Orange Money. Première session à prix réduit pour tester.",
+          storageKey: "modele_revenu",
+          xp: 2,
+        },
+        // 3 — Info : risque freemium
+        {
+          type: "info",
+          icon: "⚠️",
+          title: "Freemium en Afrique — l'erreur qui tue les startups sans financement",
+          content: "Le freemium est séduisant. En pratique, il est dangereux sans financement.\n\nLe problème : les utilisateurs gratuits ne se convertissent pas si la valeur premium n'est pas évidente. Tu brûles du temps pour servir des non-payants. Et \"gratuit\" est perçu comme \"pas sérieux\" dans certains contextes.\n\nQuand ça peut marcher : tu as 18 mois de financement minimum, la valeur premium est clairement visible, et tu as un taux de conversion >3%.\n\nSinon : commence par facturer dès le premier client. Gratuit = données, Payant = validation.",
+          xp: 5,
+        },
+        // 4 — MCQ : sans financement
+        {
+          type: "mcq",
+          question: "Tu lances un service de comptabilité en ligne pour PME au Sénégal sans financement. Quel modèle de revenus adopter en priorité ?",
+          options: [
+            "Freemium — version gratuite pour construire la base d'utilisateurs d'abord",
+            "Paiement à l'acte à 15 000 FCFA par déclaration fiscale — on valide que les clients paient avant de construire plus",
+            "Publicité — les PME voient des annonces, c'est gratuit pour elles",
+            "Licence annuelle à 500 000 FCFA pour maximiser les revenus",
+          ],
+          correctIndex: 1,
+          explanation: "Sans financement : faire payer le plus tôt possible. Un client qui paie 15 000 FCFA valide que le service vaut quelque chose. Des milliers d'utilisateurs gratuits qui ne paient jamais ne prouvent rien.",
+          xp: 10,
+        },
+        // 5 — Scénario : cycles de paiement hebdo vs mensuel
+        {
+          type: "scenario",
+          context: "Fatima vend un abonnement à sa plateforme de cours en ligne au Mali. Ses cibles (lycéens et étudiants) reçoivent de l'argent de leurs parents en début de semaine. En fin de mois, ils sont souvent à court. Test : abonnement mensuel à 5 000 FCFA → taux de renouvellement 23%. Abonnement hebdomadaire à 1 500 FCFA → taux de renouvellement 67%. Total mensuel avec l'hebdo : 6 000 FCFA par client, soit plus qu'avec le mensuel.",
+          question: "Quelle leçon Fatima devrait-elle tirer sur les cycles de paiement ?",
+          options: [
+            "L'abonnement mensuel est plus rentable car le ticket unitaire est plus élevé",
+            "Adapter la fréquence de facturation aux cycles de revenus réels des clients augmente conversion ET rétention",
+            "Il vaut mieux vendre annuellement pour fidéliser",
+            "Le prix hebdomadaire est trop bas pour être pris au sérieux",
+          ],
+          correctIndex: 1,
+          explanation: "En Afrique de l'Ouest, les revenus sont souvent hebdomadaires ou irréguliers. Un abonnement calqué sur ce cycle réduit la barrière à l'entrée ET augmente la rétention. Tu gagnes plus en adaptant le rythme.",
+          xp: 10,
+        },
+        // 6 — Vrai/faux : Mobile Money automatique
+        {
+          type: "true_false",
+          statement: "Wave et Orange Money permettent de mettre en place des abonnements automatiques récurrents sans que le client ait besoin d'agir chaque mois.",
+          isTrue: false,
+          explanation: "En 2024, les plateformes Mobile Money en Afrique de l'Ouest ne proposent pas toutes de débit automatique. Il faut souvent un rappel actif (WhatsApp, SMS) pour déclencher le paiement. Anticipe cette contrainte dans ton modèle.",
+          xp: 5,
+        },
+        // 7 — Fill blank : règle prix de survie
+        {
+          type: "fill_blank",
+          template: "Avant de lancer, vérifie que ton prix couvre tes {0} et te laisse une {1} suffisante pour continuer à opérer.",
+          blanks: ["coûts variables directs", "marge"],
+          isOpenAnswer: false,
+          xp: 8,
+        },
+        // 8 — Match : modèles revenus ↔ descriptions
+        {
+          type: "match",
+          pairs: [
+            { left: "Commission", right: "Tu facilites une transaction et prends un % (Jumia, Airbnb)" },
+            { left: "Abonnement", right: "Le client paie un montant fixe récurrent pour accéder au service" },
+            { left: "Vente directe", right: "Tu vends une fois, à un prix fixé, sans engagement futur" },
+            { left: "Marketplace", right: "Tu mets en relation offre et demande, les deux côtés te paient" },
+          ],
+          xp: 8,
+        },
+        // 9 — Reflection template : sources de revenus
+        {
+          type: "reflection_template",
+          intro: "Ton modèle de revenu est posé. Formalise maintenant tes 3 sources potentielles et explique pourquoi elles correspondent à ton marché.",
+          template: "Mon modèle de revenu principal : {modele_revenu}\n\nMes 3 sources de revenus potentielles :\n\n1. [Source principale — celle que tu testes maintenant]\n   Prix : ___  Fréquence : ___  Mode de paiement : ___\n\n2. [Source secondaire — à développer après les premiers clients]\n   Prix : ___  Fréquence : ___\n\n3. [Source future — quand tu as de la traction]\n   Prix : ___  Conditions : ___\n\nPourquoi ce modèle est adapté à mon marché :\n[Explique en 2-3 lignes pourquoi tes clients vont accepter ce mode de paiement]",
+          variables: ["modele_revenu"],
+          xp: 37,
+        },
+      ],
+    },
   },
   {
     id: 303,
@@ -1353,21 +1560,134 @@ export const tasks: Task[] = [
     title: "Calcule ton budget de démarrage minimum",
     description: "En FCFA. Sépare les coûts fixes (loyer, salaires) des coûts variables (production, commissions). Quel est le minimum pour tester en conditions réelles ?",
     xp: 150,
-    quiz: [
-      {
-        id: 1,
-        question: "Quelle est la différence entre coûts fixes et coûts variables ?",
-        options: [
-          "Les coûts fixes sont plus importants que les coûts variables",
-          "Les coûts fixes ne changent pas avec le volume de ventes ; les coûts variables augmentent avec chaque unité produite/vendue",
-          "Les coûts fixes concernent les salaires, les variables concernent les fournitures",
-          "Il n'y a pas de différence pratique pour une startup",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Comprendre cette distinction est fondamental pour ton point mort. Minimiser les coûts fixes au démarrage (bureau en coworking, outils SaaS vs achat licence) te donne plus de flexibilité pour pivoter.",
-      },
-    ],
+    recapLabel: "💼 Ton budget de démarrage",
+    lesson: {
+      title: "Budget de démarrage — calcule ton minimum viable",
+      exercises: [
+        // 0 — Info : coûts fixes vs variables
+        {
+          type: "info",
+          icon: "📊",
+          title: "Coûts fixes vs coûts variables — la distinction qui donne le contrôle",
+          content: "Coûts fixes : tu les paies que tu aies 0 ou 100 clients. Loyer bureau, abonnement internet, salaire fixe, logiciel SaaS mensuel.\n\nCoûts variables : ils augmentent avec chaque vente. Emballage, livraison, commission livreur, matières premières.\n\nUne startup peut être rentable sur le papier et mourir quand même parce que ses coûts fixes écrasent la marge.\n\nRègle lean de démarrage : maximise les coûts variables, minimise les coûts fixes. Préfère payer un livreur à la course (variable) plutôt que de l'embaucher (fixe). Le coworking à la journée plutôt qu'un bail commercial. Plus tu es flexible, plus tu peux pivoter.",
+          xp: 5,
+        },
+        // 1 — Scénario : budget réel KaraFresh (enseigne couts_fixes)
+        {
+          type: "scenario",
+          context: "Adjoua lance KaraFresh, livraison de légumes frais à Cotonou. Budget 3 mois — Coûts fixes mensuels : WhatsApp Business + data (5 000 FCFA) + stockage frigo chez sa tante (10 000 FCFA) = 15 000 FCFA × 3 = 45 000 FCFA. Coûts variables par commande : légumes (70% prix de vente) + livraison moto (500 FCFA) + sac (200 FCFA). Estimation 150 commandes × 2 500 FCFA coûts = 375 000 FCFA. Marketing initial : photos produits 15 000 FCFA. TOTAL 3 mois : 435 000 FCFA. Adjoua dispose de 600 000 FCFA d'économies.",
+          question: "Qu'est-ce que ce budget montre sur la structure de coûts de KaraFresh ?",
+          options: [
+            "Ses coûts fixes sont trop élevés — elle doit réduire son loyer",
+            "Ses coûts variables dominent — sain au démarrage, elle ne dépense que quand elle vend",
+            "Elle a mal calculé — les startups ne peuvent pas démarrer avec si peu",
+            "Elle devrait investir plus en marketing pour accélérer",
+          ],
+          correctIndex: 1,
+          explanation: "Quand les coûts variables dominent, zéro vente = dépenses minimales (15 000 FCFA/mois de fixes seulement). C'est la structure idéale au démarrage : le risque est limité et proportionnel à l'activité réelle.",
+          xp: 15,
+        },
+        // 2 — micro_input : brique "couts_fixes"
+        {
+          type: "micro_input",
+          prompt: "Quels sont tes 3 coûts fixes mensuels incompressibles pour démarrer ? (en FCFA)",
+          placeholder: "Ex : 1) Connexion internet + WhatsApp Business : 8 000 FCFA/mois. 2) Espace stockage chez un proche : 15 000 FCFA/mois. 3) Outil de gestion : 5 000 FCFA/mois. Total fixe mensuel : 28 000 FCFA",
+          storageKey: "couts_fixes",
+          xp: 2,
+        },
+        // 3 — Info : budget lean (enseigne budget_minimal)
+        {
+          type: "info",
+          icon: "✂️",
+          title: "Le budget lean — les 7 dépenses à éviter avant d'avoir des clients",
+          content: "Avant tes 10 premiers clients payants, ces dépenses sont prématurées :\n\n1. Bureau commercial — travaille depuis chez toi ou en coworking à la journée\n2. Employé fixe — commence avec des freelances à la commission\n3. Développement appli sur mesure — utilise WhatsApp, Google Forms, Notion d'abord\n4. Logo et charte pro — Canva suffit pour tester\n5. Stock important — commande au fur et à mesure\n6. Publicité payante — valide d'abord ton offre en organique\n7. Formation non essentielle — apprends en faisant\n\nLa règle : toute dépense avant le premier client doit être justifiée par \"je ne peux pas avoir de clients sans ça\". Sinon, ne dépense pas encore.",
+          xp: 5,
+        },
+        // 4 — Scénario : Ibrahima 2M vs Mariam 80k (enseigne budget_minimal)
+        {
+          type: "scenario",
+          context: "Deux entrepreneurs lancent un service de comptabilité pour artisans à Bamako. Ibrahima : loue un bureau (150k FCFA/mois), développe une appli (800k), imprime 1 000 flyers (120k), achète matériel (500k). 4 mois de préparation = 2,1M FCFA dépensés. Au 5e mois il découvre que les artisans préfèrent WhatsApp à une appli. Mariam : travaille depuis chez elle (0 FCFA), groupe WhatsApp de 15 artisans (0 FCFA), 3 suivis gratuits pour valider (0 FCFA). Semaine 4 : 2 clients payants à 25k FCFA/mois. Budget total mois 1 : 80 000 FCFA. Mois 3 : 8 clients, 200k FCFA de revenus mensuels.",
+          question: "Quel est le principe clé que Mariam applique et qu'Ibrahima a ignoré ?",
+          options: [
+            "Mariam a moins d'ambition — Ibrahima pense grand",
+            "Tester avec un investissement minimal avant de dépenser en infrastructure — le budget suit la validation, pas l'inverse",
+            "Mariam a de la chance d'avoir des contacts dans son quartier",
+            "Ibrahima a tort de développer une appli — il faut toujours commencer par WhatsApp",
+          ],
+          correctIndex: 1,
+          explanation: "Le budget minimum = ce qu'il faut pour avoir tes 3 premiers retours clients, pas pour construire une \"vraie\" entreprise. Mariam a dépensé 80k pour apprendre ce que les artisans veulent. Ibrahima a dépensé 2,1M pour construire ce qu'il croyait qu'ils voulaient.",
+          xp: 15,
+        },
+        // 5 — micro_input : brique "budget_minimal"
+        {
+          type: "micro_input",
+          prompt: "Quel est ton budget minimum pour les 3 premiers mois ? (en FCFA) — calcule : coûts fixes × 3 + coûts variables estimés + marketing initial",
+          placeholder: "Ex : Fixes 3 mois : 84 000 FCFA. Variables estimés (50 commandes × 1 500 FCFA) : 75 000 FCFA. Marketing : 20 000 FCFA. TOTAL : 179 000 FCFA. J'ai 250 000 FCFA disponibles.",
+          storageKey: "budget_minimal",
+          xp: 2,
+        },
+        // 6 — MCQ : point mort
+        {
+          type: "mcq",
+          question: "Qu'est-ce que le point mort (break-even) pour une startup ?",
+          options: [
+            "Le moment où l'entreprise a épuisé toutes ses économies",
+            "Le niveau de ventes où les revenus couvrent exactement tous les coûts — au-delà, on est rentable",
+            "Le nombre de clients minimum pour lever des fonds",
+            "La date limite pour lancer avant de perdre son marché",
+          ],
+          correctIndex: 1,
+          explanation: "Point mort = coûts fixes ÷ (prix unitaire – coûts variables unitaires). Exemple : fixes 50k FCFA/mois, prix 5k, coût variable 2k → point mort = 50k ÷ 3k = 17 ventes/mois. En dessous tu perds, au-dessus tu gagnes.",
+          xp: 10,
+        },
+        // 7 — Vrai/faux : gros budget
+        {
+          type: "true_false",
+          statement: "Il vaut mieux avoir un gros budget de démarrage pour maximiser ses chances de succès.",
+          isTrue: false,
+          explanation: "Les startups qui démarrent avec beaucoup de capital tendent à dépenser inutilement avant de valider leur marché. Un budget contraint force la créativité et la prioritisation. L'argent est utile après la validation — pas avant.",
+          xp: 5,
+        },
+        // 8 — Fill blank : formule point mort
+        {
+          type: "fill_blank",
+          template: "Point mort (en nombre de ventes) = Coûts {0} ÷ (Prix de vente – Coûts {1} unitaires)",
+          blanks: ["fixes", "variables"],
+          isOpenAnswer: false,
+          xp: 8,
+        },
+        // 9 — Match : coût fixe vs variable
+        {
+          type: "match",
+          pairs: [
+            { left: "Loyer mensuel du bureau", right: "Coût fixe" },
+            { left: "Commission livreur par course", right: "Coût variable" },
+            { left: "Abonnement outil SaaS mensuel", right: "Coût fixe" },
+            { left: "Matières premières par produit fabriqué", right: "Coût variable" },
+          ],
+          xp: 8,
+        },
+        // 10 — Reorder : ordre pour construire son budget
+        {
+          type: "reorder",
+          items: [
+            "Lister tous les coûts fixes incompressibles (ce qu'on paie même sans vente)",
+            "Estimer les coûts variables par unité vendue",
+            "Calculer le point mort mensuel",
+            "Décider du budget de lancement selon ses économies disponibles",
+          ],
+          xp: 10,
+        },
+        // 11 — Reflection template : budget de démarrage
+        {
+          type: "reflection_template",
+          intro: "Ton budget de démarrage est maintenant calculé. Voici le livrable complet à conserver comme référence pour tes 3 premiers mois.",
+          template: "Mes coûts fixes mensuels : {couts_fixes}\n\nMon budget minimum 3 mois : {budget_minimal}\n\nMes coûts variables par unité vendue :\n- Coût 1 : ___  FCFA\n- Coût 2 : ___  FCFA\n- Total coût variable unitaire : ___  FCFA\n\nMon prix de vente unitaire : ___  FCFA\n\nMon point mort mensuel :\n[Coûts fixes] ÷ ([Prix] – [Coût variable]) = ___ ventes/mois\n\nCe que j'ai décidé de NE PAS dépenser avant mes 10 premiers clients :\n[Liste les dépenses reportées et pourquoi]",
+          variables: ["couts_fixes", "budget_minimal"],
+          xp: 65,
+        },
+      ],
+    },
   },
   {
     id: 304,
@@ -1375,21 +1695,123 @@ export const tasks: Task[] = [
     title: "Définis ta stratégie de pricing",
     description: "Pour le marché local. Ni trop cher (inaccessible), ni trop bas (non crédible). Teste plusieurs niveaux de prix dans tes interviews.",
     xp: 100,
-    quiz: [
-      {
-        id: 1,
-        question: "Qu'est-ce que le pricing psychologique en Afrique de l'Ouest ?",
-        options: [
-          "Fixer des prix en nombres ronds comme 5 000 FCFA au lieu de 4 990 FCFA",
-          "Adapter le prix en fonction du pouvoir d'achat local, des cycles de revenus (mensuel, hebdomadaire) et des normes culturelles de négociation",
-          "Toujours proposer le prix le plus bas du marché",
-          "Utiliser des prix en dollars pour paraître plus professionnel",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Le pricing en Afrique de l'Ouest doit tenir compte des cycles de revenus (souvent hebdomadaires ou irréguliers), de la culture de la négociation, et de la perception qualité/prix. Un prix trop bas peut signaler une mauvaise qualité.",
-      },
-    ],
+    recapLabel: "🏷️ Ta stratégie de prix",
+    lesson: {
+      title: "Pricing — trouve le prix juste pour ton marché local",
+      exercises: [
+        // 0 — Info : 3 méthodes de pricing
+        {
+          type: "info",
+          icon: "🏷️",
+          title: "3 méthodes pour fixer ton prix",
+          content: "Il n'existe pas UN bon prix — il existe une bonne méthode pour le trouver.\n\nMéthode 1 — Par les coûts : Prix = Coûts variables unitaires + Marge souhaitée. Avantage : tu ne perds jamais d'argent par vente. Limite : ignore ce que le client est prêt à payer.\n\nMéthode 2 — Par le marché : tu regardes tes concurrents et tu te positionnes (moins cher, pareil, premium). Avantage : ancrage réel. Limite : tu assumes que le marché est bien tariffé.\n\nMéthode 3 — Par la valeur perçue : tu factures ce que le client GAGNE (économie de temps, de revenu, de stress). Si ton service fait gagner 200k FCFA, tu peux facturer 30k FCFA.\n\nEn Afrique de l'Ouest : la méthode par les coûts est le plancher, la valeur perçue est le plafond. Le benchmark calibre par rapport aux alternatives.",
+          xp: 5,
+        },
+        // 1 — Scénario : Aminata se sous-estime (enseigne prix_cible)
+        {
+          type: "scenario",
+          context: "Aminata, graphiste freelance à Lomé avec 15 ans d'expérience. Elle fixe son logo à 5 000 FCFA (studio agréé : 40-80k FCFA). Résultat : clients qui marchandent encore à la baisse, perception \"bon marché\", un client a dit \"si c'est aussi peu cher c'est pas sérieux\", elle doit faire 20 logos/mois pour survivre. Elle teste 25 000 FCFA : elle perd 2 prospects sur 3, gagne 1 nouveau qui dit \"avec ce prix je sais que tu es professionnelle\". Elle fait moins de logos mais gagne plus, avec des clients qui respectent son travail.",
+          question: "Quelle leçon sur le pricing Aminata a-t-elle apprise ?",
+          options: [
+            "Il faut toujours fixer son prix en dessous du marché pour avoir plus de clients",
+            "Un prix bas peut nuire à la crédibilité autant qu'un prix trop élevé — le prix est un signal de valeur",
+            "Il ne faut jamais baisser ses prix même pour des clients difficiles",
+            "Le prix le plus haut du marché est toujours le meilleur à adopter",
+          ],
+          correctIndex: 1,
+          explanation: "Le prix est un signal de qualité. Trop bas = pas sérieux. Le bon prix n'est pas le plus bas : c'est celui que ton client-cible peut payer ET qui correspond à la valeur qu'il perçoit.",
+          xp: 10,
+        },
+        // 2 — micro_input : brique "prix_cible"
+        {
+          type: "micro_input",
+          prompt: "Quel est ton prix de vente principal ? Quelle méthode (coûts / marché / valeur perçue) t'a guidé ?",
+          placeholder: "Ex : 15 000 FCFA par séance de coaching. Méthode : valeur perçue. Un entrepreneur qui applique mes conseils peut économiser 50k+ FCFA en erreurs. Je facture 30% de cette valeur. Benchmark Abidjan : 20-50k FCFA.",
+          storageKey: "prix_cible",
+          xp: 2,
+        },
+        // 3 — Info : pricing psychologique africain (enseigne justification_prix)
+        {
+          type: "info",
+          icon: "🧠",
+          title: "Pricing psychologique en Afrique de l'Ouest — 3 réalités",
+          content: "1. Les cycles de revenus sont souvent hebdomadaires. Beaucoup de travailleurs informels gèrent leur cash à la semaine. 2 000 FCFA/semaine est souvent plus accessible que 8 000 FCFA/mois — même si c'est pareil annuellement.\n\n2. La négociation est culturelle, pas personnelle. Proposer un prix c'est ouvrir une négociation. Stratégie : fixe un prix légèrement supérieur à ta cible pour absorber la négociation. Ou affiche \"prix fixe\" clairement pour un positionnement premium.\n\n3. Le fractionnement augmente l'accessibilité. 100 000 FCFA d'un coup vs 4 × 25 000 FCFA. Canal+ en Afrique a construit son empire sur ce principe.",
+          xp: 5,
+        },
+        // 4 — Scénario : SoyoSkin cycles (enseigne justification_prix)
+        {
+          type: "scenario",
+          context: "Diallo vend un pack de soins naturels à Conakry, coût de production 45k GNF. Son pack mensuel à 120k GNF ne se vend pas — clients disent \"trop cher d'un coup\". Test 1 : pack hebdo 30k GNF → même refus (le client calcule le mensuel et dit non). Test 2 : pack démarrage 35k GNF + recharge 20k GNF toutes les 2 semaines → 23 ventes en 3 semaines. Test 3 : abonnement mensuel 25k GNF livraison incluse → 8 abonnées fidèles mais revenu mensuel bas. Revenu mensuel Test 2 : 35k + 2×20k = 75k GNF.",
+          question: "Quelle approche Diallo devrait adopter pour maximiser à la fois le volume et la marge ?",
+          options: [
+            "Test 1 — le weekly est le plus simple à gérer",
+            "Test 2 — pack starter + recharges : barrière d'entrée basse, récurrence naturelle à 20k GNF toutes les 2 semaines",
+            "Test 3 — l'abonnement mensuel fidélise les clients sur le long terme",
+            "Baisser encore plus les prix pour accélérer les ventes",
+          ],
+          correctIndex: 1,
+          explanation: "Le pack starter réduit la barrière d'entrée et crée une habitude. La recharge s'intègre naturellement dans le budget. Revenu mensuel réel : 75k GNF — bien supérieur à l'abonnement 25k.",
+          xp: 10,
+        },
+        // 5 — micro_input : brique "justification_prix"
+        {
+          type: "micro_input",
+          prompt: "En une phrase : pourquoi ton client accepterait-il ce prix ? (économie réalisée, valeur obtenue, alternative plus chère…)",
+          placeholder: "Ex : Mon client paie 15 000 FCFA pour une consultation qui lui évite 3 mois d'erreurs et une perte potentielle de 100k+ FCFA. Il ne trouverait pas ce niveau d'accompagnement pour moins de 30k FCFA dans un cabinet.",
+          storageKey: "justification_prix",
+          xp: 2,
+        },
+        // 6 — MCQ : prix premium justifié
+        {
+          type: "mcq",
+          question: "Tu proposes un logiciel de gestion de stock pour boutiques à Abidjan. Concurrent : 50 000 FCFA/an. Ton produit : même chose mais interface plus simple et support WhatsApp inclus. Quel prix adopter ?",
+          options: [
+            "35 000 FCFA/an — moins cher que la concurrence pour prendre des parts de marché",
+            "50 000 FCFA/an — s'aligner sur le marché",
+            "65 000 FCFA/an — premium justifié par le support WhatsApp et l'interface simplifiée",
+            "Gratuit la première année pour construire la base d'utilisateurs",
+          ],
+          correctIndex: 2,
+          explanation: "Si ton produit apporte une valeur supérieure (support = économie de temps réelle pour le commerçant), un prix premium est justifié. La condition : être capable de démontrer cette valeur en 30 secondes.",
+          xp: 10,
+        },
+        // 7 — Vrai/faux : baisser le prix toujours bon
+        {
+          type: "true_false",
+          statement: "Baisser son prix est toujours la meilleure stratégie pour gagner des clients quand on démarre.",
+          isTrue: false,
+          explanation: "Baisser son prix est une stratégie de dernier recours. Si tes clients n'achètent pas, c'est rarement parce que c'est trop cher — c'est souvent parce que la valeur perçue n'est pas claire. Cherche d'abord à mieux communiquer la valeur.",
+          xp: 5,
+        },
+        // 8 — Fill blank : règles d'or du pricing
+        {
+          type: "fill_blank",
+          template: "Ton prix ne doit jamais être inférieur à tes {0} et ne devrait pas dépasser la {1} perçue par ton client.",
+          blanks: ["coûts variables", "valeur"],
+          isOpenAnswer: false,
+          xp: 8,
+        },
+        // 9 — Match : méthodes pricing ↔ cas d'usage
+        {
+          type: "match",
+          pairs: [
+            { left: "Prix par les coûts", right: "Artisan qui veut s'assurer de ne jamais perdre d'argent sur une commande" },
+            { left: "Prix par le marché", right: "Entrepreneur entrant sur un marché mature avec des concurrents établis" },
+            { left: "Prix par la valeur perçue", right: "Consultant qui fait économiser des centaines de milliers à ses clients" },
+            { left: "Pricing fractionné", right: "Service premium avec ticket élevé rendu accessible par paiements échelonnés" },
+          ],
+          xp: 8,
+        },
+        // 10 — Reflection template : stratégie de prix
+        {
+          type: "reflection_template",
+          intro: "Ta stratégie de prix est construite. Voici ton livrable complet — prix, justification et adaptation au marché local.",
+          template: "Mon prix de vente principal : {prix_cible}\n\nPourquoi mon client accepte ce prix : {justification_prix}\n\nMa méthode de calcul du prix minimum (par les coûts) :\nCoûts variables par vente : ___  FCFA\nMarge souhaitée : ___  %\nPrix minimum : ___  FCFA\n\nAdaptations pour le marché local :\n- Cycles de revenus (hebdo/mensuel/irrégulier) : [décris ton fractionnement éventuel]\n- Ma politique de négociation : [prix fixe / marge de X% / remise premier client]\n\nMon plan de test de prix avec les 5 premiers clients :\n[Comment vas-tu valider que ce prix est le bon ?]",
+          variables: ["prix_cible", "justification_prix"],
+          xp: 35,
+        },
+      ],
+    },
   },
   {
     id: 305,
@@ -1397,24 +1819,115 @@ export const tasks: Task[] = [
     title: "Identifie 3 partenaires clés potentiels",
     description: "Et comment les approcher. Dans le contexte UEMOA, les réseaux de confiance (famille, associations, anciens) sont souvent plus efficaces que les approches formelles.",
     xp: 75,
-    quiz: [
-      {
-        id: 1,
-        question: "Qu'est-ce qu'un partenariat stratégique pour une startup ?",
-        options: [
-          "Un accord avec un concurrent pour partager des clients",
-          "Une relation avec une organisation qui t'apporte des ressources, une distribution ou une légitimité que tu ne pourrais pas créer seul",
-          "Un contrat de sous-traitance",
-          "Un investissement financier d'une entreprise établie",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Les bons partenariats comblent tes gaps : accès à une base clients existante, légitimité institutionnelle, ressources complémentaires. En Afrique de l'Ouest, les ONG, coopératives et associations professionnelles peuvent être des partenaires de distribution puissants.",
-      },
-    ],
+    recapLabel: "🤝 Tes partenaires clés",
+    lesson: {
+      title: "Partenaires clés — construis ton réseau stratégique",
+      exercises: [
+        // 0 — Info : pourquoi un partenaire clé
+        {
+          type: "info",
+          icon: "🤝",
+          title: "Pourquoi un partenaire clé — ce que tu ne peux pas faire seul",
+          content: "Un partenaire clé te donne accès à quelque chose que tu ne pourrais pas créer seul — ou pas assez vite.\n\nCe qu'un partenaire peut t'apporter :\n- Distribution — accès à une base de clients qu'il a déjà\n- Crédibilité — son nom légitime ton offre\n- Ressources — équipement, locaux, stock\n- Compétence — tech, juridique, logistique\n- Réseau — ses contacts deviennent accessibles\n\nExemple africain : une startup de crédit agricole au Mali qui s'associe avec une coopérative de 500 agriculteurs ne doit pas trouver 500 clients — elle en a déjà 500.\n\nRègle : un vrai partenaire clé est quelqu'un dont l'absence mettrait ton modèle en danger. Si tu peux fonctionner sans lui, c'est un fournisseur, pas un partenaire clé.",
+          xp: 5,
+        },
+        // 1 — Scénario : MakiTech avec vs sans association (enseigne partenaire_cle)
+        {
+          type: "scenario",
+          context: "Koffi lance MakiTech, logiciel de caisse pour commerçants à Lomé. Sans partenaire : 6 semaines de démarchage = 4 clients, taux de refus 85%, raison : \"Je ne te connais pas\". Avec l'Association des Commerçants du Marché d'Assiyéyé : Koffi propose une démo gratuite à tous les membres + 10% de commission par abonnement souscrit. Résultat : présentation à 45 commerçants, 12 clients en 2 semaines, taux de conversion 27%. L'association a apporté : crédibilité immédiate, accès direct au segment, incentive à promouvoir.",
+          question: "Qu'est-ce que l'association a apporté que Koffi ne pouvait pas créer seul rapidement ?",
+          options: [
+            "Un financement pour développer l'application",
+            "La confiance préexistante — les commerçants font confiance à l'association, et cette confiance s'est transférée à Koffi",
+            "Des locaux pour les formations",
+            "Une expertise technique pour améliorer le logiciel",
+          ],
+          correctIndex: 1,
+          explanation: "En Afrique de l'Ouest, la confiance est la monnaie principale. Un partenaire dans un réseau de confiance peut compresser 6 mois d'acquisition client en 2 semaines.",
+          xp: 10,
+        },
+        // 2 — micro_input : brique "partenaire_cle"
+        {
+          type: "micro_input",
+          prompt: "Qui est ton partenaire le plus important pour démarrer ? (organisation, association, entreprise, personne clé)",
+          placeholder: "Ex : L'Association des Femmes Entrepreneures de Cotonou (AFEC) — 300 membres correspondant exactement à mon segment. Une recommandation de leur présidente vaut 6 mois de démarchage individuel.",
+          storageKey: "partenaire_cle",
+          xp: 2,
+        },
+        // 3 — Info : 4 types de partenaires
+        {
+          type: "info",
+          icon: "🔗",
+          title: "Les 4 types de partenaires clés",
+          content: "Type 1 — Partenaire de distribution : il a déjà les clients que tu vises. Exemples : associations professionnelles, boutiques partenaires, opérateurs télécom.\n\nType 2 — Partenaire fournisseur : il te fournit des ressources clés que tu ne peux pas produire seul (matières premières, tech, données).\n\nType 3 — Partenaire technologique : il apporte la tech que tu n'as pas. Une startup non-tech s'associe avec un développeur.\n\nType 4 — Partenaire institutionnel : ONG, école, mairie, banque — ils apportent crédibilité et légitimité. Plus lents à convaincre mais très puissants.\n\nEn pratique au démarrage : cherche d'abord un partenaire de distribution. C'est lui qui débloque le plus vite les premiers clients et les premiers revenus.",
+          xp: 5,
+        },
+        // 4 — MCQ : quel partenaire pour une marketplace
+        {
+          type: "mcq",
+          question: "Tu lances une plateforme de mise en relation entre plombiers et particuliers à Abidjan. Quel partenaire t'aiderait le plus à démarrer rapidement ?",
+          options: [
+            "Une banque locale pour obtenir un financement",
+            "Le syndicat des plombiers d'Abidjan — il a un annuaire de 200 plombiers que tu peux intégrer comme prestataires",
+            "Une agence de communication pour créer ta marque",
+            "Un développeur pour améliorer ton application",
+          ],
+          correctIndex: 1,
+          explanation: "Pour une marketplace, ton premier défi est de remplir les deux côtés (offre ET demande). Le syndicat te donne instantanément l'offre (200 plombiers). Un partenaire qui résout ton problème le plus urgent est toujours le bon premier partenaire.",
+          xp: 10,
+        },
+        // 5 — Scénario : Fatoumata sans argent (enseigne valeur_partenaire)
+        {
+          type: "scenario",
+          context: "Fatoumata vend un kit de jardinage urbain à Dakar. Sans budget pour payer des distributeurs. Elle propose à 5 jardineries : 1) Commission 20% sur chaque vente. 2) Formation gratuite sur le jardinage urbain pour leurs employés. 3) Co-branding \"Disponible chez [Nom]\" sur ses flyers et réseaux. 4) Exclusivité de quartier — une seule jardinerie par zone. Résultat : 3 sur 5 ont dit oui immédiatement. 2 refus : boutiques trop petites pour stocker. Premier mois : 34 kits vendus via les 3 partenaires.",
+          question: "Quel est le principe clé de l'approche de Fatoumata ?",
+          options: [
+            "Elle a proposé une commission élevée pour les convaincre",
+            "Elle a créé une proposition où chaque partenaire gagne quelque chose de valeur (argent, formation, visibilité, exclusivité) sans coût fixe pour Fatoumata",
+            "Elle a choisi les plus grandes jardineries pour maximiser les ventes",
+            "Elle a signé des contrats exclusifs pour les fidéliser",
+          ],
+          correctIndex: 1,
+          explanation: "Convaincre un partenaire sans argent : comprendre ce qu'IL veut. Fatoumata n'a pas demandé une faveur — elle a proposé un échange à valeur mutuelle. C'est ça, un vrai partenariat.",
+          xp: 10,
+        },
+        // 6 — micro_input : brique "valeur_partenaire"
+        {
+          type: "micro_input",
+          prompt: "Qu'est-ce que tu peux offrir en échange à ce partenaire ? (commission, visibilité, formation, exclusivité, co-création…)",
+          placeholder: "Ex : Commission de 15% sur chaque client qu'il m'apporte + son logo sur mon site comme \"Partenaire officiel\" + accès gratuit à ma formation pendant 1 an pour ses équipes.",
+          storageKey: "valeur_partenaire",
+          xp: 2,
+        },
+        // 7 — Vrai/faux : produit fini avant partenaire
+        {
+          type: "true_false",
+          statement: "Pour approcher un partenaire potentiel, il faut d'abord avoir un produit fini et des clients.",
+          isTrue: false,
+          explanation: "Les meilleurs partenariats se construisent tôt — souvent avant le produit fini. Un partenaire impliqué dès le début devient un défenseur du projet. Des données de validation client préliminaires suffisent pour convaincre.",
+          xp: 5,
+        },
+        // 8 — Fill blank : règle vrai partenaire clé
+        {
+          type: "fill_blank",
+          template: "Un partenaire clé est quelqu'un dont l'absence rendrait ton {0} impossible. Si tu peux fonctionner facilement sans lui, c'est un {1}, pas un partenaire clé.",
+          blanks: ["modèle économique", "fournisseur"],
+          isOpenAnswer: false,
+          xp: 8,
+        },
+        // 9 — Reflection template : partenaires clés
+        {
+          type: "reflection_template",
+          intro: "Tes partenaires clés sont identifiés. Voici ton plan d'approche — qui, ce qu'il t'apporte, ce que tu lui offres, comment tu vas le contacter.",
+          template: "Mon partenaire le plus important : {partenaire_cle}\n\nCe que je lui offre en échange : {valeur_partenaire}\n\nMes 3 partenaires clés potentiels :\n\n1. [Nom ou type]\n   Type : distribution / fournisseur / tech / institutionnel\n   Ce qu'il m'apporte : ___\n   Ce que je lui offre : ___\n   Comment l'approcher : ___\n\n2. [Nom ou type]\n   Type : ___\n   Ce qu'il m'apporte : ___\n   Ce que je lui offre : ___\n   Comment l'approcher : ___\n\n3. [Nom ou type]\n   Type : ___\n   Ce qu'il m'apporte : ___\n   Ce que je lui offre : ___\n   Comment l'approcher : ___",
+          variables: ["partenaire_cle", "valeur_partenaire"],
+          xp: 18,
+        },
+      ],
+    },
   },
 
-  // --- Niveau 4 ---
+    // --- Niveau 4 ---
   {
     id: 401,
     levelId: 4,
