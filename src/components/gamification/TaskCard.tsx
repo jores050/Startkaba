@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSWRConfig } from "swr";
 import type { TaskWithProgress } from "@/hooks/use-progress";
 import { QuizModal, type QuizResult } from "./QuizModal";
 import { LessonPlayer } from "./LessonPlayer";
@@ -77,6 +78,7 @@ interface TaskCardProps {
 }
 
 export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProps) {
+  const { mutate } = useSWRConfig();
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [quizOpen, setQuizOpen] = useState(false);
@@ -85,6 +87,14 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
   const [notesOpen, setNotesOpen] = useState(false);
 
   const isMission = task.taskType === "mission";
+
+  // Ferme le MissionPlayer ET revalide la progression : sans ça, task.missionStatus
+  // reste périmé (null) et rouvrir relancerait la leçon au lieu de la mission.
+  function closeMission() {
+    setMissionOpen(false);
+    mutate((key) => typeof key === "string" && key.startsWith("/api/levels"));
+    mutate("/api/user/mission-reminder");
+  }
 
   // Détermine si la leçon contient une reflection sauvegardable (reflection ou reflection_template)
   const hasReflection = task.lesson?.exercises.some(
@@ -240,9 +250,9 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
           taskTitle={task.title}
           missionStatus={task.missionStatus ?? null}
           missionCaptureIndexes={task.missionCaptureIndexes ?? []}
-          onClose={() => setMissionOpen(false)}
+          onClose={closeMission}
           onComplete={(r) => {
-            setMissionOpen(false);
+            closeMission();
             onQuizCompleted({ passed: true, score: 100, xpEarned: r.xpEarned, badgesUnlocked: r.badgesUnlocked });
           }}
         />

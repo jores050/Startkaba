@@ -32,9 +32,9 @@ const seed: Map<number, ProgressEntry> = new Map(
       { taskId: 103, levelId: 1, status: "COMPLETED", quizScore: 100, xpEarned: 75, completedAt: "2026-04-25T10:00:00.000Z" },
       { taskId: 104, levelId: 1, status: "COMPLETED", quizScore: 100, xpEarned: 100, completedAt: "2026-04-28T10:00:00.000Z" },
       { taskId: 105, levelId: 1, status: "COMPLETED", quizScore: 100, xpEarned: 150, completedAt: "2026-05-02T14:30:00.000Z" },
-      { taskId: 201, levelId: 2, status: "COMPLETED", quizScore: 100, xpEarned: 75, completedAt: "2026-05-10T10:00:00.000Z" },
-      { taskId: 202, levelId: 2, status: "COMPLETED", quizScore: 100, xpEarned: 100, completedAt: "2026-05-18T10:00:00.000Z" },
-      { taskId: 203, levelId: 2, status: "IN_PROGRESS", quizScore: null, xpEarned: 0, completedAt: null },
+      { taskId: 106, levelId: 2, status: "COMPLETED", quizScore: 100, xpEarned: 75, completedAt: "2026-05-10T10:00:00.000Z" },
+      { taskId: 107, levelId: 2, status: "COMPLETED", quizScore: 100, xpEarned: 100, completedAt: "2026-05-14T10:00:00.000Z" },
+      { taskId: 108, levelId: 2, status: "COMPLETED", quizScore: 100, xpEarned: 100, completedAt: "2026-05-18T10:00:00.000Z" },
     ] as ProgressEntry[]
   ).map((e) => [e.taskId, e])
 );
