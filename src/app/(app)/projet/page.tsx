@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import type { ProjetResponse, ProjetSection, ProjetReflection } from "@/lib/projet-types";
+import type { ProjetResponse, ProjetSection, ProjetReflection, MissionDeliverable } from "@/lib/projet-types";
 
 // ─── Editable reflection card (completed) ─────────────────────────────────────
 
@@ -103,12 +103,65 @@ function LockedCard({ recapLabel, taskTitle, levelId }: {
   );
 }
 
+// ─── Mission deliverable card ──────────────────────────────────────────────────
+
+function MissionDeliverableCard({ deliverable, levelId }: {
+  deliverable: MissionDeliverable;
+  levelId: number;
+}) {
+  const [open, setOpen] = useState(false);
+
+  if (!deliverable.isCompleted) {
+    return (
+      <div className="border border-dashed border-[#C8CCDF] rounded-2xl p-4 flex items-center justify-between gap-4 opacity-60">
+        <div>
+          <span className="text-xs font-bold text-[#8892C8] uppercase tracking-wider">{deliverable.recapLabel}</span>
+          <p className="text-xs text-[#8892C8] mt-0.5">À compléter — Mission terrain</p>
+        </div>
+        <Link
+          href={`/parcours/${levelId}`}
+          className="shrink-0 px-3 py-1.5 rounded-lg bg-[#F0F2FA] text-[#0722AB] text-xs font-semibold hover:bg-[#EEF1FF] transition-colors"
+        >
+          Commencer →
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-col gap-2">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-xs font-bold text-amber-700 uppercase tracking-wider">{deliverable.recapLabel}</span>
+        <span className="text-xs text-amber-600 font-semibold">✓ Mission accomplie</span>
+      </div>
+      {deliverable.notes ? (
+        <>
+          <p className={`text-sm text-amber-900 leading-relaxed whitespace-pre-wrap ${!open ? "line-clamp-3" : ""}`}>
+            {deliverable.notes}
+          </p>
+          {deliverable.notes.length > 200 && (
+            <button
+              onClick={() => setOpen(!open)}
+              className="text-xs text-amber-600 hover:underline self-start"
+            >
+              {open ? "Voir moins" : "Voir tout"}
+            </button>
+          )}
+        </>
+      ) : (
+        <p className="text-xs text-amber-600 italic">Aucune note brute — tes insights sont dans ta réflexion ci-dessous.</p>
+      )}
+    </div>
+  );
+}
+
 // ─── Level section ─────────────────────────────────────────────────────────────
 
 function LevelSection({ section }: { section: ProjetSection }) {
   const [open, setOpen] = useState(section.isUnlocked);
   const completedCount = section.reflections.filter((r) => r.isCompleted).length;
   const total = section.reflections.length;
+  const missionDeliverables = section.missionDeliverables ?? [];
 
   return (
     <div className={`bg-white dark:bg-[#151A2E] border rounded-2xl overflow-hidden shadow-sm ${
@@ -154,7 +207,11 @@ function LevelSection({ section }: { section: ProjetSection }) {
       {/* Section body */}
       {open && section.isUnlocked && (
         <div className="px-5 pb-5 flex flex-col gap-3 border-t border-[#E8EAF0] pt-4">
-          {total === 0 ? (
+          {/* Mission deliverables first */}
+          {missionDeliverables.map((d) => (
+            <MissionDeliverableCard key={d.taskId} deliverable={d} levelId={section.levelId} />
+          ))}
+          {total === 0 && missionDeliverables.length === 0 ? (
             <p className="text-sm text-[#8892C8] italic py-2">
               Les sections de réflexion de ce niveau sont en cours de préparation.
             </p>

@@ -3,8 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/client";
 import { tasks } from "@/data/tasks";
 import { levels } from "@/data/levels";
-import { mockProgress, getMockTaskReflection } from "@/lib/dev/mock-progress";
-import type { ProjetSection, ProjetResponse } from "@/lib/projet-types";
+import { mockProgress, getMockTaskReflection, getMockMissionDeliverable } from "@/lib/dev/mock-progress";
+import type { ProjetSection, ProjetResponse, MissionDeliverable } from "@/lib/projet-types";
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -18,6 +18,15 @@ const REFLECTION_TASKS = tasks
     recapLabel: t.recapLabel ?? "📝 Ta réflexion",
   }));
 
+// Mission tasks that have deliverables
+const MISSION_TASKS = tasks
+  .filter((t) => t.taskType === "mission")
+  .map((t) => ({
+    taskId: t.id,
+    levelId: t.levelId,
+    recapLabel: t.recapLabel ?? "🎤 Mission terrain",
+  }));
+
 export async function GET() {
   const supabase = await createClient();
   const {
@@ -27,6 +36,8 @@ export async function GET() {
   let completedTaskIds: Set<number>;
   let reflMap: Map<number, string>;
   let userCurrentLevelId: number;
+
+  let missionNotesMap = new Map<number, string | null>();
 
   if (!user) {
     if (isDev) {
@@ -39,6 +50,11 @@ export async function GET() {
       for (const t of REFLECTION_TASKS) {
         const ans = getMockTaskReflection("mock", t.taskId)?.answer;
         if (ans) reflMap.set(t.taskId, ans);
+      }
+      // Mission deliverables (dev mock)
+      for (const t of MISSION_TASKS) {
+        const d = getMockMissionDeliverable("mock", t.taskId, "INTERVIEW_NOTES");
+        missionNotesMap.set(t.taskId, d?.content ?? null);
       }
       userCurrentLevelId = 2;
     } else {
@@ -69,6 +85,15 @@ export async function GET() {
       for (const r of reflections) {
         if (!reflMap.has(r.taskId)) reflMap.set(r.taskId, r.answer);
       }
+
+      // Mission deliverables
+      const deliverables = await prisma.missionDeliverable.findMany({
+        where: { userId: user.id, taskId: { in: MISSION_TASKS.map(t => t.taskId) }, type: "INTERVIEW_NOTES" },
+        select: { taskId: true, content: true },
+      });
+      for (const d of deliverables) {
+        missionNotesMap.set(d.taskId, d.content);
+      }
     } catch (e) {
       console.error("[/api/user/reflections GET]", e);
       return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
@@ -80,6 +105,13 @@ export async function GET() {
     const arr = byLevel.get(t.levelId) ?? [];
     arr.push(t);
     byLevel.set(t.levelId, arr);
+  }
+
+  const missionByLevel = new Map<number, typeof MISSION_TASKS>();
+  for (const t of MISSION_TASKS) {
+    const arr = missionByLevel.get(t.levelId) ?? [];
+    arr.push(t);
+    missionByLevel.set(t.levelId, arr);
   }
 
   const completedCount = REFLECTION_TASKS.filter((t) =>
@@ -96,6 +128,12 @@ export async function GET() {
       recapLabel: t.recapLabel,
       isCompleted: completedTaskIds.has(t.taskId),
       answer: completedTaskIds.has(t.taskId) ? (reflMap.get(t.taskId) ?? null) : null,
+    })),
+    missionDeliverables: (missionByLevel.get(level.id) ?? []).map((t): MissionDeliverable => ({
+      taskId: t.taskId,
+      recapLabel: t.recapLabel,
+      isCompleted: completedTaskIds.has(t.taskId),
+      notes: completedTaskIds.has(t.taskId) ? (missionNotesMap.get(t.taskId) ?? null) : null,
     })),
   }));
 

@@ -32,6 +32,7 @@ model UserProfile {
 
   progress            UserProgress[]
   earnedBadges        UserBadge[]
+  missionDeliverables MissionDeliverable[]
   coachMessages       CoachMessage[]
   notifications       Notification[]
   reflections         TaskReflection[]
@@ -79,16 +80,19 @@ enum CoachApplicationStatus {
 }
 
 model UserProgress {
-  id          String         @id @default(uuid())
-  userId      String
-  taskId      Int
-  levelId     Int
-  status      ProgressStatus @default(NOT_STARTED)
-  quizScore   Int?
-  completedAt DateTime?
-  xpEarned    Int            @default(0)
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  id                 String          @id @default(uuid())
+  userId             String
+  taskId             Int
+  levelId            Int
+  status             ProgressStatus  @default(NOT_STARTED)
+  quizScore          Int?
+  completedAt        DateTime?
+  xpEarned           Int             @default(0)
+  missionStatus      MissionStatus?
+  missionStartedAt   DateTime?
+  missionCompletedAt DateTime?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
 
   user UserProfile @relation(fields: [userId], references: [id])
 
@@ -100,6 +104,28 @@ enum ProgressStatus {
   NOT_STARTED
   IN_PROGRESS
   COMPLETED
+}
+
+enum MissionStatus {
+  LEARNING
+  MISSION_IN_PROGRESS
+  CAPTURING
+  COMPLETED
+}
+
+model MissionDeliverable {
+  id        String      @id @default(uuid())
+  userId    String
+  taskId    Int
+  type      String
+  content   String      @db.Text
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@unique([userId, taskId, type])
+  @@map("mission_deliverables")
 }
 
 model UserBadge {

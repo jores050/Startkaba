@@ -31,6 +31,9 @@ export default function DashboardPage() {
   const { data: coachData } = useSWR<{
     quota: { remaining: number; total: number; isPremium: boolean };
   }>(`/api/coach/messages?levelId=${currentLevelId}`, fetcher);
+  const { data: missionData } = useSWR<{
+    pending: { taskId: number; taskTitle: string; levelId: number; missionStatus: string } | null;
+  }>("/api/user/mission-reminder", fetcher);
 
   if (!user) return <p className="text-muted">Chargement du dashboard...</p>;
 
@@ -66,8 +69,29 @@ export default function DashboardPage() {
   const todayIdx = (new Date().getDay() + 6) % 7; // 0 = lundi
   const weekly = user.stats.weekly;
 
+  const pendingMission = missionData?.pending;
+
   return (
     <div className="max-w-[1060px] flex flex-col gap-5">
+      {/* Mission terrain en attente */}
+      {pendingMission && (
+        <Link
+          href={`/parcours/${pendingMission.levelId}`}
+          className="flex items-center justify-between gap-4 bg-amber-50 border border-amber-300 rounded-2xl px-5 py-4 hover:bg-amber-100 transition-colors"
+        >
+          <div className="flex items-center gap-3 min-w-0">
+            <span className="text-2xl shrink-0">⏳</span>
+            <div className="min-w-0">
+              <p className="font-bold text-amber-800 text-sm">Mission terrain en attente</p>
+              <p className="text-amber-700 text-xs mt-0.5 truncate">
+                {pendingMission.taskTitle} — reviens ici après tes interviews →
+              </p>
+            </div>
+          </div>
+          <span className="shrink-0 text-amber-600 text-sm font-semibold whitespace-nowrap">Reprendre →</span>
+        </Link>
+      )}
+
       {/* b) PROCHAINE ÉTAPE */}
       {nextTask && (
         <div className="relative overflow-hidden bg-primary rounded-2xl px-5 py-5 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">

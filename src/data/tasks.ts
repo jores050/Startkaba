@@ -972,6 +972,8 @@ export const tasks: Task[] = [
   {
     id: 109,
     levelId: 2,
+    taskType: "mission",
+    missionCaptureIndexes: [2, 5, 13],
     title: "Mène 5 interviews terrain",
     description:
       "Pas des amis qui valident tout. De vraies personnes de ta cible. Au moins 5. Écoute 90% du temps — parle 10%.",

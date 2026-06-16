@@ -2,7 +2,7 @@
 // Cohérente avec mock-profile : Aïcha a complété le niveau 1 (425 XP)
 // et 2 tâches du niveau 2 (175 XP) = 600 XP, tâche 203 en cours.
 
-import type { ProgressStatus } from "@/types";
+import type { ProgressStatus, MissionStatus } from "@/types";
 
 export interface ProgressEntry {
   taskId: number;
@@ -11,7 +11,10 @@ export interface ProgressEntry {
   quizScore: number | null;
   xpEarned: number;
   completedAt: string | null;
-  lastAttemptAt?: string | null; // dernière tentative de quiz (échouée)
+  lastAttemptAt?: string | null;
+  missionStatus?: MissionStatus | null;
+  missionStartedAt?: string | null;
+  missionCompletedAt?: string | null;
 }
 
 // Singleton sur globalThis : en dev Next.js, chaque route API peut être
@@ -169,4 +172,63 @@ export function startMockTask(taskId: number, levelId: number): ProgressEntry {
   };
   mockProgress.set(taskId, entry);
   return entry;
+}
+
+export function setMockMissionStatus(
+  taskId: number,
+  levelId: number,
+  missionStatus: MissionStatus,
+): ProgressEntry {
+  const existing = mockProgress.get(taskId) ?? {
+    taskId,
+    levelId,
+    status: "IN_PROGRESS" as ProgressStatus,
+    quizScore: null,
+    xpEarned: 0,
+    completedAt: null,
+  };
+  const entry: ProgressEntry = {
+    ...existing,
+    status: missionStatus === "COMPLETED" ? "COMPLETED" : "IN_PROGRESS",
+    missionStatus,
+    missionStartedAt: existing.missionStartedAt ?? new Date().toISOString(),
+    missionCompletedAt: missionStatus === "COMPLETED" ? new Date().toISOString() : null,
+    completedAt: missionStatus === "COMPLETED" ? new Date().toISOString() : existing.completedAt,
+  };
+  mockProgress.set(taskId, entry);
+  return entry;
+}
+
+// ─── Mock mission deliverables ────────────────────────────────────────────────
+
+export interface MissionDeliverableEntry {
+  userId: string;
+  taskId: number;
+  type: string;
+  content: string;
+}
+
+const globalForDeliverables = globalThis as unknown as {
+  mockMissionDeliverables?: MissionDeliverableEntry[];
+};
+export const mockMissionDeliverables: MissionDeliverableEntry[] =
+  globalForDeliverables.mockMissionDeliverables ?? [];
+globalForDeliverables.mockMissionDeliverables = mockMissionDeliverables;
+
+export function upsertMockMissionDeliverable(entry: MissionDeliverableEntry): void {
+  const i = mockMissionDeliverables.findIndex(
+    d => d.userId === entry.userId && d.taskId === entry.taskId && d.type === entry.type
+  );
+  if (i >= 0) mockMissionDeliverables[i] = entry;
+  else mockMissionDeliverables.push(entry);
+}
+
+export function getMockMissionDeliverable(
+  userId: string,
+  taskId: number,
+  type: string
+): MissionDeliverableEntry | undefined {
+  return mockMissionDeliverables.find(
+    d => d.userId === userId && d.taskId === taskId && d.type === type
+  );
 }

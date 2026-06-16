@@ -34,6 +34,9 @@ function buildLevelDetail(levelId: number, rows: ProgressRow[]) {
         completedAt: p?.completedAt ?? null,
         lesson: task.lesson,
         recapLabel: task.recapLabel,
+        taskType: task.taskType,
+        missionCaptureIndexes: task.missionCaptureIndexes,
+        missionStatus: p?.missionStatus ?? null,
       };
     }),
   };
@@ -78,6 +81,7 @@ export async function GET(
         quizScore: true,
         xpEarned: true,
         completedAt: true,
+        missionStatus: true,
       },
     });
 

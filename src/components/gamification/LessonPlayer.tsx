@@ -50,9 +50,11 @@ interface LessonPlayerProps {
   taskTitle: string;
   onClose: () => void;
   onComplete?: (result: { xpEarned: number; badgesUnlocked: LessonResult["badgesUnlocked"] }) => void;
+  // For mission Phase A: called instead of the API when last exercise is done
+  onLearningPhaseComplete?: (xpEarned: number, microInputs: Map<string, string>) => void;
 }
 
-export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }: LessonPlayerProps) {
+export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete, onLearningPhaseComplete }: LessonPlayerProps) {
   const [idx, setIdx] = useState(0);
   const [hearts, setHearts] = useState(MAX_HEARTS);
   const [totalXp, setTotalXp] = useState(0);
@@ -280,7 +282,11 @@ export function LessonPlayer({ lesson, taskId, taskTitle, onClose, onComplete }:
       return;
     }
     if (isLast) {
-      completeLessonApi();
+      if (onLearningPhaseComplete) {
+        onLearningPhaseComplete(earnedXpRef.current, microInputsRef.current);
+      } else {
+        completeLessonApi();
+      }
       return;
     }
     setIdx(i => i + 1);

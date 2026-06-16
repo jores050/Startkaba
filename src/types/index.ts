@@ -1,6 +1,7 @@
 export type City = "COTONOU" | "ABIDJAN" | "DAKAR" | "LOME" | "BAMAKO" | "OTHER";
 export type SubscriptionStatus = "FREE" | "PREMIUM";
 export type ProgressStatus = "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED";
+export type MissionStatus = "LEARNING" | "MISSION_IN_PROGRESS" | "CAPTURING" | "COMPLETED";
 export type MessageRole = "USER" | "ASSISTANT";
 export type NotificationType =
   | "BADGE_EARNED"
@@ -154,9 +155,11 @@ export interface Task {
   title: string;
   description: string;
   xp: number;
-  recapLabel?: string;    // ex: "Ta proposition de valeur" — affiché sur la card après complétion
-  quiz?: QuizQuestion[];  // ancien format (niveaux 2-8 en attente de migration)
-  lesson?: Lesson;        // format Duolingo
+  recapLabel?: string;
+  quiz?: QuizQuestion[];
+  lesson?: Lesson;
+  taskType?: "reflexion" | "mission";
+  missionCaptureIndexes?: number[];  // exercise indexes shown only in Phase C
 }
 
 export interface Level {

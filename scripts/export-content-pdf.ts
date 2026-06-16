@@ -112,7 +112,7 @@ function hLine(color = "#E5E7EB", width = 1) {
 
 function tag(text: string, color: string) {
   const padding = 5;
-  const textWidth = doc.widthOfString(text, { fontSize: 8 });
+  const textWidth = doc.widthOfString(text, { width: 8 });
   const tagW = textWidth + padding * 2;
   const tagH = 14;
   const x = 55;
@@ -126,9 +126,9 @@ function tag(text: string, color: string) {
 
 function xpBadge(xp: number) {
   const text = `+${xp} XP`;
-  const x = 55 + W - doc.widthOfString(text, { fontSize: 8 }) - 12;
+  const x = 55 + W - doc.widthOfString(text, { width: 8 }) - 12;
   const y = doc.y - 20;
-  doc.roundedRect(x, y, doc.widthOfString(text, { fontSize: 8 }) + 10, 14, 3)
+  doc.roundedRect(x, y, doc.widthOfString(text, { width: 8 }) + 10, 14, 3)
     .fill(C.orange);
   doc.fillColor("white").fontSize(8).font("Helvetica-Bold")
     .text(text, x + 5, y + 3, { lineBreak: false });

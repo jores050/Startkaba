@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { TaskWithProgress } from "@/hooks/use-progress";
 import { QuizModal, type QuizResult } from "./QuizModal";
 import { LessonPlayer } from "./LessonPlayer";
+import { MissionPlayer } from "./MissionPlayer";
 import { Button } from "@/components/ui/Button";
 import { ReflectionSummaryCard } from "./ReflectionSummaryCard";
 
@@ -80,7 +81,10 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
   const [error, setError] = useState<string | null>(null);
   const [quizOpen, setQuizOpen] = useState(false);
   const [courseOpen, setCourseOpen] = useState(false);
+  const [missionOpen, setMissionOpen] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
+
+  const isMission = task.taskType === "mission";
 
   // Détermine si la leçon contient une reflection sauvegardable (reflection ou reflection_template)
   const hasReflection = task.lesson?.exercises.some(
@@ -96,7 +100,11 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
       setError(result.error ?? "Erreur");
       return;
     }
-    if (task.lesson) setCourseOpen(true);
+    if (isMission && task.lesson) {
+      setMissionOpen(true);
+    } else if (task.lesson) {
+      setCourseOpen(true);
+    }
   }
 
   return (
@@ -140,10 +148,25 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
         )}
         {task.status === "IN_PROGRESS" && (
           <>
-            <span className="inline-flex items-center gap-2 text-cta font-medium text-sm">
-              🔥 En cours
-            </span>
-            {task.lesson ? (
+            {isMission && task.missionStatus === "MISSION_IN_PROGRESS" ? (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold border border-amber-300">
+                ⏳ Mission en cours
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-2 text-cta font-medium text-sm">
+                🔥 En cours
+              </span>
+            )}
+            {isMission && task.lesson ? (
+              <button
+                onClick={() => setMissionOpen(true)}
+                className="px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm hover:opacity-90 transition-opacity"
+              >
+                {task.missionStatus === "MISSION_IN_PROGRESS"
+                  ? "Revenir à ma mission →"
+                  : "Reprendre la mission →"}
+              </button>
+            ) : task.lesson ? (
               <button
                 onClick={() => setCourseOpen(true)}
                 className="px-4 py-2 rounded-lg bg-primary text-white font-semibold text-sm hover:opacity-90 transition-opacity"
@@ -197,7 +220,7 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
         )}
       </div>
 
-      {courseOpen && task.lesson && (
+      {courseOpen && task.lesson && !isMission && (
         <LessonPlayer
           lesson={task.lesson}
           taskId={task.id}
@@ -205,6 +228,21 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
           onClose={() => setCourseOpen(false)}
           onComplete={(r) => {
             setCourseOpen(false);
+            onQuizCompleted({ passed: true, score: 100, xpEarned: r.xpEarned, badgesUnlocked: r.badgesUnlocked });
+          }}
+        />
+      )}
+
+      {missionOpen && task.lesson && isMission && (
+        <MissionPlayer
+          lesson={task.lesson}
+          taskId={task.id}
+          taskTitle={task.title}
+          missionStatus={task.missionStatus ?? null}
+          missionCaptureIndexes={task.missionCaptureIndexes ?? []}
+          onClose={() => setMissionOpen(false)}
+          onComplete={(r) => {
+            setMissionOpen(false);
             onQuizCompleted({ passed: true, score: 100, xpEarned: r.xpEarned, badgesUnlocked: r.badgesUnlocked });
           }}
         />

@@ -12,6 +12,7 @@ export interface ProgressRow {
   quizScore: number | null;
   xpEarned: number;
   completedAt: string | Date | null;
+  missionStatus?: string | null;
 }
 
 export interface LevelSummary {
