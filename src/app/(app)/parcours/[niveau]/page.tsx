@@ -63,7 +63,8 @@ export default function NiveauPage() {
     if (isLevelComplete) {
       setConfetti(true);
       setTimeout(() => {
-        router.push(`/parcours/${levelId}/recap`);
+        // Passe Kaba avant le récap : analyse honnête puis publication.
+        router.push(`/parcours/${levelId}/passe-kaba`);
       }, 2800);
     }
     mutate(`/api/levels/${levelId}`);

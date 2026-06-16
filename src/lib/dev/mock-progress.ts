@@ -132,8 +132,19 @@ export interface ReflectionEntry {
 const globalForReflections = globalThis as unknown as {
   mockReflections?: ReflectionEntry[];
 };
+
+// Seed de démo (dev) : réflexions Niveau 1 d'Aïcha — volontairement imparfaites
+// (cause racine circulaire, persona large, jargon) pour démontrer la Passe Kaba.
+const reflectionSeed: ReflectionEntry[] = [
+  { userId: "mock", taskId: 101, levelId: 1, exerciseIndex: 9, answer: "Une app de livraison de légumes frais pour les restaurants d'Abidjan.", createdAt: "2026-04-18T10:00:00.000Z" },
+  { userId: "mock", taskId: 102, levelId: 1, exerciseIndex: 7, answer: "Je veux entreprendre parce que j'en ai marre de travailler pour les autres et je veux lancer ma startup.", createdAt: "2026-04-20T10:00:00.000Z" },
+  { userId: "mock", taskId: 103, levelId: 1, exerciseIndex: 9, answer: "Le vrai problème, c'est qu'il n'existe pas de plateforme comme la mienne pour commander des légumes.", createdAt: "2026-04-25T10:00:00.000Z" },
+  { userId: "mock", taskId: 104, levelId: 1, exerciseIndex: 11, answer: "Ma cible : restaurateurs et particuliers, étudiants ou salariés de 18 à 45 ans, avec 0 à 500000 FCFA de revenus.", createdAt: "2026-04-28T10:00:00.000Z" },
+  { userId: "mock", taskId: 105, levelId: 1, exerciseIndex: 12, answer: "Ma plateforme permet de commander des légumes frais en ligne avec une levée de fonds prévue pour scaler.", createdAt: "2026-05-02T14:30:00.000Z" },
+];
+
 export const mockReflections: ReflectionEntry[] =
-  globalForReflections.mockReflections ?? [];
+  globalForReflections.mockReflections ?? reflectionSeed;
 globalForReflections.mockReflections = mockReflections;
 
 export function upsertMockReflection(entry: ReflectionEntry): void {
@@ -231,4 +242,29 @@ export function getMockMissionDeliverable(
   return mockMissionDeliverables.find(
     d => d.userId === userId && d.taskId === taskId && d.type === type
   );
+}
+
+// ─── Mock Passe Kaba (reviews de niveau) ──────────────────────────────────────
+
+export interface KabaReviewEntry {
+  verdict_global: string;
+  score: string;
+  forces: string[];
+  ajustements_suggérés: { card: string; probleme: string; lecon_citee: string; reformulation_possible: string }[];
+  proverbe_takeaway: string;
+}
+
+const globalForKabaReviews = globalThis as unknown as {
+  mockLevelKabaReviews?: Map<string, KabaReviewEntry>;
+};
+export const mockLevelKabaReviews: Map<string, KabaReviewEntry> =
+  globalForKabaReviews.mockLevelKabaReviews ?? new Map();
+globalForKabaReviews.mockLevelKabaReviews = mockLevelKabaReviews;
+
+export function getKabaReview(userId: string, levelNumber: number): KabaReviewEntry | undefined {
+  return mockLevelKabaReviews.get(`${userId}:${levelNumber}`);
+}
+
+export function saveKabaReview(userId: string, levelNumber: number, review: KabaReviewEntry): void {
+  mockLevelKabaReviews.set(`${userId}:${levelNumber}`, review);
 }

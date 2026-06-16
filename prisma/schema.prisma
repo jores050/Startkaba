@@ -33,6 +33,7 @@ model UserProfile {
   progress            UserProgress[]
   earnedBadges        UserBadge[]
   missionDeliverables MissionDeliverable[]
+  kabaReviews         LevelKabaReview[]
   coachMessages       CoachMessage[]
   notifications       Notification[]
   reflections         TaskReflection[]
@@ -126,6 +127,25 @@ model MissionDeliverable {
 
   @@unique([userId, taskId, type])
   @@map("mission_deliverables")
+}
+
+model LevelKabaReview {
+  id            String   @id @default(uuid())
+  userId        String
+  levelNumber   Int
+  verdictGlobal String   @db.Text
+  score         String   // excellent | solide_avec_ajustements | à_retravailler | à_recommencer
+  forces        Json     // string[]
+  ajustements   Json     // { card, probleme, lecon_citee, reformulation_possible }[]
+  proverbe      String   @db.Text
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user UserProfile @relation(fields: [userId], references: [id])
+
+  @@unique([userId, levelNumber])
+  @@index([userId])
+  @@map("level_kaba_reviews")
 }
 
 model UserBadge {

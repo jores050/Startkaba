@@ -65,7 +65,55 @@ const EXEMPLES = [
   "Gozem a démarré au Togo avec quelques motos. Ils ont validé une ville avant d'en ouvrir dix.",
 ];
 
+// Détecte les pièges classiques et renvoie une critique ferme (mode challenger).
+// En dev sans clé API, ça reproduit le comportement attendu du vrai Kaba.
+function detectChallenges(message: string): string[] {
+  const lower = message.toLowerCase();
+  const out: string[] = [];
+
+  // Cause racine circulaire
+  if (
+    /il n'existe pas|il n'y a pas (d'|de )|manque (d'|de )(plateforme|application|app|outil|solution)|aucune (plateforme|application|app)/.test(lower)
+  ) {
+    out.push(
+      "Premier défaut, et c'est le plus grave : tu dis qu'il « n'existe pas de solution comme la tienne ». C'est exactement le piège enseigné dans la Tâche 103 — tu pars de TA solution, pas du problème vécu par le client. Quel est ce qu'il VIT au quotidien avant que tu arrives ?"
+    );
+  }
+
+  // Persona mélangée / trop large
+  if (
+    /étudiants?\s+(ou|et)\s+salariés?|18\s*(à|-)\s*(45|50|55|60)|tout le monde|jeunes? (et|ou) adultes?/.test(lower)
+  ) {
+    out.push(
+      "Deuxième problème : ta cible mélange deux personas distincts. « Étudiants ou salariés de 18 à 45 ans », ce n'est pas une cible, c'est un annuaire. Le Niveau 1 t'a enseigné qu'une persona trop large = un message qui ne résonne pour personne. Choisis-en UNE."
+    );
+  }
+
+  // Jargon non passé au test Grand-mère
+  const jargon = ["startup", "mvp", "scaling", "kpi", "roi", "b2b", "b2c", "levée de fonds", "growth hacking"];
+  const hits = jargon.filter((w) => lower.includes(w));
+  if (hits.length > 0) {
+    out.push(
+      `Et le test Grand-mère ne passe pas : « ${hits.join(", ")} » ne parle à personne hors du milieu. Reformule en mots du quotidien — ta grand-mère doit comprendre ce que tu fais.`
+    );
+  }
+
+  return out;
+}
+
 export function mockKabaReply(userMessage: string, levelId: number): string {
+  const challenges = detectChallenges(userMessage);
+
+  if (challenges.length > 0) {
+    return (
+      `Je vais être direct avec toi — un ami qui ne dit que ce qu'on veut entendre n'est pas un ami.\n\n` +
+      challenges.join("\n\n") +
+      `\n\nCeci dit, le fait que tu poses tes idées par écrit est déjà un vrai pas — beaucoup restent dans le flou.\n\n` +
+      `Tu veux réécrire maintenant, ou on en discute avant ?\n\n` +
+      `*(Réponse simulée — configure GEMINI_API_KEY pour parler au vrai Kaba.)*`
+    );
+  }
+
   const p = PROVERBES[userMessage.length % PROVERBES.length];
   const e = EXEMPLES[(userMessage.length + levelId) % EXEMPLES.length];
   return (

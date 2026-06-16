@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { Lesson, Exercise } from "@/types";
+import { checkReflectionQuality } from "@/lib/quality/check-reflection";
+import { QualityChecklist } from "@/components/exercises/QualityChecklist";
 
 // ─── Types internes ───────────────────────────────────────────────────────────
 
@@ -892,6 +894,7 @@ function ExerciseRenderer(props: ExerciseRendererProps) {
 
   if (exercise.type === "reflection_template") {
     const value = props.textInputs[0] ?? "";
+    const flags = !answered ? checkReflectionQuality(value, { exerciseType: "reflection_template" }) : [];
     return (
       <div className="flex flex-col gap-4 mt-2">
         <div className="bg-[#EEF1FF] border border-[#0722AB]/20 rounded-2xl p-5">
@@ -908,6 +911,7 @@ function ExerciseRenderer(props: ExerciseRendererProps) {
           rows={5}
           className="w-full px-4 py-3 rounded-xl border-2 border-[#0722AB]/40 bg-[#EEF1FF]/30 text-foreground text-sm font-medium focus:border-[#0722AB] focus:outline-none transition-colors resize-none leading-relaxed"
         />
+        {flags.length > 0 && <QualityChecklist flags={flags} />}
         <p className="text-xs text-muted text-center">
           {value.trim().length === 0 ? "Le texte sera pré-rempli avec tes briques" : "✓ Édite si tu veux peaufiner"}
         </p>

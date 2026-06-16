@@ -9,7 +9,7 @@ import { getBadgeById } from "@/data/badges";
 import { getLevelById } from "@/data/levels";
 import { LEVEL_KABA_MESSAGES, LEVEL_RECAP_CARDS } from "@/data/level-meta";
 import { Confetti } from "@/components/gamification/Confetti";
-import { KabaAnalysis } from "@/components/gamification/KabaAnalysis";
+import { KabaVerdictSummary } from "@/components/gamification/KabaVerdictSummary";
 import type { ReflectionWithMeta } from "@/app/api/reflections/route";
 import type { StaticProduct } from "@/data/products";
 
@@ -286,8 +286,8 @@ export default function RecapPage() {
           </section>
         )}
 
-        {/* ── Analyse Kaba ───────────────────────────────────────────── */}
-        {recapCards.length > 0 && <KabaAnalysis levelId={levelId} />}
+        {/* ── Analyse Kaba (résumé de la Passe Kaba) ─────────────────── */}
+        {recapCards.length > 0 && <KabaVerdictSummary levelId={levelId} />}
 
         {/* ── Cross-sell formation ───────────────────────────────────── */}
         {crossSellProduct && !crossSellProduct.isPurchased && (
