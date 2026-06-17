@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useUser } from "@/hooks/use-user";
 import type { ProjetResponse, ProjetSection, MissionDeliverable } from "@/lib/projet-types";
 
 // ─── Editable reflection card (completed) ─────────────────────────────────────
@@ -268,6 +269,7 @@ function Skeleton() {
 // ─── Page ──────────────────────────────────────────────────────────────────────
 
 export default function ProjetPage() {
+  const { user } = useUser();
   const [data, setData] = useState<ProjetResponse | null>(null);
   const [error, setError] = useState(false);
   const [pdfMsg, setPdfMsg] = useState(false);
@@ -327,6 +329,21 @@ export default function ProjetPage() {
           <div className="mt-5 h-3 rounded-full bg-[#E8EAF0] animate-pulse" />
         )}
       </div>
+
+      {/* Ton point de départ — défi initial exprimé à l'onboarding */}
+      {user?.initialChallenge && (
+        <div className="bg-[#FFF4EC] dark:bg-[#2A1A08] border border-[#F77E2D]/30 rounded-2xl p-5">
+          <p className="text-xs font-bold text-[#F77E2D] uppercase tracking-wider mb-1.5">
+            🎯 Ton point de départ
+          </p>
+          <p className="text-sm text-[#0A0E2A] dark:text-[#F5F6FA] leading-relaxed">
+            {user.initialChallenge}
+          </p>
+          <p className="text-xs text-[#8892C8] mt-2">
+            Le défi que tu t&apos;es fixé à ton arrivée sur StartKaba.
+          </p>
+        </div>
+      )}
 
       {/* Level sections */}
       {!data ? (

@@ -16,6 +16,10 @@ export interface FullProfile {
   totalXp: number;
   subscriptionStatus: string;
   isAdmin: boolean;
+  onboardingCompleted: boolean;
+  sector: string | null;
+  stage: string | null;
+  initialChallenge: string | null;
   role: "ENTREPRENEUR" | "COACH" | "ADMIN";
   isOpenToCofounder: boolean;
   lookingFor: string[];
@@ -51,6 +55,10 @@ const seed: FullProfile = {
   totalXp: 600,
   subscriptionStatus: "FREE",
   isAdmin: false,
+  onboardingCompleted: true,
+  sector: "agriculture",
+  stage: "test",
+  initialChallenge: "Trouver mes 5 premiers restaurants clients à Cocody avant la fin du mois.",
   role: "ENTREPRENEUR",
   isOpenToCofounder: false,
   lookingFor: [],

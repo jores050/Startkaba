@@ -49,7 +49,8 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/classement") ||
     pathname.startsWith("/communaute") ||
     pathname.startsWith("/ressources") ||
-    pathname.startsWith("/profil");
+    pathname.startsWith("/profil") ||
+    pathname.startsWith("/onboarding");
 
   const isAdminRoute = pathname.startsWith("/admin");
   const isAuthPage = pathname === "/login" || pathname === "/signup";

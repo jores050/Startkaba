@@ -58,6 +58,22 @@ interface BuildSystemPromptParams {
   reflections?: Reflection[];
 }
 
+const SECTEUR_LABELS: Record<string, string> = {
+  commerce: "Commerce",
+  services: "Services",
+  agriculture: "Agriculture",
+  tech: "Tech",
+  education: "Éducation",
+  sante: "Santé",
+  autre: "Autre",
+};
+
+const STAGE_LABELS: Record<string, string> = {
+  idee: "Au stade de l'idée",
+  test: "En phase de test",
+  premiers_clients: "A déjà des premiers clients",
+};
+
 export function buildSystemPrompt({
   user,
   level,
@@ -65,6 +81,19 @@ export function buildSystemPrompt({
   reflections = [],
 }: BuildSystemPromptParams): string {
   const firstName = user.fullName?.split(" ")[0] ?? user.fullName ?? "toi";
+
+  // Bloc contextuel issu de l'onboarding — n'apparaît que si renseigné.
+  const sectorLabel = user.sector ? (SECTEUR_LABELS[user.sector] ?? user.sector) : null;
+  const stageLabel = user.stage ? (STAGE_LABELS[user.stage] ?? user.stage) : null;
+  const onboardingLines = [
+    sectorLabel ? `- Secteur : ${sectorLabel}` : null,
+    stageLabel ? `- Stade : ${stageLabel}` : null,
+    user.initialChallenge ? `- Défi initial exprimé à l'inscription : "${user.initialChallenge}"` : null,
+  ].filter(Boolean);
+  const onboardingBlock =
+    onboardingLines.length > 0
+      ? `\n${onboardingLines.join("\n")}\nUtilise ces infos pour contextualiser tes conseils et tes exemples. Quand tu cites des entrepreneurs ou des cas, privilégie ceux de ${user.city}${sectorLabel ? ` ou du secteur ${sectorLabel}` : ""} quand c'est pertinent.`
+      : "";
 
   const reflectionsBlock =
     reflections.length > 0
@@ -87,7 +116,7 @@ ${CHALLENGER_BLOCK}
 - Projet : ${user.projectName ?? "Non encore nommé"} — ${user.projectDescription ?? "Description en cours de définition"}
 - Niveau actuel : Niveau ${user.currentLevelId}/8 — "${level.title}"
 - Tâches complétées dans ce niveau : ${completedTasksCount}/${level.tasks.length}
-- XP total : ${user.totalXp} XP
+- XP total : ${user.totalXp} XP${onboardingBlock}
 ${reflectionsBlock}
 
 ## Niveau en cours — ${level.title}

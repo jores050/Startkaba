@@ -16,10 +16,14 @@ model UserProfile {
   projectName        String?
   projectDescription String?
   skills             String[]
-  currentLevelId     Int                @default(1)
-  totalXp            Int                @default(0)
-  subscriptionStatus SubscriptionStatus @default(FREE)
-  acceptedTermsAt    DateTime?
+  currentLevelId      Int                @default(1)
+  totalXp             Int                @default(0)
+  subscriptionStatus  SubscriptionStatus @default(FREE)
+  acceptedTermsAt     DateTime?
+  onboardingCompleted Boolean            @default(false)
+  sector              String?
+  stage               String?
+  initialChallenge    String?            @db.Text
   isAdmin                Boolean                 @default(false)
   role                   UserRole                @default(ENTREPRENEUR)
   payoutInfo             Json?

@@ -69,6 +69,10 @@ export interface UserProfile {
   totalXp: number;
   subscriptionStatus: SubscriptionStatus;
   isAdmin: boolean;
+  onboardingCompleted?: boolean;
+  sector?: string | null;
+  stage?: string | null;
+  initialChallenge?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
