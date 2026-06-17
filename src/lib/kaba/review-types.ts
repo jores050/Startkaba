@@ -21,6 +21,16 @@ export interface KabaReview {
   proverbe_takeaway: string;
 }
 
+// "Parfait mon modèle" — réécriture corrigée d'une réflexion + commentaire des changements.
+export interface KabaCorrection {
+  taskId: number;
+  label: string;
+  before: string;
+  after: string;
+  commentaire: string;
+  changed: boolean;
+}
+
 // Métadonnées d'affichage par score.
 export const SCORE_META: Record<
   KabaScore,
