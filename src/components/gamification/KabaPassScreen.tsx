@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { SCORE_META, type KabaReview } from "@/lib/kaba/review-types";
+import { KabaPerfectModel } from "./KabaPerfectModel";
 
 interface Props {
   levelId: number;
@@ -112,6 +113,9 @@ export function KabaPassScreen({ levelId, review, readOnly = false }: Props) {
           <p className="text-sm text-foreground italic leading-relaxed">{review.proverbe_takeaway}</p>
         </div>
       )}
+
+      {/* Parfaire mon modèle en un clic — après lecture des suggestions */}
+      <KabaPerfectModel levelId={levelId} />
 
       {/* CTAs */}
       {readOnly ? (
