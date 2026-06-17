@@ -3,7 +3,6 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/client";
 import { updateMockConnectionStatus } from "@/lib/dev/mock-community";
-import { mockProfile } from "@/lib/dev/mock-profile";
 
 const isDev = process.env.NODE_ENV !== "production";
 

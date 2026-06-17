@@ -37,7 +37,7 @@ export async function GET() {
   let reflMap: Map<number, string>;
   let userCurrentLevelId: number;
 
-  let missionNotesMap = new Map<number, string | null>();
+  const missionNotesMap = new Map<number, string | null>();
 
   if (!user) {
     if (isDev) {

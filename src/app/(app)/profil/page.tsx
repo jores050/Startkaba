@@ -7,7 +7,7 @@ import type { ReflectionWithMeta } from "@/app/api/reflections/route";
 import { useUser, type FullProfile } from "@/hooks/use-user";
 import { isSoundEnabled, setSoundEnabled } from "@/lib/sound";
 import { Avatar } from "@/components/ui/Avatar";
-import { badges as badgeDefs, getBadgeById } from "@/data/badges";
+import { badges as badgeDefs } from "@/data/badges";
 import { BadgeCard } from "@/components/gamification/BadgeCard";
 import { getLevelById, levels } from "@/data/levels";
 import { tasks } from "@/data/tasks";

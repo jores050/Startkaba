@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/client";
 import { getLevelById } from "@/data/levels";
 import { tasks } from "@/data/tasks";
-import { mockProgress, getMockTaskReflection } from "@/lib/dev/mock-progress";
+import { getMockTaskReflection } from "@/lib/dev/mock-progress";
 
 const isDev = process.env.NODE_ENV !== "production";
 
