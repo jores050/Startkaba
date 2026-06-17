@@ -19,6 +19,7 @@ model UserProfile {
   currentLevelId     Int                @default(1)
   totalXp            Int                @default(0)
   subscriptionStatus SubscriptionStatus @default(FREE)
+  acceptedTermsAt    DateTime?
   isAdmin                Boolean                 @default(false)
   role                   UserRole                @default(ENTREPRENEUR)
   payoutInfo             Json?

@@ -13,6 +13,9 @@ export const signupSchema = z.object({
   email: z.string().email("Adresse email invalide"),
   password: z.string().min(8, "Le mot de passe doit contenir au moins 8 caractères"),
   city: z.enum(["COTONOU", "ABIDJAN", "DAKAR", "LOME", "BAMAKO", "OTHER"]),
+  acceptedTerms: z
+    .string()
+    .refine((v) => v === "on", "Tu dois accepter les CGU et la politique de confidentialité."),
 });
 
 export type LoginInput = z.infer<typeof loginSchema>;

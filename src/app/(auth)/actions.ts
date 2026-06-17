@@ -19,6 +19,7 @@ export async function signUp(
     email: formData.get("email"),
     password: formData.get("password"),
     city: formData.get("city"),
+    acceptedTerms: formData.get("acceptedTerms") ?? "",
   });
 
   if (!parsed.success) {
@@ -46,7 +47,7 @@ export async function signUp(
 
   if (data.user) {
     try {
-      await ensureProfile({ userId: data.user.id, email, fullName, city });
+      await ensureProfile({ userId: data.user.id, email, fullName, city, acceptedTermsAt: new Date() });
     } catch {
       // La base n'est pas joignable (env fictif) — le profil sera créé
       // au premier appel authentifié via /api/user/profile.

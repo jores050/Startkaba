@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/layout/Logo";
+import { Footer } from "@/components/layout/Footer";
 import { levels } from "@/data/levels";
 
 const TEMOIGNAGES = [
@@ -396,22 +397,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#E8EAF0] dark:border-[#2A3050] bg-white dark:bg-[#151A2E] px-4 sm:px-10 py-8">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Link href="/" className="flex items-center gap-2">
-            <Logo size={24} />
-            <span className="font-display font-extrabold text-[#0722AB]">StartKaba</span>
-          </Link>
-          <div className="flex gap-6 text-sm text-[#8892C8]">
-            <Link href="/parcours" className="hover:text-[#0722AB] transition-colors">Parcours</Link>
-            <Link href="/login" className="hover:text-[#0722AB] transition-colors">Connexion</Link>
-            <Link href="/signup" className="hover:text-[#0722AB] transition-colors">Inscription</Link>
-          </div>
-          <p className="text-[#8892C8] text-sm">
-            © 2026 StartKaba
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

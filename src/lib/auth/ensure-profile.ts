@@ -8,6 +8,7 @@ interface EnsureProfileParams {
   fullName: string;
   city?: City;
   avatarUrl?: string;
+  acceptedTermsAt?: Date;
 }
 
 export async function ensureProfile({
@@ -16,6 +17,7 @@ export async function ensureProfile({
   fullName,
   city,
   avatarUrl,
+  acceptedTermsAt,
 }: EnsureProfileParams) {
   const createData = {
     id: userId,
@@ -26,6 +28,7 @@ export async function ensureProfile({
     currentLevelId: 1,
     totalXp: 0,
     subscriptionStatus: "FREE" as const,
+    acceptedTermsAt,
   };
 
   try {
