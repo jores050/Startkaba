@@ -43,7 +43,6 @@ model UserProfile {
   notifications       Notification[]
   reflections         TaskReflection[]
   microInputs         UserMicroInput[]
-  levelAnalyses       LevelAnalysis[]
   products            Product[]            @relation("CoachProducts")
   purchases           Purchase[]
   payouts             Payout[]
@@ -318,19 +317,6 @@ model Payout {
   coach UserProfile @relation(fields: [coachId], references: [id])
 
   @@map("payouts")
-}
-
-model LevelAnalysis {
-  id        String   @id @default(uuid())
-  userId    String
-  levelId   Int
-  content   String   @db.Text
-  createdAt DateTime @default(now())
-
-  user UserProfile @relation(fields: [userId], references: [id])
-
-  @@unique([userId, levelId])
-  @@map("level_analyses")
 }
 
 enum MentorStatus {

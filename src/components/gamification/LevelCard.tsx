@@ -11,12 +11,14 @@ const STATUS_META: Record<
   IN_PROGRESS: { label: "En cours", icon: "🔥" },
   UNLOCKED: { label: "Disponible", icon: "✨" },
   LOCKED: { label: "Verrouillé", icon: "🔒" },
-  COMING_SOON: { label: "Bientôt disponible", icon: "🔒" },
+  COMING_SOON: { label: "Bientôt disponible", icon: "🚧" },
 };
 
 export function LevelCard({ level }: { level: LevelSummary }) {
   const meta = STATUS_META[level.status];
-  const locked = level.status === "LOCKED" || level.status === "COMING_SOON";
+  const locked = level.status === "LOCKED";
+  const comingSoon = level.status === "COMING_SOON";
+  const inactive = locked || comingSoon;
   const pct =
     level.totalXp > 0 ? Math.round((level.earnedXp / level.totalXp) * 100) : 0;
   const badges = level.badgeIds
@@ -28,9 +30,11 @@ export function LevelCard({ level }: { level: LevelSummary }) {
       className={`relative overflow-hidden bg-surface border rounded-2xl p-6 transition-all h-full flex flex-col gap-4 ${
         locked
           ? "border-border opacity-60"
-          : level.status === "COMPLETED"
-            ? "border-green"
-            : "border-border hover:border-primary hover:shadow-md"
+          : comingSoon
+            ? "border-[#F77E2D]/30 opacity-80"
+            : level.status === "COMPLETED"
+              ? "border-green"
+              : "border-border hover:border-primary hover:shadow-md"
       }`}
     >
       {/* Motif wax en décoration subtile */}
@@ -50,7 +54,9 @@ export function LevelCard({ level }: { level: LevelSummary }) {
                 ? "bg-green text-white"
                 : locked
                   ? "bg-border text-muted"
-                  : "bg-primary text-white"
+                  : comingSoon
+                    ? "bg-[#F77E2D]/15 text-[#F77E2D]"
+                    : "bg-primary text-white"
             }`}
           >
             {level.id}
@@ -67,12 +73,24 @@ export function LevelCard({ level }: { level: LevelSummary }) {
             )}
           </div>
         </div>
-        <span title={meta.label} className="text-xl shrink-0">
-          {meta.icon}
-        </span>
+        {comingSoon ? (
+          <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#F77E2D]/10 text-[#F77E2D] border border-[#F77E2D]/25 shrink-0 whitespace-nowrap">
+            🚧 Bientôt
+          </span>
+        ) : (
+          <span title={meta.label} className="text-xl shrink-0">
+            {meta.icon}
+          </span>
+        )}
       </div>
 
       <p className="text-muted text-sm flex-1">{level.description}</p>
+
+      {comingSoon && (
+        <p className="text-xs text-[#F77E2D] font-medium">
+          Ce module arrive bientôt — continue les niveaux précédents.
+        </p>
+      )}
 
       {level.taskCount > 0 && (
         <>
@@ -111,7 +129,7 @@ export function LevelCard({ level }: { level: LevelSummary }) {
     </div>
   );
 
-  if (locked) return card;
+  if (inactive) return card;
 
   return (
     <Link href={`/parcours/${level.id}`} className="block h-full">

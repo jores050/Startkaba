@@ -93,6 +93,39 @@ export default function NiveauPage() {
   }
   if (!level) return null;
 
+  if (level.status === "COMING_SOON") {
+    return (
+      <div className="max-w-3xl">
+        <Link href="/parcours" className="inline-flex items-center gap-1.5 text-[#8892C8] hover:text-[#0722AB] transition-colors text-sm mb-6">
+          ← Retour au parcours
+        </Link>
+        <div className="bg-white dark:bg-[#151A2E] border border-[#E8EAF0] dark:border-[#2A3050] rounded-2xl p-10 text-center shadow-sm">
+          <span className="text-5xl block mb-4">🚧</span>
+          <h1 className="font-display text-2xl font-bold text-[#0A0E2A] dark:text-white mb-1">
+            Niveau {level.id} — {level.title}
+          </h1>
+          <p className="text-[#8892C8] text-sm italic mb-5">{level.subtitle}</p>
+          <p className="text-[#4A5280] dark:text-[#8892C8] text-sm leading-relaxed mb-6 max-w-md mx-auto">
+            {level.description}
+          </p>
+          <div className="bg-[#FFF8F5] dark:bg-[#2A1A0E] border border-[#F77E2D]/25 rounded-xl p-5 mb-8 text-left max-w-md mx-auto">
+            <p className="text-[#F77E2D] font-semibold text-sm mb-1.5">🚀 En cours de construction</p>
+            <p className="text-[#4A5280] dark:text-[#8892C8] text-sm leading-relaxed">
+              Ce niveau sera disponible prochainement. Termine les niveaux précédents
+              en attendant — tu seras parmi les premiers à y accéder.
+            </p>
+          </div>
+          <Link
+            href="/parcours"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0722AB] text-white font-bold text-sm hover:opacity-90 transition-opacity"
+          >
+            ← Continuer mon parcours
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   const badges = level.badgeIds
     .map(getBadgeById)
     .filter((b): b is NonNullable<typeof b> => Boolean(b));
