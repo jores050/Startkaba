@@ -5,8 +5,8 @@ import { dirname, join } from "path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const SUPABASE_URL = "https://lcffxhvmzzxhhpurunhc.supabase.co";
-const SERVICE_KEY = "process.env.SUPABASE_SERVICE_ROLE_KEY";
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const sql = readFileSync(join(__dirname, "../prisma/rls.sql"), "utf-8");
 
