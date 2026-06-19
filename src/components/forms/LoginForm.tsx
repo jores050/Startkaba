@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
 import { signIn, type AuthState } from "@/app/(auth)/actions";
 import { Button } from "@/components/ui/Button";
@@ -31,16 +32,23 @@ export function LoginForm() {
         placeholder="toi@exemple.com"
         error={state.fieldErrors?.email}
       />
-      <Input
-        id="password"
-        name="password"
-        type="password"
-        label="Mot de passe"
-        required
-        autoComplete="current-password"
-        placeholder="••••••••"
-        error={state.fieldErrors?.password}
-      />
+      <div>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          label="Mot de passe"
+          required
+          autoComplete="current-password"
+          placeholder="••••••••"
+          error={state.fieldErrors?.password}
+        />
+        <div className="text-right mt-1.5">
+          <Link href="/auth/forgot-password" className="text-xs text-[#0722AB] font-semibold hover:underline">
+            Mot de passe oublié&nbsp;?
+          </Link>
+        </div>
+      </div>
       {state.error && (
         <p className="text-error text-sm text-center bg-error/10 border border-error/30 rounded-lg px-4 py-2">
           {state.error}

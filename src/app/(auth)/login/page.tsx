@@ -5,7 +5,12 @@ import { GoogleButton } from "@/components/forms/GoogleButton";
 
 export const metadata = { title: "Connexion — StartKaba" };
 
-export default function LoginPage() {
+export default function LoginPage({
+  searchParams,
+}: {
+  searchParams?: { reset?: string };
+}) {
+  const resetDone = searchParams?.reset === "success";
   return (
     <main className="min-h-screen bg-[#F5F6FA] flex">
       {/* Colonne gauche — visuel */}
@@ -92,6 +97,12 @@ export default function LoginPage() {
                 Ton parcours t&apos;attend là où tu l&apos;as laissé.
               </p>
             </div>
+
+            {resetDone && (
+              <p className="text-[#1A6B00] text-sm text-center bg-green/10 border border-green/30 rounded-lg px-4 py-2 mb-5">
+                ✓ Mot de passe mis à jour. Connecte-toi avec ton nouveau mot de passe.
+              </p>
+            )}
 
             <LoginForm />
 
