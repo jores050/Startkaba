@@ -14,30 +14,41 @@ export async function middleware(request: NextRequest) {
     return supabaseResponse;
   }
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          );
-          supabaseResponse = NextResponse.next({ request });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          );
-        },
-      },
-    }
-  );
+  // Si les variables Supabase sont absentes (mauvaise config Vercel), on laisse passer
+  // pour éviter MIDDLEWARE_INVOCATION_FAILED et afficher une page d'erreur lisible.
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return supabaseResponse;
+  }
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  let supabase: ReturnType<typeof createServerClient> | null = null;
+  try {
+    supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll();
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value }) =>
+              request.cookies.set(name, value)
+            );
+            supabaseResponse = NextResponse.next({ request });
+            cookiesToSet.forEach(({ name, value, options }) =>
+              supabaseResponse.cookies.set(name, value, options)
+            );
+          },
+        },
+      }
+    );
+    const { data } = await supabase.auth.getUser();
+    user = data.user;
+  } catch {
+    // Supabase injoignable → laisse passer, les pages géreront l'état non authentifié
+    return supabaseResponse;
+  }
 
   const { pathname } = request.nextUrl;
 
@@ -71,7 +82,7 @@ export async function middleware(request: NextRequest) {
 
   // Guard admin : vérifie isAdmin dans user_profiles (via PostgREST,
   // Prisma n'étant pas disponible en Edge runtime).
-  if (isAdminRoute && user) {
+  if (isAdminRoute && user && supabase) {
     const { data: profile } = await supabase
       .from("user_profiles")
       .select("isAdmin")
