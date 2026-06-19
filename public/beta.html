@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StartKaba Bêta — Rejoins les premiers</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #0722AB;
+    --blue-light: #0722AB18;
+    --blue-mid: #0722AB40;
+    --green: #1A6B00;
+    --green-light: #AEFF94;
+    --green-pale: #AEFF9422;
+    --orange: #F77E2D;
+    --orange-light: #F77E2D18;
+    --white: #FFFFFF;
+    --off-white: #F7F8FC;
+    --gray-100: #F0F1F7;
+    --gray-300: #C8CBD8;
+    --gray-600: #6B6F85;
+    --gray-900: #1A1C2A;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 32px;
+  }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--off-white);
+    color: var(--gray-900);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-100);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-logo {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--blue);
+    letter-spacing: -0.5px;
+    text-decoration: none;
+  }
+
+  .nav-logo span {
+    color: var(--orange);
+  }
+
+  .nav-badge {
+    background: var(--green-light);
+    color: var(--green);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--blue);
+    color: var(--white);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: var(--orange);
+    opacity: 0.12;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    left: -40px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: var(--green-light);
+    opacity: 0.1;
+  }
+
+  .hero-pill {
+    display: inline-block;
+    background: var(--orange);
+    color: var(--white);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 100px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    max-width: 720px;
+    margin: 0 auto 1.25rem;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--green-light);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    font-weight: 400;
+    opacity: 0.85;
+    max-width: 560px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    background: var(--orange);
+    color: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 1rem 2.5rem;
+    border-radius: 100px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 20px rgba(247, 126, 45, 0.4);
+  }
+
+  .hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(247, 126, 45, 0.5);
+  }
+
+  .hero-note {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    opacity: 0.6;
+  }
+
+  /* ── STATS ── */
+  .stats {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-100);
+    padding: 1.75rem 2rem;
+  }
+
+  .stats-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--blue);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    font-weight: 500;
+    margin-top: 4px;
+  }
+
+  /* ── CONTENT WRAPPER ── */
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .section-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--blue);
+    letter-spacing: -0.5px;
+    margin-bottom: 1rem;
+  }
+
+  .section-lead {
+    font-size: 1rem;
+    color: var(--gray-600);
+    max-width: 580px;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ── DEAL CARDS ── */
+  .deal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 4rem;
+  }
+
+  .deal-card {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+  }
+
+  .deal-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .deal-icon.blue { background: var(--blue-light); }
+  .deal-icon.green { background: var(--green-pale); }
+  .deal-icon.orange { background: var(--orange-light); }
+
+  .deal-card h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 0.4rem;
+  }
+
+  .deal-card p {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    line-height: 1.55;
+  }
+
+  /* ── COMMITMENT ── */
+  .commitment {
+    background: var(--blue-light);
+    border: 1px solid var(--blue-mid);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin-bottom: 4rem;
+  }
+
+  .commitment h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 1rem;
+  }
+
+  .commit-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .commit-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--gray-900);
+  }
+
+  .commit-list li::before {
+    content: '✓';
+    background: var(--blue);
+    color: var(--white);
+    font-size: 0.65rem;
+    font-weight: 800;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── FORM ── */
+  .form-wrapper {
+    background: var(--white);
+    border: 1px solid var(--gray-100);
+    border-radius: var(--radius-xl);
+    padding: 2.5rem;
+    box-shadow: 0 2px 24px rgba(7, 34, 171, 0.06);
+  }
+
+  .form-header {
+    margin-bottom: 2rem;
+  }
+
+  .form-header h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--blue);
+    letter-spacing: -0.5px;
+    margin-bottom: 0.4rem;
+  }
+
+  .form-header p {
+    font-size: 0.875rem;
+    color: var(--gray-600);
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.2px;
+  }
+
+  label .required {
+    color: var(--orange);
+    margin-left: 2px;
+  }
+
+  label .hint {
+    font-weight: 400;
+    color: var(--gray-600);
+    font-size: 0.75rem;
+    margin-left: 4px;
+  }
+
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: var(--gray-900);
+    background: var(--white);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6F85' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px var(--blue-light);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+
+  .radio-option:hover {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+
+  .radio-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: var(--blue);
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .radio-option.selected {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+
+  .radio-option .radio-label {
+    font-size: 0.875rem;
+    color: var(--gray-900);
+    font-weight: 500;
+  }
+
+  .radio-option .radio-sub {
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    font-weight: 400;
+  }
+
+  /* Ville grid */
+  .ville-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .ville-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    border: 1.5px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+
+  .ville-option:hover {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+
+  .ville-option.selected {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+
+  .ville-option input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    accent-color: var(--blue);
+    margin: 0;
+    padding: 0;
+    border: none;
+  }
+
+  .ville-option span {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gray-900);
+  }
+
+  .form-divider {
+    height: 1px;
+    background: var(--gray-100);
+    margin: 2rem 0;
+  }
+
+  .form-section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1.25rem;
+  }
+
+  /* Char counter */
+  .char-counter {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.72rem;
+    color: var(--gray-600);
+    margin-top: 4px;
+  }
+
+  /* Submit */
+  .submit-btn {
+    width: 100%;
+    background: var(--blue);
+    color: var(--white);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .submit-btn:hover {
+    background: #0920A0;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 24px rgba(7, 34, 171, 0.3);
+  }
+
+  .submit-btn:active {
+    transform: translateY(0);
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .submit-note {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--gray-600);
+    margin-top: 0.75rem;
+  }
+
+  /* ── SUCCESS ── */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 3rem 1.5rem;
+  }
+
+  .success-icon {
+    width: 72px;
+    height: 72px;
+    background: var(--green-pale);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+  }
+
+  .success-screen h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--blue);
+    margin-bottom: 0.75rem;
+  }
+
+  .success-screen p {
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    max-width: 400px;
+    margin: 0 auto 0.5rem;
+  }
+
+  .success-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    background: #25D366;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.75rem 1.75rem;
+    border-radius: 100px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--blue);
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.8rem;
+  }
+
+  footer strong {
+    color: var(--white);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    nav { padding: 1rem; }
+    .hero { padding: 3.5rem 1.25rem 3rem; }
+    .content { padding: 2.5rem 1.25rem; }
+    .form-wrapper { padding: 1.75rem 1.25rem; }
+    .stats-inner { gap: 1.5rem; }
+    .ville-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── ERROR STATE ── */
+  .field-error {
+    border-color: #E24B4A !important;
+  }
+
+  .error-msg {
+    font-size: 0.75rem;
+    color: #A32D2D;
+    margin-top: 4px;
+    display: none;
+  }
+
+  .error-msg.visible {
+    display: block;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    height: 4px;
+    background: var(--gray-100);
+    border-radius: 2px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue), var(--orange));
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Start<span>Kaba</span></a>
+  <span class="nav-badge">Bêta fermée</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-pill">🚀 40 places disponibles</div>
+  <h1>Sois parmi les <em>premiers</em> à construire ton projet sur StartKaba</h1>
+  <p class="hero-sub">2 semaines. Une idée de business. Un accès gratuit complet. Et ton retour qui façonne la plateforme pour des milliers d'entrepreneurs africains.</p>
+  <a href="#formulaire" class="hero-cta">Je veux rejoindre la bêta →</a>
+  <p class="hero-note">Pas de carte bancaire. Pas d'engagement après les 2 semaines.</p>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-number">2 sem.</div>
+      <div class="stat-label">Durée du test</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">~20 min</div>
+      <div class="stat-label">Par jour</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">3 niveaux</div>
+      <div class="stat-label">À explorer</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">40 places</div>
+      <div class="stat-label">Maximum</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- Ce que tu testes -->
+  <div class="section-tag">Ce que tu vas vivre</div>
+  <h2 class="section-title">3 niveaux. Une vraie progression.</h2>
+  <p class="section-lead">En 2 semaines, tu parcours les niveaux 1 à 3 de StartKaba — de l'idée brute à un modèle économique structuré, guidé par Kaba, ton coach IA.</p>
+
+  <div class="deal-grid">
+    <div class="deal-card">
+      <div class="deal-icon blue">💡</div>
+      <h3>Niveau 1 — Clarifier ton idée</h3>
+      <p>Tu construis ta proposition de valeur brique par brique, avec les exercices qui t'apprennent à penser comme un entrepreneur, pas comme un rêveur.</p>
+    </div>
+    <div class="deal-card">
+      <div class="deal-icon green">🎯</div>
+      <h3>Niveau 2 — Valider ton marché</h3>
+      <p>Tu mènes de vraies interviews terrain. Tu apprends à distinguer la politesse d'un vrai signal fort. Tu décides : continuer, ajuster ou pivoter.</p>
+    </div>
+    <div class="deal-card">
+      <div class="deal-icon orange">📐</div>
+      <h3>Niveau 3 — Construire ton modèle</h3>
+      <p>Business Model Canvas version Afrique de l'Ouest. Budget de démarrage en FCFA. Pricing adapté à ton marché local. Tout ça en exercices concrets.</p>
+    </div>
+  </div>
+
+  <!-- Ce qu'on te demande -->
+  <div class="section-tag">L'engagement</div>
+  <h2 class="section-title">Ce qu'on attend de toi</h2>
+  <p class="section-lead">La bêta n'est pas une démo passive. C'est un partenariat : tu testes vraiment, on améliore vraiment.</p>
+
+  <div class="commitment">
+    <h3>Ton engagement sur 2 semaines</h3>
+    <ul class="commit-list">
+      <li>Utiliser StartKaba au moins 5 jours sur 7 (~20 min/session)</li>
+      <li>Signaler chaque blocage, confusion ou suggestion au moment où tu le vis (via l'app ou WhatsApp)</li>
+      <li>Répondre à 3 check-ins WhatsApp aux jours 3, 7 et 14</li>
+      <li>Participer à un appel de 20 min à la fin des 2 semaines</li>
+    </ul>
+  </div>
+
+  <!-- Ce que tu gagnes -->
+  <div class="section-tag">Ce que tu reçois</div>
+  <h2 class="section-title">Ton deal en tant que Fondateur Bêta</h2>
+  <p class="section-lead">Tu n'es pas juste un testeur. Tu es co-constructeur de ce qui va aider des milliers d'entrepreneurs francophones.</p>
+
+  <div class="deal-grid" style="margin-bottom: 2rem;">
+    <div class="deal-card">
+      <div class="deal-icon blue">🎁</div>
+      <h3>Accès complet gratuit</h3>
+      <p>Les 3 niveaux, toutes les tâches, le coach Kaba — rien de caché, rien de bloqué derrière un paywall.</p>
+    </div>
+    <div class="deal-card">
+      <div class="deal-icon green">🏅</div>
+      <h3>Badge "Fondateur" permanent</h3>
+      <p>Visible sur ton profil StartKaba à vie. Tu fais partie des 40 premiers. Ce n'est pas rien.</p>
+    </div>
+    <div class="deal-card">
+      <div class="deal-icon orange">🎙️</div>
+      <h3>Ton feedback façonne le produit</h3>
+      <p>Chaque signalement que tu envoies est lu. Les prochaines versions de StartKaba porteront ton empreinte.</p>
+    </div>
+  </div>
+
+  <!-- FORMULAIRE -->
+  <div id="formulaire" style="padding-top: 1rem;">
+    <div class="section-tag">Candidature</div>
+    <h2 class="section-title">Rejoindre la bêta</h2>
+    <p class="section-lead">5 questions. 3 minutes. On sélectionne 40 personnes parmi les candidats — on te recontacte sur WhatsApp sous 48h.</p>
+
+    <div class="form-wrapper">
+
+      <!-- Success screen -->
+      <div class="success-screen" id="successScreen">
+        <div class="success-icon">✅</div>
+        <h2>Candidature reçue !</h2>
+        <p>Merci — tu es dans la file. On revient vers toi sur WhatsApp sous 48h pour confirmer ta place.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.82rem;">En attendant, rejoins notre canal WhatsApp pour suivre le lancement.</p>
+        <a href="https://wa.me/22997000000" class="success-whatsapp" target="_blank">
+          💬 Rejoindre le canal WhatsApp
+        </a>
+      </div>
+
+      <!-- Form -->
+      <div id="formContent">
+        <div class="form-header">
+          <h2>Ta candidature</h2>
+          <p>Tous les champs marqués <span style="color: var(--orange);">*</span> sont obligatoires.</p>
+        </div>
+
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <form id="betaForm" novalidate>
+
+          <!-- Section 1 : Toi -->
+          <div class="form-section-title">→ Qui tu es</div>
+
+          <div class="form-group">
+            <label for="prenom">Prénom <span class="required">*</span></label>
+            <input type="text" id="prenom" name="prenom" placeholder="Ex : Fatoumata" autocomplete="given-name" />
+            <p class="error-msg" id="prenom-error">Ton prénom est requis.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="whatsapp">Numéro WhatsApp <span class="required">*</span> <span class="hint">— avec indicatif pays</span></label>
+            <input type="tel" id="whatsapp" name="whatsapp" placeholder="Ex : +22997123456 ou +2250701234567" autocomplete="tel" />
+            <p class="error-msg" id="whatsapp-error">Ton numéro WhatsApp est requis (avec indicatif +).</p>
+          </div>
+
+          <div class="form-group">
+            <label>Ta ville <span class="required">*</span></label>
+            <div class="ville-grid" id="villeGrid">
+              <label class="ville-option" data-value="Cotonou">
+                <input type="radio" name="ville" value="Cotonou" />
+                <span>🇧🇯 Cotonou</span>
+              </label>
+              <label class="ville-option" data-value="Abidjan">
+                <input type="radio" name="ville" value="Abidjan" />
+                <span>🇨🇮 Abidjan</span>
+              </label>
+              <label class="ville-option" data-value="Dakar">
+                <input type="radio" name="ville" value="Dakar" />
+                <span>🇸🇳 Dakar</span>
+              </label>
+              <label class="ville-option" data-value="Lomé">
+                <input type="radio" name="ville" value="Lomé" />
+                <span>🇹🇬 Lomé</span>
+              </label>
+              <label class="ville-option" data-value="Bamako">
+                <input type="radio" name="ville" value="Bamako" />
+                <span>🇲🇱 Bamako</span>
+              </label>
+              <label class="ville-option" data-value="Autre">
+                <input type="radio" name="ville" value="Autre" />
+                <span>🌍 Autre</span>
+              </label>
+            </div>
+            <p class="error-msg" id="ville-error">Sélectionne ta ville.</p>
+          </div>
+
+          <div class="form-divider"></div>
+
+          <!-- Section 2 : Ton projet -->
+          <div class="form-section-title">→ Ton projet</div>
+
+          <div class="form-group">
+            <label>Tu as une idée de business ? <span class="required">*</span></label>
+            <div class="radio-group" id="ideeGroup">
+              <label class="radio-option" data-value="oui_claire">
+                <input type="radio" name="idee" value="oui_claire" />
+                <div>
+                  <div class="radio-label">Oui, une idée claire</div>
+                  <div class="radio-sub">Je sais ce que je veux faire, j'ai juste besoin de le structurer</div>
+                </div>
+              </label>
+              <label class="radio-option" data-value="oui_vague">
+                <input type="radio" name="idee" value="oui_vague" />
+                <div>
+                  <div class="radio-label">Oui, mais encore vague</div>
+                  <div class="radio-sub">J'ai une direction mais pas encore de proposition précise</div>
+                </div>
+              </label>
+              <label class="radio-option" data-value="non_cherche">
+                <input type="radio" name="idee" value="non_cherche" />
+                <div>
+                  <div class="radio-label">Pas encore, je cherche</div>
+                  <div class="radio-sub">Je veux trouver une idée viable adaptée à mon contexte</div>
+                </div>
+              </label>
+            </div>
+            <p class="error-msg" id="idee-error">Dis-nous où tu en es.</p>
+          </div>
+
+          <div class="form-group">
+            <label>Combien de temps par jour pour StartKaba ? <span class="required">*</span></label>
+            <div class="radio-group" id="tempsGroup">
+              <label class="radio-option" data-value="moins_10">
+                <input type="radio" name="temps" value="moins_10" />
+                <div>
+                  <div class="radio-label">Moins de 10 minutes</div>
+                  <div class="radio-sub">Je suis très occupé — je ferai ce que je peux</div>
+                </div>
+              </label>
+              <label class="radio-option" data-value="10_20">
+                <input type="radio" name="temps" value="10_20" />
+                <div>
+                  <div class="radio-label">10 à 20 minutes</div>
+                  <div class="radio-sub">Je peux m'y mettre régulièrement le matin ou le soir</div>
+                </div>
+              </label>
+              <label class="radio-option" data-value="30_plus">
+                <input type="radio" name="temps" value="30_plus" />
+                <div>
+                  <div class="radio-label">30 minutes et plus</div>
+                  <div class="radio-sub">Je prends ça au sérieux, je bloque du temps</div>
+                </div>
+              </label>
+            </div>
+            <p class="error-msg" id="temps-error">Dis-nous ta disponibilité.</p>
+          </div>
+
+          <div class="form-divider"></div>
+
+          <!-- Section 3 : Motivation -->
+          <div class="form-section-title">→ Ta motivation</div>
+
+          <div class="form-group">
+            <label for="pourquoi">Pourquoi tu veux tester StartKaba ? <span class="required">*</span> <span class="hint">— 2-4 phrases, sois sincère</span></label>
+            <textarea id="pourquoi" name="pourquoi" placeholder="Ex : J'ai une idée depuis 2 ans mais je n'ai jamais su comment la structurer. J'ai besoin d'un cadre concret, pas d'un autre livre de business en théorie..." maxlength="500"></textarea>
+            <div class="char-counter"><span id="pourquoiCount">0</span>/500</div>
+            <p class="error-msg" id="pourquoi-error">Dis-nous ce qui t'amène (minimum 30 caractères).</p>
+          </div>
+
+          <div class="form-group">
+            <label for="decouverte">Comment tu as entendu parler de StartKaba ? <span class="hint">— facultatif</span></label>
+            <select id="decouverte" name="decouverte">
+              <option value="">— Sélectionner —</option>
+              <option value="whatsapp">Groupe WhatsApp</option>
+              <option value="linkedin">LinkedIn</option>
+              <option value="facebook">Facebook / Instagram</option>
+              <option value="ami">Un ami / une connaissance</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+
+          <!-- Engagement -->
+          <div style="background: var(--off-white); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
+            <label style="display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer; margin-bottom: 0;" for="engagement">
+              <input type="checkbox" id="engagement" name="engagement" style="width: 18px; height: 18px; margin-top: 2px; accent-color: var(--blue); flex-shrink: 0;" />
+              <span style="font-size: 0.82rem; color: var(--gray-600); font-weight: 400; line-height: 1.5;">
+                Je m'engage à utiliser StartKaba sérieusement pendant 2 semaines, à répondre aux check-ins WhatsApp et à signaler mes retours. Je comprends que les places sont limitées et que les testeurs inactifs peuvent être remplacés.
+              </span>
+            </label>
+            <p class="error-msg" id="engagement-error" style="margin-top: 0.5rem;">Cet engagement est nécessaire pour participer.</p>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">
+            Envoyer ma candidature →
+          </button>
+          <p class="submit-note">On te recontacte sur WhatsApp sous 48h. 40 places max.</p>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>StartKaba</strong> — INTELLITECH INNOVATION, Cotonou</p>
+  <p style="margin-top: 0.4rem;">La plateforme gamifiée pour les entrepreneurs d'Afrique francophone.</p>
+</footer>
+
+<script>
+  // Progress bar
+  const fields = ['prenom', 'whatsapp', 'ville', 'idee', 'temps', 'pourquoi'];
+  function updateProgress() {
+    let filled = 0;
+    const prenom = document.getElementById('prenom').value.trim();
+    const whatsapp = document.getElementById('whatsapp').value.trim();
+    const ville = document.querySelector('input[name="ville"]:checked');
+    const idee = document.querySelector('input[name="idee"]:checked');
+    const temps = document.querySelector('input[name="temps"]:checked');
+    const pourquoi = document.getElementById('pourquoi').value.trim();
+    if (prenom) filled++;
+    if (whatsapp) filled++;
+    if (ville) filled++;
+    if (idee) filled++;
+    if (temps) filled++;
+    if (pourquoi.length >= 30) filled++;
+    const pct = Math.round((filled / 6) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+
+  // Char counter
+  const pourquoiArea = document.getElementById('pourquoi');
+  pourquoiArea.addEventListener('input', function() {
+    document.getElementById('pourquoiCount').textContent = this.value.length;
+    updateProgress();
+  });
+
+  // Radio styling
+  function setupRadioGroup(groupId) {
+    const group = document.getElementById(groupId);
+    if (!group) return;
+    group.querySelectorAll('.radio-option, .ville-option').forEach(opt => {
+      const radio = opt.querySelector('input[type="radio"]');
+      radio.addEventListener('change', () => {
+        group.querySelectorAll('.radio-option, .ville-option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        updateProgress();
+      });
+    });
+  }
+
+  setupRadioGroup('villeGrid');
+  setupRadioGroup('ideeGroup');
+  setupRadioGroup('tempsGroup');
+
+  // Track all inputs
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', updateProgress);
+    el.addEventListener('change', updateProgress);
+  });
+
+  // Form submit
+  document.getElementById('betaForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    let valid = true;
+
+    function showError(id, show) {
+      const el = document.getElementById(id + '-error');
+      if (!el) return;
+      if (show) {
+        el.classList.add('visible');
+        document.getElementById(id) && document.getElementById(id).classList.add('field-error');
+      } else {
+        el.classList.remove('visible');
+        document.getElementById(id) && document.getElementById(id).classList.remove('field-error');
+      }
+    }
+
+    const prenom = document.getElementById('prenom').value.trim();
+    if (!prenom) { showError('prenom', true); valid = false; } else showError('prenom', false);
+
+    const whatsapp = document.getElementById('whatsapp').value.trim();
+    if (!whatsapp || !whatsapp.startsWith('+')) { showError('whatsapp', true); valid = false; } else showError('whatsapp', false);
+
+    const ville = document.querySelector('input[name="ville"]:checked');
+    const villeErr = document.getElementById('ville-error');
+    if (!ville) { villeErr.classList.add('visible'); valid = false; } else villeErr.classList.remove('visible');
+
+    const idee = document.querySelector('input[name="idee"]:checked');
+    const ideeErr = document.getElementById('idee-error');
+    if (!idee) { ideeErr.classList.add('visible'); valid = false; } else ideeErr.classList.remove('visible');
+
+    const temps = document.querySelector('input[name="temps"]:checked');
+    const tempsErr = document.getElementById('temps-error');
+    if (!temps) { tempsErr.classList.add('visible'); valid = false; } else tempsErr.classList.remove('visible');
+
+    const pourquoi = document.getElementById('pourquoi').value.trim();
+    if (pourquoi.length < 30) { showError('pourquoi', true); valid = false; } else showError('pourquoi', false);
+
+    const engagement = document.getElementById('engagement').checked;
+    const engErr = document.getElementById('engagement-error');
+    if (!engagement) { engErr.classList.add('visible'); valid = false; } else engErr.classList.remove('visible');
+
+    if (!valid) {
+      document.querySelector('.field-error, .error-msg.visible').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // Collect data
+    const data = {
+      prenom,
+      whatsapp,
+      ville: ville ? ville.value : '',
+      idee: idee ? idee.value : '',
+      temps: temps ? temps.value : '',
+      pourquoi,
+      decouverte: document.getElementById('decouverte').value,
+      soumis_le: new Date().toISOString()
+    };
+
+    // In production: POST to your API
+    // fetch('/api/beta-candidature', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) })
+    console.log('Candidature soumise :', data);
+
+    // Show success
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours...';
+
+    setTimeout(() => {
+      document.getElementById('formContent').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+      document.getElementById('successScreen').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 800);
+  });
+</script>
+
+</body>
+</html>
