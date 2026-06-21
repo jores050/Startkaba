@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import Link from "next/link";
+import { MapPin, Rocket } from "lucide-react";
 import type { ReflectionWithMeta } from "@/app/api/reflections/route";
 import { useUser, type FullProfile } from "@/hooks/use-user";
 import { isSoundEnabled, setSoundEnabled } from "@/lib/sound";
@@ -203,14 +204,14 @@ export default function ProfilPage() {
                 </span>
               )}
             </div>
-            <p className="text-muted text-sm mt-1">📍 {cityLabel}</p>
+            <p className="text-muted text-sm mt-1 flex items-center gap-1"><MapPin size={12} strokeWidth={2} />{cityLabel}</p>
             {user.bio && (
               <p className="text-mid mt-3 text-sm leading-relaxed">{user.bio}</p>
             )}
             {user.projectName && (
               <div className="mt-3 flex items-center gap-2 flex-wrap">
                 <span className="px-3 py-1 rounded-full bg-primary-light text-primary dark:text-[#4D6FFF] text-xs font-semibold">
-                  🚀 {user.projectName}
+                  <Rocket size={12} strokeWidth={2} className="inline mr-0.5 align-[-1px]" />{user.projectName}
                 </span>
                 <span className="px-3 py-1 rounded-full bg-green-bg text-green dark:text-[#4ADE80] text-xs font-semibold">
                   {stage}

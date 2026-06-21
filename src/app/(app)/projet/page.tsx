@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Lock, Target } from "lucide-react";
 import { useUser } from "@/hooks/use-user";
 import type { ProjetResponse, ProjetSection, MissionDeliverable } from "@/lib/projet-types";
 
@@ -183,8 +184,8 @@ function LevelSection({ section }: { section: ProjetSection }) {
               {completedCount === total && total > 0 ? "✓" : section.levelId}
             </span>
           ) : (
-            <span className="w-7 h-7 rounded-full bg-[#E8EAF0] flex items-center justify-center text-xs font-bold text-[#8892C8] shrink-0">
-              🔒
+            <span className="w-7 h-7 rounded-full bg-[#E8EAF0] flex items-center justify-center text-[#8892C8] shrink-0">
+              <Lock size={14} strokeWidth={2} />
             </span>
           )}
           <div>
@@ -334,7 +335,7 @@ export default function ProjetPage() {
       {user?.initialChallenge && (
         <div className="bg-[#FFF4EC] dark:bg-[#2A1A08] border border-[#F77E2D]/30 rounded-2xl p-5">
           <p className="text-xs font-bold text-[#F77E2D] uppercase tracking-wider mb-1.5">
-            🎯 Ton point de départ
+            <Target size={12} strokeWidth={2} className="inline mr-1 align-[-1px]" />Ton point de départ
           </p>
           <p className="text-sm text-[#0A0E2A] dark:text-[#F5F6FA] leading-relaxed">
             {user.initialChallenge}

@@ -974,6 +974,59 @@ export const tasks: Task[] = [
     levelId: 2,
     taskType: "mission",
     missionCaptureIndexes: [2, 5, 13],
+    missionConfig: {
+      type: "interviews",
+      title: "Mener 5 interviews",
+      brief: "Tu viens d'apprendre comment écouter sans biaiser. Maintenant, tu sors du cours et tu rencontres de vraies personnes.",
+      icon: "Mic",
+      checkpointQuestion: "Tu as mené tes interviews ?",
+      checkpointMinLabel: "au moins 3 vraies personnes de ta cible",
+      checkpointCta: "✓ Oui, j'ai parlé à au moins 3 personnes",
+      briefingPanels: [
+        {
+          title: "Qui interviewer ?",
+          items: [
+            "✓ Des personnes qui correspondent à ta persona client",
+            "✓ Idéalement des inconnus ou connaissances distantes",
+            "✗ Pas des amis ou de la famille",
+            "✓ Minimum 3 pour valider, idéal 5",
+          ],
+        },
+        {
+          title: "La posture",
+          items: [
+            "🎙️ Tu parles 10% du temps — tu écoutes 90%",
+            "🚫 Ne parle pas de ton idée au début",
+            "💬 Commence par la vie de la personne, ses frustrations",
+            "🔍 Creuse avec «donne-moi un exemple récent»",
+          ],
+        },
+      ],
+      ctaLabel: "J'ai parlé à mes interviewés → Capturer mes insights",
+      coachNiveau: 2,
+      hasRawNotes: true,
+      rawNotesLabel: "Tes notes de terrain",
+      rawNotesPlaceholder: "Interview 1 — Amara, 34 ans, Abidjan Plateau\n\n'Chaque semaine je perds au moins 2h à...'\nSignal fort : il a frappé la table en disant 'si quelqu'un résolvait ça, je paierais sans hésiter'\n\nInterview 2 — ...",
+      captureFields: [
+        {
+          id: "signal_fort",
+          label: "Quel est le signal le plus fort que tu as entendu dans tes interviews — une vraie réaction émotionnelle, pas une politesse ? (Cite si possible les mots exacts.)",
+          type: "texte_moyen",
+          placeholder: "Ex : 'Une commerçante m'a dit «je dépense 15 000 FCFA par mois pour corriger les erreurs de mon comptable — si tu fais mieux pour ce prix, je signe aujourd'hui»' ...",
+          required: true,
+        },
+        {
+          id: "surprise",
+          label: "Qu'est-ce qui t'a le plus surpris dans tes 5 interviews — ce que tu n'attendais pas, que ça soit positif ou négatif ?",
+          type: "texte_moyen",
+          placeholder: "Ex : je pensais que le prix était le frein principal, mais tous mes interlocuteurs parlaient surtout de la fiabilité et du manque de suivi...",
+          required: true,
+        },
+      ],
+      captureXP: 119,
+      completeSummary: "5 interviews terrain",
+      completeContextLabel: "Retrouve tes notes terrain et tes insights dans la section \"Mon Projet\", sous le Niveau 2.",
+    },
     title: "Mène 5 interviews terrain",
     description:
       "Pas des amis qui valident tout. De vraies personnes de ta cible. Au moins 5. Écoute 90% du temps — parle 10%.",
@@ -1933,112 +1986,672 @@ export const tasks: Task[] = [
   {
     id: 401,
     levelId: 4,
-    title: "Liste 10 fonctionnalités, sélectionne les 3 essentielles",
-    description: "La méthode MoSCoW : Must have, Should have, Could have, Won't have. Être impitoyable sur ce qui est essentiel est la compétence la plus difficile et la plus précieuse.",
+    title: "Priorise tes fonctionnalités (méthode MoSCoW)",
+    description: "Tu ne peux pas tout construire. Le secret d'un MVP, c'est de choisir les 2-3 choses indispensables et d'ignorer le reste — pour l'instant.",
     xp: 100,
-    quiz: [
-      {
-        id: 1,
-        question: "Que signifie la méthode de priorisation MoSCoW ?",
-        options: [
-          "Moscow est la ville où cette méthode a été inventée",
-          "Must have, Should have, Could have, Won't have — un framework pour prioriser les fonctionnalités",
-          "Maximum Output, Scope Control, Optimized Work — un framework agile",
-          "Minimum, Optimal, Standard, Complete, Worth — les niveaux de qualité",
-        ],
-        correctIndex: 1,
-        explanation:
-          "MoSCoW aide à distinguer ce qui est critique (Must) de ce qui est souhaitable (Should), possible (Could) ou exclu du périmètre actuel (Won't). Tout mettre en \"Must have\" est le piège classique.",
-      },
-    ],
+    recapLabel: "📋 Tes fonctionnalités prioritaires",
+    lesson: {
+      title: "MoSCoW — séparer le vital du superflu",
+      exercises: [
+        // 0 — Info
+        {
+          type: "info",
+          icon: "🎯",
+          title: "Qu'est-ce qu'un MVP, vraiment ?",
+          content:
+            "MVP = Minimum Viable Product = la plus petite version de ton produit qui résout déjà le problème central de ton client. Pas une version bâclée — une version concentrée. Un MVP n'est pas 'ton produit en moins bien', c'est 'ton produit réduit à sa promesse essentielle'. Si tu veux livrer des repas, ton MVP n'a pas besoin d'une app avec paiement intégré, suivi GPS et programme de fidélité. Il a besoin de : prendre une commande, livrer un repas chaud. Le reste attend.",
+          xp: 5,
+        },
+        // 1 — MCQ (enseigne "définition MVP / Must have")
+        {
+          type: "mcq",
+          question: "Awa veut lancer une plateforme de cours particuliers à Abidjan. Quelle est la meilleure définition de son MVP ?",
+          options: [
+            "Une app complète avec profils de profs, paiement, visio intégrée et notes.",
+            "Un groupe WhatsApp où elle met en relation 5 profs et 10 élèves, et encaisse en Mobile Money.",
+            "Un site web vitrine qui présente le concept avec un formulaire de contact.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "Le MVP d'Awa doit prouver une seule chose : des parents sont prêts à payer pour qu'elle trouve un bon prof à leur enfant. Le groupe WhatsApp fait exactement ça, sans une ligne de code. Le site vitrine ne prouve rien (personne ne paie). L'app complète coûte 6 mois et des millions avant de savoir si le besoin existe.",
+          xp: 10,
+        },
+        // 2 — Info (enseigne MoSCoW)
+        {
+          type: "info",
+          icon: "📊",
+          title: "La méthode MoSCoW",
+          content:
+            "Pour décider quoi construire, classe chaque fonctionnalité en 4 catégories : Must have (sans ça, le produit ne résout pas le problème — vital), Should have (important mais le produit marche sans, au début), Could have (sympa, à ajouter si le temps le permet), Won't have (pas maintenant — volontairement reporté). Ton MVP = uniquement les 'Must have'. Tout le reste est une distraction tant que tu n'as pas validé que les Must have suffisent à convaincre.",
+          xp: 5,
+        },
+        // 3 — Scénario (renforce Must have via cas Kofi)
+        {
+          type: "scenario",
+          context:
+            "Kofi lance une app de réservation de coiffeurs à Lomé. Il liste ses idées : (1) réserver un créneau, (2) payer en ligne, (3) voir les photos des coupes, (4) programme de fidélité, (5) notation des coiffeurs, (6) chat avec le coiffeur.",
+          question: "Quelle fonctionnalité est le seul vrai 'Must have' pour le MVP de Kofi ?",
+          options: [
+            "Réserver un créneau — c'est le cœur du problème (éviter d'attendre des heures au salon).",
+            "Payer en ligne — utile, mais on peut payer sur place au début.",
+            "Le programme de fidélité — ça vient quand on a déjà des clients fidèles.",
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le problème que Kofi résout, c'est l'attente. 'Réserver un créneau' résout ça directement. Tout le reste améliore l'expérience mais ne résout pas le problème central. Au lancement, Kofi peut encaisser en espèces ou Mobile Money sur place. Construire d'abord le paiement en ligne, c'est repousser le lancement pour une fonctionnalité secondaire.",
+          xp: 10,
+        },
+        // 4 — Micro-input : brique "must_have" (suit INFO+SCENARIO sur Must have)
+        {
+          type: "micro_input",
+          prompt:
+            "Quelle est LA fonctionnalité absolument vitale de ton MVP — celle sans laquelle ton produit ne résout pas le problème central de ton client ?",
+          placeholder:
+            "Ex : permettre à une commerçante d'enregistrer une vente en 10 secondes par message vocal WhatsApp — sans ça, mon outil de suivi de ventes ne sert à rien...",
+          storageKey: "must_have",
+          xp: 2,
+        },
+        // 5 — Vrai/Faux
+        {
+          type: "true_false",
+          statement: "Un bon MVP doit avoir le maximum de fonctionnalités pour impressionner les premiers utilisateurs.",
+          isTrue: false,
+          explanation:
+            "Faux. Un MVP impressionne par sa capacité à résoudre UN problème, pas par sa richesse. Trop de fonctionnalités au départ = développement plus long, plus de bugs, message confus. Les utilisateurs adoptent un outil qui résout bien leur problème principal, pas un couteau suisse qui fait tout à moitié.",
+          xp: 5,
+        },
+        // 6 — Reorder
+        {
+          type: "reorder",
+          items: [
+            "Lister toutes les fonctionnalités imaginées pour le produit",
+            "Classer chacune en Must / Should / Could / Won't (MoSCoW)",
+            "Garder UNIQUEMENT les Must have pour le MVP",
+            "Vérifier que ces Must have suffisent à résoudre le problème central",
+            "Reporter consciemment tout le reste à plus tard",
+          ],
+          xp: 8,
+        },
+        // 7 — Match (enseigne les 4 catégories MoSCoW)
+        {
+          type: "match",
+          pairs: [
+            { left: "Must have", right: "Sans ça, le produit ne résout pas le problème" },
+            { left: "Should have", right: "Important, mais le produit marche sans au début" },
+            { left: "Could have", right: "Sympa, à ajouter si le temps le permet" },
+            { left: "Won't have (for now)", right: "Reporté volontairement à plus tard" },
+          ],
+          xp: 8,
+        },
+        // 8 — Micro-input : brique "wont_have" (suit le MATCH sur les 4 catégories MoSCoW)
+        {
+          type: "micro_input",
+          prompt:
+            "Quelles 2-3 fonctionnalités tu vas volontairement REPORTER (Won't have) pour sortir ton MVP plus vite ? Sois honnête sur ce que tu lâches pour l'instant.",
+          placeholder:
+            "Ex : je reporte le paiement en ligne (j'encaisse en Mobile Money sur place), le programme de fidélité, et le tableau de bord statistiques — pas vital pour mes 10 premiers clients...",
+          storageKey: "wont_have",
+          xp: 2,
+        },
+        // 9 — Reflection template : assemblage MoSCoW
+        {
+          type: "reflection_template",
+          intro:
+            "Tu sais maintenant ce que tu construis — et ce que tu ne construis pas encore. Voilà ta feuille de route MVP assemblée.",
+          template:
+            "Le cœur de mon MVP (Must have) : {must_have}.\n\nCe que je reporte volontairement pour aller plus vite (Won't have) : {wont_have}.\n\nMon principe : sortir vite la plus petite version qui résout déjà le problème central.",
+          variables: ["must_have", "wont_have"],
+          xp: 45,
+        },
+      ],
+    },
   },
+
   {
     id: 402,
     levelId: 4,
-    title: "Choisis le format de ton MVP",
-    description: "Landing page, service manuel, prototype papier, app basique... Le MVP le plus efficace est souvent le plus simple.",
-    xp: 75,
-    quiz: [
-      {
-        id: 1,
-        question: "Quels sont les 5 types de MVP les plus courants ?",
-        options: [
-          "App mobile, Site web, API, Desktop app, SaaS",
-          "Landing page, Concierge (service manuel), Prototype papier/Figma, Wizard of Oz, Produit simplifié",
-          "Free trial, Freemium, Open source, Communauté, Marketplace",
-          "B2C, B2B, B2G, C2C, D2C",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Un MVP Concierge simule le produit manuel (tu fais toi-même ce que l'app ferait), un Wizard of Oz simule une IA ou automatisation avec des humains en coulisses. Ces approches permettent de valider la demande sans code.",
-      },
-    ],
+    title: "Choisis ton format MVP",
+    description: "Pas besoin de coder. Le meilleur MVP est souvent celui que tu peux lancer cette semaine, avec les outils que tu maîtrises déjà.",
+    xp: 125,
+    recapLabel: "🔧 Ton format MVP",
+    lesson: {
+      title: "Les formats MVP — du plus simple au plus complexe",
+      exercises: [
+        // 0 — Info
+        {
+          type: "info",
+          icon: "📱",
+          title: "Tu n'as (souvent) pas besoin de coder",
+          content:
+            "La plus grande erreur des entrepreneurs débutants : croire qu'il faut une app pour lancer. Faux. Les MVP les plus malins utilisent des outils existants : WhatsApp Business, un Google Form, une page Notion, un compte Instagram. Ces outils sont gratuits, instantanés, et tes clients les utilisent déjà. Coder vient après — quand tu as prouvé que les gens veulent ton service et que les outils manuels ne suffisent plus à suivre la demande.",
+          xp: 5,
+        },
+        // 1 — Info (enseigne les 5 formats)
+        {
+          type: "info",
+          icon: "🛠️",
+          title: "Les 5 formats MVP les plus accessibles",
+          content:
+            "1. Landing page : une page qui décrit ton offre + un bouton 'Je veux' → tu mesures l'intérêt avant de construire. 2. Service manuel (concierge) : tu fais le travail à la main, sans automatisation, pour tes premiers clients. 3. WhatsApp Business : catalogue, commandes, paiement Mobile Money — pour la plupart des commerces. 4. No-code (Glide, Tally, Softr, Bubble) : une vraie app sans coder, en quelques jours. 5. MVP 'Magicien d'Oz' : le client croit que c'est automatique, mais c'est toi derrière qui fais tout manuellement.",
+          xp: 5,
+        },
+        // 2 — Scénario (enseigne WhatsApp Business via cas Fatou)
+        {
+          type: "scenario",
+          context:
+            "Fatou veut lancer un service de livraison de paniers de légumes frais à Cotonou. Elle hésite : (A) développer une app de commande (700 000 FCFA, 2 mois), (B) un compte WhatsApp Business avec catalogue photo, commande par message, paiement Mobile Money, livraison le samedi.",
+          question: "Quel format MVP Fatou devrait-elle choisir pour démarrer ?",
+          options: [
+            "WhatsApp Business — elle peut lancer ce week-end, sans dépense, avec un canal que ses clientes utilisent déjà.",
+            "L'app — c'est plus professionnel et ça impressionnera les investisseurs.",
+            "Attendre d'avoir économisé assez pour faire les deux en même temps.",
+          ],
+          correctIndex: 0,
+          explanation:
+            "WhatsApp Business permet à Fatou de tester son vrai problème (est-ce que des gens commandent et paient des paniers ?) en quelques jours, gratuitement. Si elle a 30 commandes le premier mois, ALORS l'app devient un investissement justifié. Construire l'app d'abord, c'est risquer 700 000 FCFA sur une hypothèse non validée.",
+          xp: 10,
+        },
+        // 3 — MCQ (enseigne landing page)
+        {
+          type: "mcq",
+          question: "Dans quel cas une landing page est-elle le MVP le plus pertinent ?",
+          options: [
+            "Quand tu veux encaisser tes premiers paiements immédiatement.",
+            "Quand tu veux mesurer l'intérêt pour une offre AVANT de la construire (combien de gens cliquent 'Je veux').",
+            "Quand tu as déjà 100 clients et besoin de les gérer.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "Une landing page teste la demande : tu décris ton offre, tu mets un bouton d'action, et tu mesures combien de personnes s'inscrivent ou laissent leur contact. C'est parfait pour valider l'intérêt avant de construire quoi que ce soit. Si personne ne clique, tu as économisé des mois.",
+          xp: 10,
+        },
+        // 4 — Info (enseigne le MVP concierge)
+        {
+          type: "info",
+          icon: "🤝",
+          title: "Le MVP 'Concierge' : fais tout à la main d'abord",
+          content:
+            "Avant d'automatiser, fais le travail manuellement pour tes 5-10 premiers clients. Tu veux lancer un service de mise en relation artisans-clients ? Pour tes 10 premiers clients, prends les demandes par WhatsApp, appelle toi-même les artisans, organise tout à la main. C'est épuisant — et c'est le but. Tu apprends exactement où sont les frictions, ce que les clients demandent vraiment, et ce qu'il faudra automatiser en priorité. Airbnb, DoorDash — beaucoup ont commencé 100% manuel.",
+          xp: 5,
+        },
+        // 5 — Micro-input : brique "format_mvp" (suit les INFO sur 5 formats + scénario WhatsApp)
+        {
+          type: "micro_input",
+          prompt:
+            "Quel format MVP choisis-tu pour démarrer (landing, WhatsApp Business, service manuel, no-code, Magicien d'Oz) ? Et pourquoi ce format est le plus rapide pour TOI ?",
+          placeholder:
+            "Ex : WhatsApp Business, parce que mes clientes commerçantes y sont déjà toute la journée, je peux mettre mon catalogue en photos et prendre les commandes sans rien coder ni dépenser...",
+          storageKey: "format_mvp",
+          xp: 2,
+        },
+        // 6 — Vrai/Faux
+        {
+          type: "true_false",
+          statement: "Si mon MVP n'est pas une vraie application mobile, les gens ne me prendront pas au sérieux.",
+          isTrue: false,
+          explanation:
+            "Faux. Ce qui te rend sérieux, c'est de résoudre vraiment le problème de ton client, pas le support technique utilisé. Une commerçante qui reçoit ses légumes frais livrés à l'heure via WhatsApp se fiche complètement que ce ne soit 'qu'un WhatsApp'. La technologie impressionne les ingénieurs ; le résultat impressionne les clients.",
+          xp: 5,
+        },
+        // 7 — Compléter
+        {
+          type: "fill_blank",
+          template: "Le meilleur format MVP n'est pas le plus {0} — c'est le plus {1} à lancer avec ce que tu maîtrises déjà.",
+          blanks: ["sophistiqué", "rapide"],
+          isOpenAnswer: false,
+          xp: 8,
+        },
+        // 8 — Scénario (enseigne approche progressive via cas Issiaka)
+        {
+          type: "scenario",
+          context:
+            "Issiaka à Bamako veut lancer un outil de gestion de tontine numérique. Il sait coder un peu. Il hésite entre : (A) passer 3 mois à coder l'app parfaite seul, (B) utiliser un Google Sheet partagé + un groupe WhatsApp pour gérer les 3 premières tontines manuellement, puis coder ce qui marche.",
+          question: "Quelle approche réduit le mieux son risque ?",
+          options: [
+            "Google Sheet + WhatsApp d'abord — il valide le besoin réel et apprend les vraies règles des tontines avant de coder.",
+            "Coder l'app parfaite — comme ça c'est prêt quand les clients arrivent.",
+            "Abandonner s'il ne peut pas coder l'app complète tout de suite.",
+          ],
+          correctIndex: 0,
+          explanation:
+            "Les tontines ont des règles sociales subtiles qu'Issiaka ne découvrira qu'en gérant de vraies tontines. S'il code 3 mois en isolation, il construira probablement les mauvaises fonctionnalités. Avec Sheet + WhatsApp, il gère 3 tontines réelles, apprend les vrais besoins, et code ensuite un outil qui colle à la réalité. Le code n'est pas le risque — construire la mauvaise chose l'est.",
+          xp: 15,
+        },
+        // 9 — Micro-input : brique "premier_pas_mvp" (suit le scénario sur approche progressive)
+        {
+          type: "micro_input",
+          prompt:
+            "Quel est le tout premier pas concret que tu peux faire CETTE SEMAINE pour mettre ton MVP en ligne ? (créer le compte WhatsApp Business, monter la landing, écrire le premier post...)",
+          placeholder:
+            "Ex : créer mon compte WhatsApp Business, prendre 8 photos de mes produits, écrire mon catalogue avec les prix, et envoyer le lien à 15 contacts ce samedi...",
+          storageKey: "premier_pas_mvp",
+          xp: 2,
+        },
+        // 10 — Reflection template : format + premier pas
+        {
+          type: "reflection_template",
+          intro:
+            "Tu as choisi ton format et ton premier pas. C'est ça, le passage de 'je réfléchis' à 'je construis'. Voilà ta décision assemblée.",
+          template:
+            "Mon format MVP : {format_mvp}.\n\nMon tout premier pas cette semaine : {premier_pas_mvp}.\n\nJe sors la version la plus simple possible — et j'améliore avec les vrais retours.",
+          variables: ["format_mvp", "premier_pas_mvp"],
+          xp: 58,
+        },
+      ],
+    },
   },
+
   {
     id: 403,
     levelId: 4,
-    title: "Crée et publie ton MVP",
-    description: "Un lien est requis dans la soumission. Peu importe si c'est une landing page Webflow, un groupe WhatsApp, ou un formulaire Google Forms — publie.",
-    xp: 300,
-    quiz: [
-      {
-        id: 1,
-        question: "Comment mesurer la valeur d'un MVP ?",
-        options: [
-          "En comptant le nombre de visiteurs uniques",
-          "En mesurant si des gens utilisent vraiment le produit et si ça résout leur problème — engagement et rétention, pas juste acquisition",
-          "En comparant au chiffre d'affaires de tes concurrents",
-          "En obtenant un score App Store supérieur à 4 étoiles",
-        ],
-        correctIndex: 1,
-        explanation:
-          "L'acquisition (nouveaux utilisateurs) est facile à gonfler. Ce qui compte : est-ce que les gens reviennent ? Est-ce qu'ils recommandent ? Est-ce qu'ils paient ? Ces métriques indiquent une vraie valeur créée.",
-      },
-    ],
+    taskType: "mission",
+    missionCaptureIndexes: [5, 6, 7, 8, 9],
+    missionConfig: {
+      type: "build",
+      title: "Construis et publie ton MVP",
+      brief: "Tu as appris à choisir ton format et à accepter l'imperfection. Maintenant, sors-le. Reviens ici quand ton MVP est EN LIGNE et accessible par au moins une vraie personne.",
+      icon: "Rocket",
+      checkpointQuestion: "Ton MVP est en ligne ?",
+      checkpointMinLabel: "accessible par au moins une vraie personne",
+      checkpointCta: "✓ Oui, mon MVP est en ligne et accessible",
+      ctaLabel: "Mon MVP est en ligne → Capturer mes données",
+      coachNiveau: 4,
+      hasRawNotes: false,
+      captureFields: [
+        {
+          id: "lien_mvp",
+          label: "Le lien ou le point d'accès public de ton MVP",
+          type: "texte_court",
+          placeholder: "wa.me/229XXXXXXXX, monsite.com, instagram.com/...",
+          required: true,
+        },
+        {
+          id: "format_utilise",
+          label: "Quel format as-tu finalement utilisé ?",
+          type: "texte_court",
+          placeholder: "WhatsApp Business, landing Tally, compte Instagram...",
+          required: true,
+        },
+        {
+          id: "ce_qui_marche",
+          label: "Qu'est-ce qui fonctionne déjà ?",
+          type: "texte_moyen",
+          placeholder: "On peut voir le catalogue, commander par message, je reçois les commandes...",
+          required: true,
+        },
+        {
+          id: "ce_qui_manque",
+          label: "Qu'est-ce qui ne marche pas encore / que tu amélioreras ?",
+          type: "texte_moyen",
+          placeholder: "Pas encore de paiement intégré, photos à refaire, délai de réponse à réduire...",
+          required: true,
+        },
+      ],
+      captureXP: 215,
+      completeSummary: "MVP publié",
+      completeContextLabel: "Retrouve le lien de ton MVP et tes notes dans la section \"Mon Projet\", sous le Niveau 4.",
+    },
+    title: "Construis et publie ton MVP",
+    description: "Le moment de vérité. Tu vas sortir ton MVP dans le monde réel — pas parfait, juste réel.",
+    xp: 250,
+    recapLabel: "🚀 Ton MVP publié",
+    lesson: {
+      title: "Publier — done is better than perfect",
+      exercises: [
+        // 0 — Info (phase apprentissage)
+        {
+          type: "info",
+          icon: "🔥",
+          title: "\"Done is better than perfect\"",
+          content:
+            "Ton MVP sera imparfait. C'est normal — c'est même le but. Reid Hoffman (fondateur de LinkedIn) dit : 'Si tu n'as pas honte de la première version de ton produit, tu l'as lancée trop tard.' La honte est le signe que tu as lancé assez tôt pour apprendre vite. Chaque jour passé à 'peaufiner' en secret est un jour sans données réelles. Publie, puis améliore avec les vrais retours.",
+          xp: 5,
+        },
+        // 1 — Scénario (phase apprentissage)
+        {
+          type: "scenario",
+          context:
+            "Bintou a monté son catalogue WhatsApp Business de plats préparés à Dakar. Elle hésite à le partager : 'Mes photos ne sont pas pro, je n'ai que 6 plats, mon logo est fait sur Canva.' Elle veut attendre d'avoir 20 plats et des photos de pro.",
+          question: "Que devrait faire Bintou ?",
+          options: [
+            "Publier maintenant avec ses 6 plats — elle apprendra quels plats se vendent avant d'investir dans plus.",
+            "Attendre d'avoir 20 plats et des photos pro pour faire bonne impression.",
+            "Attendre d'avoir économisé pour une vraie app de commande.",
+          ],
+          correctIndex: 0,
+          explanation:
+            "Si Bintou publie ses 6 plats maintenant, elle découvrira en 2 semaines lesquels se vendent — peut-être que 2 plats font 80% des commandes. Elle concentrera alors ses efforts sur ce qui marche. Attendre 20 plats, c'est investir dans 14 plats dont elle ignore s'ils intéressent quelqu'un. Le marché lui dira quoi améliorer — mais seulement si elle publie.",
+          xp: 15,
+        },
+        // 2 — Info (phase apprentissage)
+        {
+          type: "info",
+          icon: "✅",
+          title: "Ta checklist de publication minimale",
+          content:
+            "Avant de partager ton MVP, vérifie juste l'essentiel : (1) un client peut-il comprendre ce que tu offres en 10 secondes ? (2) peut-il passer à l'action (commander, s'inscrire, te contacter) ? (3) peux-tu honorer cette action (livrer, répondre, fournir) ? Si ces 3 cases sont cochées, c'est suffisant pour lancer. Le reste s'améliore en marchant.",
+          xp: 5,
+        },
+        // 3 — Vrai/Faux (phase apprentissage)
+        {
+          type: "true_false",
+          statement: "Il vaut mieux lancer ton MVP auprès d'inconnus que de tes proches, pour avoir des retours honnêtes.",
+          isTrue: true,
+          explanation:
+            "Vrai pour les retours, avec une nuance. Tes proches sont parfaits pour t'aider à démarrer (premiers tests, encouragement), mais ils mentiront sur la qualité pour ne pas te blesser. Pour savoir si ton MVP tient vraiment, il te faut des inconnus de ta cible. Les deux sont utiles : les proches pour amorcer, les inconnus pour la vérité.",
+          xp: 5,
+        },
+        // 4 — Micro-input : engagement publication (phase apprentissage — engagement daté)
+        {
+          type: "micro_input",
+          prompt:
+            "Quelle est ta date limite pour publier ton MVP ? Engage-toi sur un jour précis. (Un engagement daté multiplie tes chances de passer à l'action.)",
+          placeholder:
+            "Ex : je publie mon catalogue WhatsApp et je l'envoie à mes 15 premiers contacts au plus tard ce samedi 21 juin...",
+          storageKey: "engagement_publication",
+          xp: 5,
+        },
+        // 5 — Micro-input CAPTURE : lien_mvp
+        {
+          type: "micro_input",
+          prompt: "Le lien ou le point d'accès public de ton MVP",
+          placeholder: "wa.me/229XXXXXXXX, monsite.com, instagram.com/...",
+          storageKey: "lien_mvp",
+          xp: 2,
+        },
+        // 6 — Micro-input CAPTURE : format_utilise
+        {
+          type: "micro_input",
+          prompt: "Quel format as-tu finalement utilisé ?",
+          placeholder: "WhatsApp Business, landing Tally, compte Instagram...",
+          storageKey: "format_utilise",
+          xp: 2,
+        },
+        // 7 — Micro-input CAPTURE : ce_qui_marche
+        {
+          type: "micro_input",
+          prompt: "Qu'est-ce qui fonctionne déjà ?",
+          placeholder: "On peut voir le catalogue, commander par message, je reçois les commandes...",
+          storageKey: "ce_qui_marche",
+          xp: 2,
+        },
+        // 8 — Micro-input CAPTURE : ce_qui_manque
+        {
+          type: "micro_input",
+          prompt: "Qu'est-ce qui ne marche pas encore / que tu amélioreras ?",
+          placeholder: "Pas encore de paiement intégré, photos à refaire, délai de réponse à réduire...",
+          storageKey: "ce_qui_manque",
+          xp: 2,
+        },
+        // 9 — Reflection template CAPTURE
+        {
+          type: "reflection_template",
+          intro:
+            "Ton MVP existe dans le monde réel. Tu n'es plus quelqu'un 'qui a une idée' — tu es quelqu'un 'qui a lancé'. Voilà ton livrable assemblé.",
+          template:
+            "Mon MVP est en ligne : {lien_mvp}\n\nFormat utilisé : {format_utilise}\n\nCe qui marche déjà : {ce_qui_marche}\n\nCe que je vais améliorer : {ce_qui_manque}",
+          variables: ["lien_mvp", "format_utilise", "ce_qui_marche", "ce_qui_manque"],
+          xp: 55,
+        },
+      ],
+    },
   },
+
   {
     id: 404,
     levelId: 4,
-    title: "Acquiers tes 10 premiers utilisateurs ou testeurs",
-    description: "Sans budget publicitaire. Réseau personnel, groupes WhatsApp, marchés locaux, événements, bouche-à-oreille. Fais-le manuellement.",
+    taskType: "mission",
+    missionCaptureIndexes: [4, 5, 6],
+    missionConfig: {
+      type: "outreach",
+      title: "Acquiers tes 10 premiers utilisateurs",
+      brief: "Va chercher tes 10 premiers utilisateurs un par un, personnellement. Écris à chacun. Rends-leur un service exceptionnel. Reviens capturer tes apprentissages.",
+      icon: "Users",
+      checkpointQuestion: "Tu as contacté tes premiers utilisateurs ?",
+      checkpointMinLabel: "au moins 5 personnes de ta cible",
+      checkpointCta: "✓ Oui, j'ai contacté mes premiers utilisateurs",
+      ctaLabel: "J'ai commencé mon outreach → Capturer mes insights",
+      coachNiveau: 4,
+      hasRawNotes: true,
+      rawNotesLabel: "Tes notes de contact terrain (optionnel)",
+      rawNotesPlaceholder: "Contact 1 — Awa, via WhatsApp direct\nRéaction : intéressée, a demandé quand c'est dispo\nA essayé : oui, a commandé le lendemain\n\nContact 2 — Kofi, groupe quartier\nRéaction : sceptique sur le prix\nA essayé : non, a dit qu'il verrait...",
+      captureFields: [
+        {
+          id: "message_approche",
+          label: "Le message exact que tu as envoyé à tes premiers utilisateurs potentiels",
+          type: "texte_moyen",
+          placeholder: "Salut Awa, tu me disais que tu perdais un temps fou à noter tes ventes le soir. J'ai créé un petit outil WhatsApp où tu enregistres une vente en 10 secondes par message vocal. Tu veux l'essayer gratuitement cette semaine ?",
+          required: true,
+        },
+        {
+          id: "approche_apprentissage",
+          label: "Qu'as-tu appris sur ta façon d'approcher tes premiers utilisateurs ?",
+          type: "texte_moyen",
+          placeholder: "J'ai découvert que le message personnel fonctionnait mieux que le message générique, et que mentionner un problème précis de la personne multipliait les réponses...",
+          required: true,
+        },
+      ],
+      captureXP: 165,
+      completeSummary: "10 premiers utilisateurs contactés",
+      completeContextLabel: "Retrouve tes notes de contact dans la section \"Mon Projet\", sous le Niveau 4.",
+    },
+    title: "Acquiers tes 10 premiers utilisateurs",
+    description: "Un MVP sans utilisateurs, c'est un journal intime. Va chercher tes 10 premiers — un par un, à la main.",
     xp: 200,
-    quiz: [
-      {
-        id: 1,
-        question: "Quelle est la stratégie d'acquisition sans budget la plus efficace pour une startup africaine ?",
-        options: [
-          "La publicité Facebook et Instagram",
-          "Le SEO (référencement naturel)",
-          "Le réseau personnel direct et les communautés de confiance (WhatsApp, associations, marchés)",
-          "La presse et les médias traditionnels",
-        ],
-        correctIndex: 2,
-        explanation:
-          "En Afrique de l'Ouest, la confiance est le premier facteur d'adoption. Les recommandations dans les groupes WhatsApp, les associations professionnelles et les réseaux familiaux convertissent bien mieux qu'une publicité froide pour une startup inconnue.",
-      },
-    ],
+    recapLabel: "👥 Tes 10 premiers utilisateurs",
+    lesson: {
+      title: "Outreach — do things that don't scale",
+      exercises: [
+        // 0 — Info (phase apprentissage)
+        {
+          type: "info",
+          icon: "🎯",
+          title: "\"Do things that don't scale\"",
+          content:
+            "Paul Graham (Y Combinator) a une règle célèbre : au début, fais des choses qui ne passent pas à l'échelle. N'essaie pas de 'lancer une campagne marketing'. Va chercher tes 10 premiers utilisateurs un par un, personnellement. Écris à chacun individuellement. Rends-leur un service exceptionnel. Ces 10 personnes, traitées comme des rois, deviendront tes ambassadeurs. Le marketing de masse vient bien plus tard — d'abord, le contact humain direct.",
+          xp: 5,
+        },
+        // 1 — Scénario (phase apprentissage)
+        {
+          type: "scenario",
+          context:
+            "Yao a publié son MVP (app no-code de mise en relation avec des plombiers à Abidjan). Pour trouver ses premiers utilisateurs, il hésite : (A) payer 50 000 FCFA de pub Facebook, (B) écrire personnellement à 30 personnes de son réseau qui ont récemment cherché un plombier, et leur proposer de tester gratuitement.",
+          question: "Quelle approche est la meilleure pour ses 10 premiers utilisateurs ?",
+          options: [
+            "Écrire personnellement aux 30 personnes — contact direct, taux de réponse élevé, vrais retours.",
+            "La pub Facebook — ça touche plus de monde d'un coup.",
+            "Attendre que le bouche-à-oreille se fasse naturellement.",
+          ],
+          correctIndex: 0,
+          explanation:
+            "La pub Facebook enverra du trafic froid vers un MVP non éprouvé — taux de conversion proche de zéro, argent gaspillé. Écrire à 30 personnes qui ont un besoin réel et une relation avec Yao donnera 10 testeurs engagés qui lui feront des retours précieux. 10 utilisateurs qui parlent vraiment avec toi valent mieux que 1000 visiteurs anonymes.",
+          xp: 10,
+        },
+        // 2 — Info (phase apprentissage)
+        {
+          type: "info",
+          icon: "🗺️",
+          title: "Où trouver tes 10 premiers (contexte africain)",
+          content:
+            "Tes premiers utilisateurs sont plus proches que tu crois : ton réseau WhatsApp direct, les groupes WhatsApp de quartier/métier/association, ta communauté religieuse (mosquée, église), les marchés et lieux physiques où ta cible se trouve, les anciens camarades d'école, ta famille élargie. Le canal le plus puissant en Afrique de l'Ouest reste la recommandation personnelle : une personne de confiance qui te présente à 3 autres vaut 100 pubs.",
+          xp: 5,
+        },
+        // 3 — MCQ (enseigne comment aborder un utilisateur)
+        {
+          type: "mcq",
+          question: "Comment aborder un premier utilisateur potentiel pour maximiser tes chances ?",
+          options: [
+            "'Salut, j'ai lancé une super app, tu peux la partager à tout le monde ?'",
+            "'Salut [prénom], je me souviens que tu galérais avec [problème précis]. J'ai créé un truc qui pourrait t'aider, tu veux l'essayer gratuitement ?'",
+            "'Bonjour, je lance ma startup, soutiens-moi en t'inscrivant stp.'",
+          ],
+          correctIndex: 1,
+          explanation:
+            "L'option B marche parce qu'elle est personnelle, rappelle un problème réel de la personne, et offre une valeur (essai gratuit) sans demander d'effort. Les options A et C demandent une faveur sans offrir de valeur — c'est de la charge, pas une proposition. Parle du problème de l'autre, pas de ta startup.",
+          xp: 10,
+        },
+        // 4 — Micro-input CAPTURE : message_approche (suit MCQ sur comment aborder)
+        {
+          type: "micro_input",
+          prompt:
+            "Le message exact que tu as envoyé à tes premiers utilisateurs potentiels (personnalisé, centré sur LEUR problème, avec une offre claire)",
+          placeholder:
+            "Salut Awa, tu me disais que tu perdais un temps fou à noter tes ventes le soir. J'ai créé un petit outil WhatsApp où tu enregistres une vente en 10 secondes par message vocal. Tu veux l'essayer gratuitement cette semaine ?",
+          storageKey: "message_approche",
+          xp: 5,
+        },
+        // 5 — Micro-input CAPTURE : approche_apprentissage
+        {
+          type: "micro_input",
+          prompt: "Qu'as-tu appris sur ta façon d'approcher tes premiers utilisateurs ?",
+          placeholder: "J'ai découvert que le message personnel fonctionnait mieux que le message générique, et que mentionner un problème précis de la personne multipliait les réponses...",
+          storageKey: "approche_apprentissage",
+          xp: 2,
+        },
+        // 6 — Reflection template CAPTURE
+        {
+          type: "reflection_template",
+          intro:
+            "Tu as tes premiers utilisateurs réels. Regarde qui a accroché, qui a résisté, et pourquoi. C'est de l'or pour la suite.",
+          template:
+            "Mon message d'approche :\n{message_approche}\n\nCe que j'ai appris sur ma façon d'approcher mes premiers utilisateurs :\n{approche_apprentissage}\n\n(Mes contacts détaillés sont dans mes notes de terrain.)",
+          variables: ["message_approche", "approche_apprentissage"],
+          xp: 53,
+        },
+      ],
+    },
   },
+
   {
     id: 405,
     levelId: 4,
-    title: "Collecte les retours et rédige un rapport d'apprentissage",
-    description: "Qu'as-tu construit ? Qu'as-tu mesuré ? Qu'as-tu appris ? Que vas-tu faire ensuite ? Le framework Build-Measure-Learn en action.",
+    taskType: "mission",
+    missionCaptureIndexes: [5, 6, 7],
+    missionConfig: {
+      type: "field_research",
+      title: "Collecte les retours & Build-Measure-Learn",
+      brief: "Tes premiers utilisateurs ont essayé. Maintenant écoute-les vraiment : que garder, que jeter, que changer ? Reviens avec au moins 3 retours structurés.",
+      icon: "RefreshCw",
+      checkpointQuestion: "Tu as collecté tes premiers retours ?",
+      checkpointMinLabel: "au moins 3 retours de vrais utilisateurs",
+      checkpointCta: "✓ Oui, j'ai collecté mes premiers retours",
+      ctaLabel: "J'ai mes retours → Synthétiser mes apprentissages",
+      coachNiveau: 4,
+      hasRawNotes: true,
+      rawNotesLabel: "Tes retours terrain détaillés (optionnel)",
+      rawNotesPlaceholder: "Retour 1 — Fatou\nA aimé : la rapidité de réponse\nA frustré : le paiement avant livraison\nRecommenderait : oui, à ses collègues commerçantes\n\nRetour 2 — ...",
+      captureFields: [
+        {
+          id: "feedback_synthese",
+          label: "Synthèse des retours qui reviennent le plus souvent (signal vs bruit)",
+          type: "texte_moyen",
+          placeholder: "3 personnes sur 5 mentionnent le même frein : le paiement avant livraison. 4 sur 5 ont aimé la rapidité de réponse. Un retour isolé sur la couleur du logo — je l'ignore...",
+          required: true,
+        },
+        {
+          id: "decision_iteration",
+          label: "Ta décision pour la prochaine version : que gardes-tu, changes-tu, ajoutes-tu ?",
+          type: "texte_moyen",
+          placeholder: "Je GARDE : la commande par message vocal (tout le monde adore). Je CHANGE : le paiement après livraison, pas avant. J'AJOUTE : un rappel automatique chaque soir parce que 6/8 oublient d'ouvrir l'outil...",
+          required: true,
+        },
+      ],
+      captureXP: 115,
+      completeSummary: "rapport Build-Measure-Learn",
+      completeContextLabel: "Retrouve ton rapport BML dans la section \"Mon Projet\", sous le Niveau 4.",
+    },
+    title: "Collecte les retours & rapport Build-Measure-Learn",
+    description: "Tes premiers utilisateurs ont essayé. Maintenant écoute-les vraiment : que garder, que jeter, que changer ?",
     xp: 150,
-    quiz: [
-      {
-        id: 1,
-        question: "Qu'est-ce que le framework Build-Measure-Learn ?",
-        options: [
-          "Un process de construction d'entreprise en 3 ans",
-          "La boucle centrale du Lean Startup : construire un MVP → mesurer les comportements réels → apprendre et itérer",
-          "Un framework de management d'équipe",
-          "Une méthode comptable pour les startups",
-        ],
-        correctIndex: 1,
-        explanation:
-          "Build-Measure-Learn est le moteur du Lean Startup d'Eric Ries. L'objectif est de minimiser le temps de chaque boucle pour apprendre le plus rapidement possible si ton hypothèse est juste ou s'il faut pivoter.",
-      },
-    ],
+    recapLabel: "🔄 Ton rapport Build-Measure-Learn",
+    lesson: {
+      title: "Build-Measure-Learn — boucler pour apprendre",
+      exercises: [
+        // 0 — Info (phase apprentissage)
+        {
+          type: "info",
+          icon: "🔁",
+          title: "La boucle Build-Measure-Learn",
+          content:
+            "Eric Ries (Lean Startup) résume toute l'aventure entrepreneuriale en une boucle : Build (construis le MVP) → Measure (mesure comment les gens l'utilisent) → Learn (apprends et décide quoi changer) → et tu recommences. Tu viens de faire Build (403) et le début de Measure (404). Maintenant tu boucles : tu collectes les retours, tu en tires des apprentissages, et tu décides de ta prochaine version. Cette boucle, répétée vite et souvent, est le moteur de toute startup qui réussit.",
+          xp: 5,
+        },
+        // 1 — Scénario (phase apprentissage)
+        {
+          type: "scenario",
+          context:
+            "Aminata a fait essayer son bot WhatsApp de suivi de dépenses à 8 personnes. Retours : 6 disent 'c'est pratique mais je ne pense pas à l'ouvrir le soir'. 1 dit 'j'adore, je l'utilise tous les jours'. 1 dit 'trop compliqué'.",
+          question: "Quel est l'apprentissage le plus important pour Aminata ?",
+          options: [
+            "Le vrai problème n'est pas l'outil mais l'habitude — il faut un rappel/déclencheur pour qu'on pense à l'utiliser.",
+            "L'outil est trop compliqué — il faut tout simplifier.",
+            "1 personne l'adore, donc le produit est validé.",
+          ],
+          correctIndex: 0,
+          explanation:
+            "Le signal dominant (6/8) n'est pas 'c'est mauvais' mais 'j'oublie de l'utiliser'. C'est un problème d'habitude, pas de fonctionnalité. Aminata devrait ajouter un rappel automatique (ex : message chaque soir à 20h). Si elle avait écouté seulement la personne qui trouve ça 'compliqué', elle aurait simplifié un outil qui n'a pas de problème de complexité. Écouter le pattern dominant, pas le retour le plus fort en émotion.",
+          xp: 10,
+        },
+        // 2 — Info (phase apprentissage)
+        {
+          type: "info",
+          icon: "📡",
+          title: "Sépare le signal du bruit",
+          content:
+            "Tous les retours ne se valent pas. Le signal : un pattern qui revient chez plusieurs utilisateurs ('3 personnes sur 5 veulent payer après la livraison, pas avant'). Le bruit : une demande isolée, une préférence personnelle, un cas particulier. Règle : un retour qui revient 3+ fois = signal à traiter. Un retour unique = à noter, mais pas à prioriser. Ne refais pas tout ton produit pour plaire à une seule personne.",
+          xp: 5,
+        },
+        // 3 — MCQ (enseigne ajustement post-retours)
+        {
+          type: "mcq",
+          question: "Après avoir collecté les retours, tu réalises que ton hypothèse de départ était partiellement fausse. Que fais-tu ?",
+          options: [
+            "Tu ignores les retours qui contredisent ton idée initiale — tu y crois.",
+            "Tu ajustes ta prochaine version en fonction des patterns réels, même si ça remet en cause ton idée de départ.",
+            "Tu abandonnes le projet puisque tu t'étais trompé.",
+          ],
+          correctIndex: 1,
+          explanation:
+            "Se tromper sur une hypothèse n'est pas un échec — c'est le but de la boucle. Les retours qui contredisent ton idée sont les plus précieux : ils t'évitent de construire dans la mauvaise direction. Tu n'abandonnes pas et tu n'ignores pas la réalité. Tu ajustes — c'est exactement ce que la boucle Build-Measure-Learn est censée produire.",
+          xp: 10,
+        },
+        // 4 — Vrai/Faux (phase apprentissage)
+        {
+          type: "true_false",
+          statement: "Si mes premiers utilisateurs ne sont pas tous enthousiastes, mon MVP est un échec.",
+          isTrue: false,
+          explanation:
+            "Faux. Un MVP n'est pas censé plaire à tout le monde — il est censé t'apprendre quelque chose. Même des retours tièdes ou négatifs sont des succès s'ils te disent quoi améliorer. L'échec, ce n'est pas un MVP imparfait ; c'est un MVP dont tu n'apprends rien parce que tu n'as pas vraiment écouté. Le but du MVP, c'est l'apprentissage, pas l'applaudissement.",
+          xp: 5,
+        },
+        // 5 — Micro-input CAPTURE : feedback_synthese
+        {
+          type: "micro_input",
+          prompt: "Synthèse des retours qui reviennent le plus souvent (signal vs bruit)",
+          placeholder: "3 personnes sur 5 mentionnent le même frein : le paiement avant livraison. 4 sur 5 ont aimé la rapidité de réponse...",
+          storageKey: "feedback_synthese",
+          xp: 2,
+        },
+        // 6 — Micro-input CAPTURE : decision_iteration (suit MCQ sur ajustement post-retours)
+        {
+          type: "micro_input",
+          prompt: "Ta décision pour la prochaine version : que gardes-tu, changes-tu, ajoutes-tu ?",
+          placeholder: "Je GARDE : la commande par message vocal (tout le monde adore). Je CHANGE : le paiement après livraison. J'AJOUTE : un rappel automatique chaque soir...",
+          storageKey: "decision_iteration",
+          xp: 2,
+        },
+        // 7 — Reflection template CAPTURE
+        {
+          type: "reflection_template",
+          intro:
+            "Tu as bouclé ta première boucle Build-Measure-Learn. C'est le rythme cardiaque de toute startup. Voilà ton rapport assemblé.",
+          template:
+            "RAPPORT BUILD-MEASURE-LEARN — Mon MVP\n\nSynthèse des retours terrain :\n{feedback_synthese}\n\nMa décision pour la prochaine version :\n{decision_iteration}\n\nProchaine boucle : je construis cette version améliorée et je remesure.",
+          variables: ["feedback_synthese", "decision_iteration"],
+          xp: 58,
+        },
+      ],
+    },
   },
 
   // --- Niveau 5 ---

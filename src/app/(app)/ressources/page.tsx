@@ -3,12 +3,15 @@
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import Link from "next/link";
+import { BarChart2, Mic, Scale, Star, Link as LinkIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { Resource } from "@/types";
 import type { StaticProduct } from "@/data/products";
 import { useUser } from "@/hooks/use-user";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
 import { EXTERNAL_RESOURCES } from "@/data/external-resources";
+import { IconBadge } from "@/components/ui/IconBadge";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -26,10 +29,10 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const CATEGORY_META: Record<string, { bg: string; text: string; icon: string }> = {
-  Modèle: { bg: "bg-[#EEF1FF]", text: "text-[#0722AB]", icon: "📊" },
-  Pitch: { bg: "bg-[#FFF4EC]", text: "text-[#F77E2D]", icon: "🎤" },
-  Légal: { bg: "bg-[#F0FAF0]", text: "text-[#1A6B00]", icon: "⚖️" },
+const CATEGORY_META: Record<string, { bg: string; text: string; Icon: LucideIcon }> = {
+  Modèle: { bg: "bg-[#EEF1FF]", text: "text-[#0722AB]", Icon: BarChart2 },
+  Pitch: { bg: "bg-[#FFF4EC]", text: "text-[#F77E2D]", Icon: Mic },
+  Légal: { bg: "bg-[#F0FAF0]", text: "text-[#1A6B00]", Icon: Scale },
 };
 
 const FAVORITES_KEY = "startkaba-favorites";
@@ -127,7 +130,12 @@ function FormationCard({
     <div className="bg-white border border-[#E8EAF0] rounded-2xl overflow-hidden hover:shadow-md transition-shadow flex flex-col">
       {/* Cover */}
       <div className="h-32 bg-gradient-to-br from-[#EEF1FF] to-[#D5DAF7] flex items-center justify-center relative">
-        <span className="text-5xl">{product.levelTag ? ["🎯", "📐", "🏗️", "🚀", "📣", "⚖️", "💰", "🎊"][product.levelTag - 1] ?? "📘" : "📘"}</span>
+        <IconBadge
+            iconKey={product.levelTag ? (["Target","Ruler","Construction","Rocket","Megaphone","Scale","Coins","PartyPopper"][product.levelTag - 1] ?? "BookOpen") : "BookOpen"}
+            size={48}
+            strokeWidth={1.5}
+            className="text-[#0722AB]/60"
+          />
         {product.levelTag && (
           <span className="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-[#0722AB] text-white text-xs font-bold">
             Niv. {product.levelTag}
@@ -318,7 +326,7 @@ export default function RessourcesPage() {
       {/* ── Section Recommandés ─────────────────────────────────────────── */}
       {!isLoadingResources && !isLoadingProducts && (recommendedResources.length > 0 || recommendedFormation) && (
         <div className="bg-[#EEF1FF] border border-[#0722AB]/20 rounded-2xl p-4 mb-8 flex items-start gap-3">
-          <span className="text-2xl shrink-0">⭐</span>
+          <Star size={22} strokeWidth={2} className="text-amber-400 shrink-0 mt-0.5" />
           <div className="flex-1 min-w-0">
             <p className="text-[#0722AB] font-semibold text-sm mb-1">
               Recommandés pour ton niveau {currentLevelId}
@@ -326,7 +334,7 @@ export default function RessourcesPage() {
             <div className="flex flex-wrap gap-2">
               {recommendedResources.map((r) => (
                 <span key={r.id} className="px-2 py-0.5 rounded-full bg-white/70 text-[#0722AB] text-xs font-medium">
-                  📄 {r.title}
+                  {r.title}
                 </span>
               ))}
               {recommendedFormation && !recommendedFormation.isPurchased && (
@@ -334,7 +342,7 @@ export default function RessourcesPage() {
                   onClick={() => setPurchaseTarget(recommendedFormation)}
                   className="px-2 py-0.5 rounded-full bg-[#F77E2D] text-white text-xs font-bold hover:opacity-90 transition-opacity"
                 >
-                  🎓 {recommendedFormation.title} — {recommendedFormation.priceCFA.toLocaleString("fr-FR")} FCFA
+                  {recommendedFormation.title} — {recommendedFormation.priceCFA.toLocaleString("fr-FR")} FCFA
                 </button>
               )}
               {recommendedFormation?.isPurchased && (
@@ -364,7 +372,7 @@ export default function RessourcesPage() {
               const catMeta = CATEGORY_META[r.category] ?? {
                 bg: "bg-[#F5F6FA]",
                 text: "text-[#4A5280]",
-                icon: "📄",
+                Icon: Star,
               };
               return (
                 <div
@@ -374,8 +382,8 @@ export default function RessourcesPage() {
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2">
-                    <div className={`w-12 h-12 rounded-2xl ${catMeta.bg} flex items-center justify-center text-2xl shrink-0`}>
-                      {catMeta.icon}
+                    <div className={`w-12 h-12 rounded-2xl ${catMeta.bg} flex items-center justify-center shrink-0`}>
+                      <catMeta.Icon size={24} strokeWidth={2} className={catMeta.text} />
                     </div>
                     <div className="flex items-center gap-2">
                       <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${catMeta.bg} ${catMeta.text}`}>
@@ -384,9 +392,9 @@ export default function RessourcesPage() {
                       <button
                         onClick={() => toggleFavorite(r.id)}
                         aria-label={isFav ? "Retirer des favoris" : "Ajouter aux favoris"}
-                        className={`text-lg transition-all hover:scale-110 ${isFav ? "opacity-100" : "grayscale opacity-30 hover:opacity-70"}`}
+                        className={`transition-all hover:scale-110 ${isFav ? "opacity-100 text-amber-400" : "opacity-30 hover:opacity-70 text-muted"}`}
                       >
-                        ⭐
+                        <Star size={18} strokeWidth={2} fill={isFav ? "currentColor" : "none"} />
                       </button>
                     </div>
                   </div>
@@ -511,8 +519,8 @@ export default function RessourcesPage() {
                     : "border-[#E8EAF0] bg-white hover:border-[#0722AB]"
                 }`}
               >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0 ${forNow ? "bg-[#AEFF94]/40" : "bg-[#F5F6FA]"}`}>
-                  🔗
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${forNow ? "bg-[#AEFF94]/40" : "bg-[#F5F6FA]"}`}>
+                  <LinkIcon size={20} strokeWidth={2} className="text-[#8892C8]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">

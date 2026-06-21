@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { MapPin } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser } from "@/hooks/use-user";
@@ -179,7 +180,7 @@ export function Sidebar() {
           <p className="text-sm font-bold text-white truncate">
             {user?.fullName ?? "Chargement..."}
           </p>
-          <p className="text-xs text-white/50 mt-0.5">📍 {cityLabel}</p>
+          <p className="text-xs text-white/50 mt-0.5 flex items-center gap-1"><MapPin size={10} strokeWidth={2} />{cityLabel}</p>
         </div>
       </div>
 

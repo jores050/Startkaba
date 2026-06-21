@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { Timer, Rocket, Bot } from "lucide-react";
+import { IconBadge } from "@/components/ui/IconBadge";
 import useSWR from "swr";
 import { useUser } from "@/hooks/use-user";
 import { useLevels, useLevelDetail } from "@/hooks/use-progress";
@@ -80,7 +82,7 @@ export default function DashboardPage() {
           className="flex items-center justify-between gap-4 bg-amber-50 border border-amber-300 rounded-2xl px-5 py-4 hover:bg-amber-100 transition-colors"
         >
           <div className="flex items-center gap-3 min-w-0">
-            <span className="text-2xl shrink-0">⏳</span>
+            <Timer size={24} strokeWidth={2} className="shrink-0 text-amber-600" />
             <div className="min-w-0">
               <p className="font-bold text-amber-800 text-sm">Mission terrain en attente</p>
               <p className="text-amber-700 text-xs mt-0.5 truncate">
@@ -185,7 +187,7 @@ export default function DashboardPage() {
           </div>
           <div className="flex justify-between text-xs text-muted mt-1.5">
             <span>Niv.1</span>
-            <span>🚀 Niv.8</span>
+            <span className="flex items-center gap-0.5"><Rocket size={12} strokeWidth={2} /> Niv.8</span>
           </div>
         </div>
       </div>
@@ -203,8 +205,8 @@ export default function DashboardPage() {
           <div className="px-5 py-3.5 flex flex-col gap-2.5">
             {lastBadges.map((b) => (
               <div key={b.badgeId} className="flex items-center gap-3">
-                <span className="w-[34px] h-[34px] rounded-lg bg-green-bg flex items-center justify-center text-base shrink-0">
-                  {b.def!.icon}
+                <span className="w-[34px] h-[34px] rounded-lg bg-green-bg flex items-center justify-center shrink-0">
+                  <IconBadge iconKey={b.def!.icon} size={18} strokeWidth={2} />
                 </span>
                 <div>
                   <p className="text-sm font-bold text-ink">{b.def!.name}</p>
@@ -216,8 +218,8 @@ export default function DashboardPage() {
             ))}
             {nextLocked && (
               <div className="flex items-center gap-3">
-                <span className="w-[34px] h-[34px] rounded-lg bg-app grayscale opacity-45 flex items-center justify-center text-base shrink-0">
-                  {nextLocked.icon}
+                <span className="w-[34px] h-[34px] rounded-lg bg-app grayscale opacity-45 flex items-center justify-center shrink-0">
+                  <IconBadge iconKey={nextLocked.icon} size={18} strokeWidth={2} />
                 </span>
                 <div>
                   <p className="text-sm font-bold text-muted">{nextLocked.name}</p>
@@ -291,8 +293,8 @@ export default function DashboardPage() {
             aria-hidden
             className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-white/5 pointer-events-none"
           />
-          <span className="relative w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center text-xl mb-3">
-            🤖
+          <span className="relative w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center mb-3">
+            <Bot size={22} strokeWidth={2} className="text-white" />
           </span>
           <p className="font-display text-base font-extrabold text-white mb-1.5">
             Kaba, ton coach

@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { Lock, LockOpen, PartyPopper } from "lucide-react";
+import { IconBadge } from "@/components/ui/IconBadge";
 import useSWR from "swr";
 import { useLevelDetail } from "@/hooks/use-progress";
 import { getBadgeById } from "@/data/badges";
@@ -54,7 +56,7 @@ function ReflectionCard({ icon, title, answer, index }: ReflectionCardProps) {
       style={{ animationDelay: `${0.3 + index * 0.12}s`, animationFillMode: "forwards" }}
     >
       <div className="flex items-center gap-2 mb-2">
-        <span className="text-xl">{icon}</span>
+        <IconBadge iconKey={icon} size={18} strokeWidth={2} className="text-primary shrink-0" />
         <h3 className="font-semibold text-foreground text-sm">{title}</h3>
       </div>
       {answer ? (
@@ -97,8 +99,13 @@ function CrossSellCard({ product }: { product: StaticProduct & { isPurchased: bo
   return (
     <>
       <div className="bg-gradient-to-r from-[#FFF4EC] to-[#FFF9F5] border border-[#F77E2D]/30 rounded-2xl p-5 flex gap-4 items-center">
-        <div className="w-14 h-14 rounded-2xl bg-[#F77E2D]/10 flex items-center justify-center text-3xl shrink-0">
-          {["🎯", "📐", "🏗️", "🚀", "📣", "⚖️", "💰", "🎊"][(product.levelTag ?? 1) - 1] ?? "📘"}
+        <div className="w-14 h-14 rounded-2xl bg-[#F77E2D]/10 flex items-center justify-center shrink-0">
+          <IconBadge
+            iconKey={["Target","Ruler","Construction","Rocket","Megaphone","Scale","Coins","PartyPopper"][(product.levelTag ?? 1) - 1] ?? "BookOpen"}
+            size={28}
+            strokeWidth={2}
+            className="text-[#F77E2D]"
+          />
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-xs font-bold text-[#F77E2D] uppercase tracking-wide mb-1">
@@ -206,7 +213,7 @@ export default function RecapPage() {
   if (!completed) {
     return (
       <div className="max-w-xl mx-auto px-4 py-12 text-center">
-        <span className="text-5xl block mb-4">🔒</span>
+        <Lock size={48} strokeWidth={1.5} className="mx-auto mb-4 text-muted" />
         <h1 className="font-display text-2xl font-bold text-foreground mb-2">
           Récap pas encore disponible
         </h1>
@@ -231,7 +238,9 @@ export default function RecapPage() {
         {/* ── Hero header ────────────────────────────────────────────── */}
         <div className="relative rounded-2xl overflow-hidden mb-6 mt-2">
           <div className="bg-[#0722AB] px-6 py-8 text-center text-white">
-            <div className="text-5xl mb-3 animate-badge-pop">🎊</div>
+            <div className="mb-3 animate-badge-pop flex justify-center">
+              <PartyPopper size={48} strokeWidth={1.5} className="text-white" />
+            </div>
             <h1 className="font-display text-3xl font-extrabold mb-1">
               Niveau {levelId} complété !
             </h1>
@@ -245,7 +254,7 @@ export default function RecapPage() {
                 key={b.id}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 border border-white/30 mb-4"
               >
-                <span className="text-2xl">{b.icon}</span>
+                <IconBadge iconKey={b.icon} size={24} strokeWidth={2} className="text-white" />
                 <span className="font-bold text-sm">{b.name}</span>
               </div>
             ))}
@@ -260,7 +269,8 @@ export default function RecapPage() {
             {/* Next level badge */}
             {nextLevelData && (
               <p className="mt-3 text-sm text-white/80 font-semibold">
-                🔓 Niveau {nextLevelId} débloqué — {nextLevelData.title}
+                <LockOpen size={16} strokeWidth={2} className="inline mr-1 align-[-3px]" />
+                Niveau {nextLevelId} débloqué — {nextLevelData.title}
               </p>
             )}
           </div>

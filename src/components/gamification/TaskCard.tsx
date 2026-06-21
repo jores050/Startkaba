@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSWRConfig } from "swr";
+import { Timer, Flame } from "lucide-react";
 import type { TaskWithProgress } from "@/hooks/use-progress";
 import { QuizModal, type QuizResult } from "./QuizModal";
 import { LessonPlayer } from "./LessonPlayer";
@@ -160,11 +161,11 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
           <>
             {isMission && task.missionStatus === "MISSION_IN_PROGRESS" ? (
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold border border-amber-300">
-                ⏳ Mission en cours
+                <Timer size={12} strokeWidth={2} />Mission en cours
               </span>
             ) : (
-              <span className="inline-flex items-center gap-2 text-cta font-medium text-sm">
-                🔥 En cours
+              <span className="inline-flex items-center gap-1.5 text-cta font-medium text-sm">
+                <Flame size={14} strokeWidth={2} />En cours
               </span>
             )}
             {isMission && task.lesson ? (
@@ -210,7 +211,7 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
         <div className="pl-0 sm:pl-11">
           <ReflectionSummaryCard
             taskId={task.id}
-            recapLabel={task.recapLabel ?? "📝 Ta réflexion"}
+            recapLabel={task.recapLabel ?? "Ta réflexion"}
           />
         </div>
       )}
@@ -243,13 +244,14 @@ export function TaskCard({ task, index, onStart, onQuizCompleted }: TaskCardProp
         />
       )}
 
-      {missionOpen && task.lesson && isMission && (
+      {missionOpen && task.lesson && isMission && task.missionConfig && (
         <MissionPlayer
           lesson={task.lesson}
           taskId={task.id}
           taskTitle={task.title}
           missionStatus={task.missionStatus ?? null}
           missionCaptureIndexes={task.missionCaptureIndexes ?? []}
+          missionConfig={task.missionConfig}
           onClose={closeMission}
           onComplete={(r) => {
             closeMission();

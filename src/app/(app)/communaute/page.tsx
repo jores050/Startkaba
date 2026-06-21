@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import { MessageCircle, Mail, CalendarDays, MapPin, Clock, Building2, BookOpen, Handshake } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Avatar } from "@/components/ui/Avatar";
 import { CITIES } from "@/lib/validations/auth";
 import type { Mentor, CommunityProfile, ConnectionRequest } from "@/types";
@@ -19,10 +21,13 @@ function contactHref(method: string, value: string) {
   if (method === "EMAIL") return `mailto:${value}`;
   return value;
 }
-function contactIcon(method: string) {
-  if (method === "WHATSAPP") return "💬";
-  if (method === "EMAIL") return "✉️";
-  return "📅";
+const CONTACT_ICONS: Record<string, LucideIcon> = {
+  WHATSAPP: MessageCircle,
+  EMAIL: Mail,
+};
+function ContactIcon({ method }: { method: string }) {
+  const Icon = CONTACT_ICONS[method] ?? CalendarDays;
+  return <Icon size={14} strokeWidth={2} />;
 }
 
 const EXPERTISE_FILTERS = [
@@ -140,7 +145,7 @@ function ShowcaseBanner() {
               <Avatar fullName={p.fullName} avatarUrl={p.avatarUrl} size="sm" />
               <div className="min-w-0">
                 <p className="text-xs font-semibold text-foreground truncate">{p.projectName ?? p.fullName}</p>
-                <p className="text-xs text-muted truncate">📍 {cityLabel(p.city)}</p>
+                <p className="text-xs text-muted truncate flex items-center gap-0.5"><MapPin size={10} strokeWidth={2} />{cityLabel(p.city)}</p>
               </div>
             </div>
             <span className="self-start px-2 py-0.5 rounded-full bg-green/10 dark:bg-[rgba(74,222,128,0.08)] text-green dark:text-[#4ADE80] text-xs font-semibold">
@@ -228,7 +233,7 @@ function MentorCard({ mentor }: { mentor: Mentor }) {
         <div className="flex-1 min-w-0">
           <p className="font-semibold text-foreground text-sm leading-snug">{mentor.name}</p>
           <p className="text-muted text-xs mt-0.5">{mentor.title}</p>
-          <p className="text-muted text-xs mt-0.5">📍 {cityLabel(mentor.city)}</p>
+          <p className="text-muted text-xs mt-0.5 flex items-center gap-0.5"><MapPin size={10} strokeWidth={2} />{cityLabel(mentor.city)}</p>
         </div>
       </div>
       <p className="text-foreground text-xs leading-relaxed line-clamp-3">{mentor.bio}</p>
@@ -238,14 +243,14 @@ function MentorCard({ mentor }: { mentor: Mentor }) {
         ))}
       </div>
       <div className="flex items-center justify-between mt-1">
-        <p className="text-muted text-xs">🕐 {mentor.availability}</p>
+        <p className="text-muted text-xs flex items-center gap-1"><Clock size={12} strokeWidth={2} /> {mentor.availability}</p>
         <a
           href={contactHref(mentor.contactMethod, mentor.contactValue)}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary text-white dark:bg-[#4D6FFF] text-xs font-bold hover:opacity-90 transition-opacity"
         >
-          {contactIcon(mentor.contactMethod)} Contacter
+          <ContactIcon method={mentor.contactMethod} /> Contacter
         </a>
       </div>
     </div>
@@ -347,7 +352,7 @@ function ProfileCard({ profile, sent, sending, onConnect }: { profile: Community
         <Avatar fullName={profile.fullName} avatarUrl={profile.avatarUrl} size="md" />
         <div className="flex-1 min-w-0">
           <p className="font-semibold text-foreground text-sm">{profile.fullName}</p>
-          <p className="text-muted text-xs mt-0.5">📍 {cityLabel(profile.city)}</p>
+          <p className="text-muted text-xs mt-0.5 flex items-center gap-0.5"><MapPin size={10} strokeWidth={2} />{cityLabel(profile.city)}</p>
           <span className="inline-block mt-1 px-2 py-0.5 rounded-full bg-green/10 dark:bg-[rgba(74,222,128,0.08)] text-green dark:text-[#4ADE80] text-xs font-semibold">Niv. {profile.currentLevelId}</span>
         </div>
       </div>
@@ -427,11 +432,11 @@ function GroupsTab({ myUserId }: { myUserId: string | null }) {
 }
 
 function GroupCard({ group, onClick }: { group: Group; onClick: () => void }) {
-  const icon = group.type === "CITY" ? "🏙️" : "📚";
+  const GroupIcon = group.type === "CITY" ? Building2 : BookOpen;
   return (
     <button onClick={onClick} className="bg-surface border border-border rounded-2xl p-4 text-left flex flex-col gap-2 hover:border-primary dark:hover:border-[#4D6FFF] transition-colors w-full">
       <div className="flex items-start justify-between gap-2">
-        <p className="font-semibold text-foreground text-sm">{icon} {group.name}</p>
+        <p className="font-semibold text-foreground text-sm flex items-center gap-1.5"><GroupIcon size={14} strokeWidth={2} className="shrink-0 text-muted" />{group.name}</p>
         <span className="text-muted text-xs shrink-0">{group._count.posts} post{group._count.posts !== 1 ? "s" : ""}</span>
       </div>
       <p className="text-muted text-xs line-clamp-2">{group.description}</p>
@@ -892,13 +897,13 @@ function AccountabilitySection({ myUserId }: { myUserId: string | null }) {
 
   return (
     <div className="bg-surface border border-border rounded-2xl p-5 mb-6">
-      <p className="font-semibold text-foreground text-sm mb-3">🤝 Ton binôme de motivation</p>
+      <p className="font-semibold text-foreground text-sm mb-3 flex items-center gap-1.5"><Handshake size={16} strokeWidth={2} className="text-muted" />Ton binôme de motivation</p>
       {pair && partner ? (
         <div className="flex items-center gap-3">
           <Avatar fullName={partner.fullName} avatarUrl={partner.avatarUrl} size="md" />
           <div className="flex-1 min-w-0">
             <p className="font-semibold text-foreground text-sm">{partner.fullName}</p>
-            <p className="text-muted text-xs">📍 {cityLabel(partner.city)} · Niv. {partner.currentLevelId}</p>
+            <p className="text-muted text-xs flex items-center gap-0.5"><MapPin size={10} strokeWidth={2} />{cityLabel(partner.city)} · Niv. {partner.currentLevelId}</p>
           </div>
           <button
             onClick={() => sayHello(partner.id)}

@@ -8,25 +8,32 @@ export interface RecapCard {
 
 export const LEVEL_RECAP_CARDS: Record<number, RecapCard[]> = {
   1: [
-    { icon: "🎯", title: "Ta proposition de valeur", taskId: 101, exerciseIndex: 9 },
-    { icon: "❤️", title: "Pourquoi ce projet te tient à cœur", taskId: 102, exerciseIndex: 7 },
-    { icon: "🔍", title: "Les problèmes que tu résous", taskId: 103, exerciseIndex: 9 },
-    { icon: "👤", title: "Ton client idéal", taskId: 104, exerciseIndex: 11 },
-    { icon: "✨", title: "Ta proposition de valeur (version finale)", taskId: 105, exerciseIndex: 12 },
+    { icon: "Target", title: "Ta proposition de valeur", taskId: 101, exerciseIndex: 9 },
+    { icon: "Heart", title: "Pourquoi ce projet te tient à cœur", taskId: 102, exerciseIndex: 7 },
+    { icon: "Search", title: "Les problèmes que tu résous", taskId: 103, exerciseIndex: 9 },
+    { icon: "User", title: "Ton client idéal", taskId: 104, exerciseIndex: 11 },
+    { icon: "Sparkles", title: "Ta proposition de valeur (version finale)", taskId: 105, exerciseIndex: 12 },
   ],
   2: [
-    { icon: "🥊", title: "Tes concurrents", taskId: 106, exerciseIndex: 9 },
-    { icon: "📊", title: "Ton marché estimé", taskId: 107, exerciseIndex: 8 },
-    { icon: "🎙️", title: "Ton guide d'entretien", taskId: 108, exerciseIndex: 9 },
-    { icon: "🎤", title: "Tes 5 interviews", taskId: 109, exerciseIndex: 13 },
-    { icon: "✅", title: "Marché validé — ta décision", taskId: 110, exerciseIndex: 11 },
+    { icon: "Swords", title: "Tes concurrents", taskId: 106, exerciseIndex: 9 },
+    { icon: "BarChart2", title: "Ton marché estimé", taskId: 107, exerciseIndex: 8 },
+    { icon: "Mic2", title: "Ton guide d'entretien", taskId: 108, exerciseIndex: 9 },
+    { icon: "Mic", title: "Tes 5 interviews", taskId: 109, exerciseIndex: 13 },
+    { icon: "CheckCircle2", title: "Marché validé — ta décision", taskId: 110, exerciseIndex: 11 },
   ],
   3: [
-    { icon: "🏗️", title: "Ton Business Model Canvas", taskId: 301, exerciseIndex: 11 },
-    { icon: "💰", title: "Tes sources de revenus", taskId: 302, exerciseIndex: 9 },
-    { icon: "💼", title: "Ton budget de démarrage", taskId: 303, exerciseIndex: 11 },
-    { icon: "🏷️", title: "Ta stratégie de prix", taskId: 304, exerciseIndex: 10 },
-    { icon: "🤝", title: "Tes partenaires clés", taskId: 305, exerciseIndex: 9 },
+    { icon: "Construction", title: "Ton Business Model Canvas", taskId: 301, exerciseIndex: 11 },
+    { icon: "Coins", title: "Tes sources de revenus", taskId: 302, exerciseIndex: 9 },
+    { icon: "Briefcase", title: "Ton budget de démarrage", taskId: 303, exerciseIndex: 11 },
+    { icon: "Tag", title: "Ta stratégie de prix", taskId: 304, exerciseIndex: 10 },
+    { icon: "Handshake", title: "Tes partenaires clés", taskId: 305, exerciseIndex: 9 },
+  ],
+  4: [
+    { icon: "ClipboardList", title: "Tes fonctionnalités prioritaires", taskId: 401, exerciseIndex: 9 },
+    { icon: "Wrench", title: "Ton format MVP", taskId: 402, exerciseIndex: 10 },
+    { icon: "Rocket", title: "Ton MVP publié", taskId: 403, exerciseIndex: 9 },
+    { icon: "Users", title: "Tes 10 premiers utilisateurs", taskId: 404, exerciseIndex: 6 },
+    { icon: "RefreshCw", title: "Ton rapport Build-Measure-Learn", taskId: 405, exerciseIndex: 7 },
   ],
 };
 

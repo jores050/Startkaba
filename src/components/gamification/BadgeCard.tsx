@@ -1,4 +1,5 @@
 import type { Badge } from "@/types";
+import { IconBadge } from "@/components/ui/IconBadge";
 
 interface BadgeCardProps {
   badge: Badge;
@@ -16,7 +17,9 @@ export function BadgeCard({ badge, earned, earnedAt }: BadgeCardProps) {
           : "border-border bg-background opacity-40 grayscale"
       }`}
     >
-      <span className="text-3xl block mb-1">{badge.icon}</span>
+      <div className="flex justify-center mb-1">
+        <IconBadge iconKey={badge.icon} size={32} className="text-foreground" />
+      </div>
       <p className="text-sm font-medium text-foreground">{badge.name}</p>
       <p className="text-xs text-muted mt-1">{badge.description}</p>
       {earned && earnedAt && (

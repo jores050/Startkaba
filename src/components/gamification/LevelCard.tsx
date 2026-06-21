@@ -1,17 +1,27 @@
 import Link from "next/link";
+import {
+  CheckCircle2,
+  Flame,
+  Sparkles,
+  Lock,
+  Construction,
+  Clock,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { LevelSummary } from "@/lib/progress/compute";
 import { getBadgeById } from "@/data/badges";
 import { LEVEL_TIME_ESTIMATES } from "@/data/level-meta";
+import { IconBadge } from "@/components/ui/IconBadge";
 
 const STATUS_META: Record<
   LevelSummary["status"],
-  { label: string; icon: string }
+  { label: string; Icon: LucideIcon }
 > = {
-  COMPLETED: { label: "Complété", icon: "✅" },
-  IN_PROGRESS: { label: "En cours", icon: "🔥" },
-  UNLOCKED: { label: "Disponible", icon: "✨" },
-  LOCKED: { label: "Verrouillé", icon: "🔒" },
-  COMING_SOON: { label: "Bientôt disponible", icon: "🚧" },
+  COMPLETED: { label: "Complété", Icon: CheckCircle2 },
+  IN_PROGRESS: { label: "En cours", Icon: Flame },
+  UNLOCKED: { label: "Disponible", Icon: Sparkles },
+  LOCKED: { label: "Verrouillé", Icon: Lock },
+  COMING_SOON: { label: "Bientôt disponible", Icon: Construction },
 };
 
 export function LevelCard({ level }: { level: LevelSummary }) {
@@ -67,19 +77,21 @@ export function LevelCard({ level }: { level: LevelSummary }) {
             </h3>
             <p className="text-muted text-sm">{level.subtitle}</p>
             {level.taskCount > 0 && (
-              <p className="text-muted text-xs mt-0.5">
-                ⏱ {LEVEL_TIME_ESTIMATES[level.id]}
+              <p className="text-muted text-xs mt-0.5 flex items-center gap-1">
+                <Clock size={12} strokeWidth={2} />
+                {LEVEL_TIME_ESTIMATES[level.id]}
               </p>
             )}
           </div>
         </div>
         {comingSoon ? (
-          <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#F77E2D]/10 text-[#F77E2D] border border-[#F77E2D]/25 shrink-0 whitespace-nowrap">
-            🚧 Bientôt
+          <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[#F77E2D]/10 text-[#F77E2D] border border-[#F77E2D]/25 shrink-0 whitespace-nowrap flex items-center gap-1">
+            <Construction size={12} strokeWidth={2} />
+            Bientôt
           </span>
         ) : (
-          <span title={meta.label} className="text-xl shrink-0">
-            {meta.icon}
+          <span title={meta.label} className="shrink-0 text-foreground">
+            <meta.Icon size={20} strokeWidth={2} />
           </span>
         )}
       </div>
@@ -121,7 +133,8 @@ export function LevelCard({ level }: { level: LevelSummary }) {
               title={`${b.name} — ${b.description}`}
               className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-light/30 border border-green/30 text-xs font-medium text-green"
             >
-              {b.icon} {b.name}
+              <IconBadge iconKey={b.icon} size={12} strokeWidth={2} />
+              {b.name}
             </span>
           ))}
         </div>
