@@ -36,6 +36,7 @@ function buildLevelDetail(levelId: number, rows: ProgressRow[]) {
         recapLabel: task.recapLabel,
         taskType: task.taskType,
         missionCaptureIndexes: task.missionCaptureIndexes,
+        missionConfig: task.missionConfig,
         missionStatus: p?.missionStatus ?? null,
       };
     }),

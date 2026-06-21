@@ -151,6 +151,38 @@ export interface Lesson {
   exercises: Exercise[];
 }
 
+// ─── Mission Config (système data-driven pour MissionPlayer) ─────────────────
+
+export type CaptureFieldType = "texte_court" | "texte_moyen" | "oui_non_texte";
+
+export interface CaptureFieldDef {
+  id: string;
+  label: string;
+  type: CaptureFieldType;
+  placeholder?: string;
+  required: boolean;
+}
+
+export interface MissionConfig {
+  type: "interviews" | "build" | "outreach" | "field_research";
+  title: string;
+  brief: string;
+  icon: string;
+  checkpointQuestion: string;
+  checkpointMinLabel: string;
+  checkpointCta: string;
+  briefingPanels?: { title: string; items: string[] }[];
+  ctaLabel: string;
+  coachNiveau: number;
+  hasRawNotes: boolean;
+  rawNotesLabel?: string;
+  rawNotesPlaceholder?: string;
+  captureFields: CaptureFieldDef[];
+  captureXP: number;
+  completeSummary: string;
+  completeContextLabel: string;
+}
+
 // ─── Task ─────────────────────────────────────────────────────────────────────
 
 export interface Task {
@@ -164,6 +196,7 @@ export interface Task {
   lesson?: Lesson;
   taskType?: "reflexion" | "mission";
   missionCaptureIndexes?: number[];  // exercise indexes shown only in Phase C
+  missionConfig?: MissionConfig;
 }
 
 export interface Level {
